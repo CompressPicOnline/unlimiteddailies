@@ -8,6 +8,7 @@ EMAIL = "contact@unlimiteddailies.com"
 TODAY = datetime.date.today().isoformat()
 OUT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "site")
 V = "1"  # bump to bust asset cache
+INDEXNOW_KEY = "3753766b9ea89f1d1682ceed22f858eb"  # IndexNow key file served at /<key>.txt
 
 NAV = [("/sumbreak-unlimited/", "Sumbreak Unlimited"), ("/sumbreak-solver/", "Solver"), ("/how-to-play-sumbreak/", "How to play")]
 
@@ -107,7 +108,7 @@ def build():
         shutil.rmtree(OUT)
     os.makedirs(OUT)
     shutil.copytree(os.path.join(os.path.dirname(OUT), "assets"), os.path.join(OUT, "assets"))
-    for f in ["favicon.svg", "og.png", "_headers", "_redirects"]:
+    for f in ["favicon.svg", "og.png", "_headers", "_redirects", INDEXNOW_KEY + ".txt"]:
         src = os.path.join(os.path.dirname(OUT), "static", f)
         if os.path.exists(src):
             shutil.copy(src, OUT)
