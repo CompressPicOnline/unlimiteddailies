@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Sumbreak Unlimited – Play Free Sumbreak Puzzles (No Daily Limit)</title>
+<meta name="description" content="Play Sumbreak unlimited for free: merge identical numbers until one tile is left. Easy, Medium & Hard boards, daily puzzle, hints and undo. No login.">
+<link rel="canonical" href="https://unlimiteddailies.com/sumbreak-unlimited/">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Unlimited Dailies">
+<meta property="og:title" content="Sumbreak Unlimited – Play Free Sumbreak Puzzles (No Daily Limit)">
+<meta property="og:description" content="Play Sumbreak unlimited for free: merge identical numbers until one tile is left. Easy, Medium & Hard boards, daily puzzle, hints and undo. No login.">
+<meta property="og:url" content="https://unlimiteddailies.com/sumbreak-unlimited/">
+<meta property="og:image" content="https://unlimiteddailies.com/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#2f6fed">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/assets/style.css?v=1">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Unlimited Dailies", "item": "https://unlimiteddailies.com/"}, {"@type": "ListItem", "position": 2, "name": "Sumbreak Unlimited", "item": "https://unlimiteddailies.com/sumbreak-unlimited/"}]}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": ["VideoGame", "WebApplication"], "name": "Sumbreak Unlimited", "url": "https://unlimiteddailies.com/sumbreak-unlimited/", "description": "Free unlimited Sumbreak-style number merge puzzles in the browser. Easy, Medium, Hard and a daily puzzle.", "applicationCategory": "GameApplication", "operatingSystem": "Any (web browser)", "genre": ["Puzzle", "Math puzzle", "Logic puzzle"], "gamePlatform": "Web browser", "playMode": "SinglePlayer", "isAccessibleForFree": true, "inLanguage": "en", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "publisher": {"@type": "Organization", "name": "Unlimited Dailies", "url": "https://unlimiteddailies.com"}}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "What is Sumbreak Unlimited?", "acceptedAnswer": {"@type": "Answer", "text": "Sumbreak Unlimited is a free, unofficial practice version of the Sumbreak-style number puzzle. Instead of one puzzle a day, you can play as many boards as you like in Easy, Medium and Hard, plus a free daily puzzle of our own."}}, {"@type": "Question", "name": "Is this the official LinkedIn Sumbreak game?", "acceptedAnswer": {"@type": "Answer", "text": "No. The official game is played on LinkedIn. This site is an independent fan-made practice tool that uses the same simple idea (merging identical neighbouring numbers) and creates its own puzzles. We are not affiliated with LinkedIn."}}, {"@type": "Question", "name": "How do you play Sumbreak?", "acceptedAnswer": {"@type": "Answer", "text": "Drag a number onto an identical number right next to it (up, down, left or right). The two tiles combine into their sum, and the tile you moved leaves an empty dead spot. Keep merging until only one number is left on the board."}}, {"@type": "Question", "name": "Can I play Sumbreak more than once a day?", "acceptedAnswer": {"@type": "Answer", "text": "The official game gives one puzzle per day. Here you can play unlimited puzzles: every time you press New puzzle you get a fresh, solvable board."}}, {"@type": "Question", "name": "Is every puzzle solvable?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. Every board is built backwards from a single finished tile, so there is always at least one correct order of merges. If you get stuck, use Undo or the Hint button."}}, {"@type": "Question", "name": "Do I need an account or download?", "acceptedAnswer": {"@type": "Answer", "text": "No. The game runs in your browser on phone, tablet or computer. There is no sign-up, and your stats are saved only on your own device."}}, {"@type": "Question", "name": "What is the difference between Easy, Medium and Hard?", "acceptedAnswer": {"@type": "Answer", "text": "Easy uses a 3×3 board like the early official puzzles, Medium uses 4×4, and Hard uses a 5×5 board with 25 tiles and many more possible wrong turns."}}]}</script>
+</head>
+<body>
+<header class="site"><div class="wrap">
+<a class="logo" href="/"><span>∞</span> Unlimited Dailies</a>
+<nav class="top"><a href="/sumbreak-unlimited/">Sumbreak Unlimited</a><a href="/sumbreak-solver/">Solver</a><a href="/how-to-play-sumbreak/">How to play</a></nav>
+</div></header>
+<main><div class="wrap">
+
+<h1>Sumbreak Unlimited – Play Free Sumbreak Puzzles With No Daily Limit</h1>
+<p class="lead">Merge identical neighbouring numbers until only one tile is left. Unlimited Easy, Medium and Hard boards, a free daily puzzle, hints and undo – no login needed.</p>
+
+<div id="game" data-default="easy">
+  <div class="levels" role="group" aria-label="Choose difficulty">
+    <button type="button" data-level-btn="daily">Daily</button>
+    <button type="button" data-level-btn="easy">Easy</button>
+    <button type="button" data-level-btn="medium">Medium</button>
+    <button type="button" data-level-btn="hard">Hard</button>
+  </div>
+  <div class="meta"><span data-puzzle-title>Loading…</span><span>⏱ <span data-timer>0:00</span> · Merges <span data-moves>0</span></span></div>
+  <div class="board" aria-label="Puzzle board"></div>
+  <p class="game-msg" aria-live="polite"></p>
+  <div class="ctrl">
+    <button type="button" data-action="undo">↶ Undo</button>
+    <button type="button" data-action="restart">Restart</button>
+    <button type="button" data-action="hint">💡 Hint</button>
+    <button type="button" data-action="new">New puzzle →</button>
+  </div>
+  <p class="stats" data-stats></p>
+</div>
+<div class="modal" id="win-modal" hidden role="dialog" aria-modal="true" aria-labelledby="win-title">
+  <div class="card">
+    <h2 id="win-title" style="margin-top:0">🎉 Puzzle solved!</h2>
+    <p data-win-text></p>
+    <button type="button" class="btn primary" data-next>Next puzzle</button>
+    <button type="button" class="btn" data-share>Share result</button>
+    <button type="button" class="btn" data-close>Close</button>
+  </div>
+</div>
+
+<div class="ad-slot"></div>
+
+<h2>How to play Sumbreak Unlimited</h2>
+<ol>
+<li><strong>Find a pair.</strong> Look for two identical numbers that touch side by side or above and below each other. Diagonal tiles do not count.</li>
+<li><strong>Merge them.</strong> Drag one number onto the other (or tap one, then tap the other). They combine into their sum: 4 + 4 becomes 8.</li>
+<li><strong>Watch the dead spot.</strong> The tile you moved leaves an empty space behind. Empty spaces can never be filled again, so they can cut the board into pieces.</li>
+<li><strong>Finish with one tile.</strong> The puzzle is solved when a single number remains. Every board here is guaranteed to have a solution.</li>
+</ol>
+<p>New to the puzzle? Read our full <a href="/how-to-play-sumbreak/">Sumbreak rules and strategy guide</a>. Stuck on today's official board? Type it into the <a href="/sumbreak-solver/">Sumbreak solver</a> to get the answer step by step.</p>
+
+<h2>Why play unlimited Sumbreak puzzles?</h2>
+<p>The daily version is over in a minute or two, and then you have to wait until midnight Pacific Time for the next one. Practising here helps you spot the patterns that matter – which small numbers to clear first, which merges leave a tile stranded, and when to merge <em>towards</em> the big numbers instead of away from them. Players who practise a few boards usually solve the daily puzzle faster and with fewer mistakes.</p>
+
+<h2>Features</h2>
+<ul>
+<li><strong>Unlimited puzzles</strong> in three difficulty levels, each with its own puzzle number you can share.</li>
+<li><strong>Daily puzzle</strong> – one shared board for everyone each day, with a streak counter.</li>
+<li><strong>Hint, Undo and Restart</strong> so you can learn instead of guessing.</li>
+<li><strong>Timer and best times</strong> saved on your device.</li>
+<li><strong>Works everywhere</strong> – drag on touch screens, click or use the keyboard on desktop.</li>
+</ul>
+
+<h2>Quick tips</h2>
+<ul>
+<li>Clear the <strong>smallest numbers first</strong>. A 1 or 2 that ends up alone can never be merged, because no new small numbers are ever created.</li>
+<li>Count each value: an <strong>odd number of the smallest tile</strong> on the board means something has already gone wrong.</li>
+<li>Before each merge, check that you are not <strong>cutting the board in two</strong> with a new dead spot.</li>
+<li>Merge so the result lands <strong>next to a matching number</strong>, keeping chains going.</li>
+</ul>
+
+<h2>Frequently asked questions</h2>
+<div class="faq"><details><summary>What is Sumbreak Unlimited?</summary><p>Sumbreak Unlimited is a free, unofficial practice version of the Sumbreak-style number puzzle. Instead of one puzzle a day, you can play as many boards as you like in Easy, Medium and Hard, plus a free daily puzzle of our own.</p></details><details><summary>Is this the official LinkedIn Sumbreak game?</summary><p>No. The official game is played on LinkedIn. This site is an independent fan-made practice tool that uses the same simple idea (merging identical neighbouring numbers) and creates its own puzzles. We are not affiliated with LinkedIn.</p></details><details><summary>How do you play Sumbreak?</summary><p>Drag a number onto an identical number right next to it (up, down, left or right). The two tiles combine into their sum, and the tile you moved leaves an empty dead spot. Keep merging until only one number is left on the board.</p></details><details><summary>Can I play Sumbreak more than once a day?</summary><p>The official game gives one puzzle per day. Here you can play unlimited puzzles: every time you press New puzzle you get a fresh, solvable board.</p></details><details><summary>Is every puzzle solvable?</summary><p>Yes. Every board is built backwards from a single finished tile, so there is always at least one correct order of merges. If you get stuck, use Undo or the Hint button.</p></details><details><summary>Do I need an account or download?</summary><p>No. The game runs in your browser on phone, tablet or computer. There is no sign-up, and your stats are saved only on your own device.</p></details><details><summary>What is the difference between Easy, Medium and Hard?</summary><p>Easy uses a 3×3 board like the early official puzzles, Medium uses 4×4, and Hard uses a 5×5 board with 25 tiles and many more possible wrong turns.</p></details></div>
+<p class="disclaimer">Unlimited Dailies is an independent website. It is not affiliated with, sponsored by or endorsed by LinkedIn Corporation or Microsoft. All puzzles on this page are generated by our own code.</p>
+</div></main>
+<footer class="site"><div class="wrap">
+<p><a href="/">Home</a><a href="/sumbreak-unlimited/">Sumbreak Unlimited</a><a href="/sumbreak-solver/">Sumbreak Solver</a><a href="/how-to-play-sumbreak/">How to Play</a><a href="/about/">About</a><a href="/contact/">Contact</a><a href="/privacy-policy/">Privacy</a><a href="/terms/">Terms</a></p>
+<p>© 2026 Unlimited Dailies. Free, unofficial practice puzzles. Not affiliated with, endorsed by or connected to LinkedIn Corporation or Microsoft. "Sumbreak" is used only to describe the puzzle style.</p>
+</div></footer>
+<script src="/assets/core.js?v=1"></script>
+<script src="/assets/game.js?v=1"></script>
+</body>
+</html>
