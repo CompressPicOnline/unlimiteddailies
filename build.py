@@ -39,6 +39,7 @@ def head(title, desc, path, extra_schema=None, noindex=False):
 <meta property="og:image" content="{DOMAIN}/og.png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#2f6fed">
+<meta name="msvalidate.01" content="DCD9377743936F2F6B4B5754198E0DD4">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="/assets/style.css?v={V}">
 {sch}
