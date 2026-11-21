@@ -161,7 +161,9 @@
     if (!modal) return;
     modal.querySelector('[data-win-text]').textContent = 'Solved in ' + fmt(time) + ' with ' + state.moves + ' merges.';
     modal.hidden = false;
-    modal.querySelector('[data-next]').focus();
+    var nx = modal.querySelector('[data-next]');
+    nx.href = nextUrl();
+    nx.focus();
     modal.querySelector('[data-share]').onclick = function () {
       var txt = shareText(time), btn = this;
       if (navigator.share) { navigator.share({ text: txt }).catch(function () {}); return; }
@@ -169,6 +171,13 @@
     };
   }
   function hideWin() { if (modal) modal.hidden = true; }
+
+  function nextTarget() {
+    var lv = state.level === 'daily' ? 'medium' : state.level;
+    var id = state.level === 'daily' ? (store.get('last_medium', 0) || 0) + 1 : state.id + 1;
+    return { lv: lv, id: id };
+  }
+  function nextUrl() { var t = nextTarget(); return location.pathname + '?level=' + t.lv + '&p=' + t.id; }
 
   function nextPuzzle() {
     hideWin();
@@ -252,7 +261,7 @@
   root.querySelector('[data-action="hint"]').addEventListener('click', hint);
   root.querySelector('[data-action="new"]').addEventListener('click', nextPuzzle);
   if (modal) {
-    modal.querySelector('[data-next]').addEventListener('click', nextPuzzle);
+    // "Next puzzle" in the win dialog is a real link (a natural break between puzzles).
     modal.querySelector('[data-close]').addEventListener('click', hideWin);
     modal.addEventListener('click', function (e) { if (e.target === modal) hideWin(); });
   }

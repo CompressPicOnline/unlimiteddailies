@@ -24,7 +24,7 @@
 <meta name="monetag" content="c643b64e9fb0e1e28f59dc44caa0c5cc">
 <meta name="msvalidate.01" content="DCD9377743936F2F6B4B5754198E0DD4">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="/assets/style.css?v=1">
+<link rel="stylesheet" href="/assets/style.css?v=2">
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Unlimited Dailies", "item": "https://unlimiteddailies.com/"}]}</script>
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebSite", "name": "Unlimited Dailies", "url": "https://unlimiteddailies.com/"}</script>
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "Organization", "name": "Unlimited Dailies", "url": "https://unlimiteddailies.com/", "logo": "https://unlimiteddailies.com/favicon.svg", "email": "contact@unlimiteddailies.com"}</script>
@@ -67,7 +67,7 @@
   <div class="card">
     <h2 id="win-title" style="margin-top:0">🎉 Puzzle solved!</h2>
     <p data-win-text></p>
-    <button type="button" class="btn primary" data-next>Next puzzle</button>
+    <a class="btn primary" data-next href="#" style="text-decoration:none;display:inline-block">Next puzzle</a>
     <button type="button" class="btn" data-share>Share result</button>
     <button type="button" class="btn" data-close>Close</button>
   </div>
@@ -88,7 +88,13 @@
 <p><a href="/">Home</a><a href="/sumbreak-unlimited/">Sumbreak Unlimited</a><a href="/sumbreak-solver/">Sumbreak Solver</a><a href="/how-to-play-sumbreak/">How to Play</a><a href="/about/">About</a><a href="/contact/">Contact</a><a href="/privacy-policy/">Privacy</a><a href="/terms/">Terms</a></p>
 <p>© 2026 Unlimited Dailies. Free, unofficial practice puzzles. Not affiliated with, endorsed by or connected to LinkedIn Corporation or Microsoft. "Sumbreak" is used only to describe the puzzle style.</p>
 </div></footer>
-<script src="/assets/core.js?v=1"></script>
-<script src="/assets/game.js?v=1"></script>
+<script src="/assets/core.js?v=2"></script>
+<script src="/assets/game.js?v=2"></script><script>
+/* Monetag vignette: loaded a few seconds after the page opens so the first view is never blocked.
+   Vignette ads only appear when the visitor follows a link (e.g. "Next puzzle" after a win),
+   never in the middle of a game. */
+(function(){var load=function(){var s=document.createElement('script');s.dataset.zone='12312406';s.src='https://n6wxm.com/vignette.min.js';s.async=true;document.body.appendChild(s);};
+if(document.readyState==='complete')setTimeout(load,4000);else window.addEventListener('load',function(){setTimeout(load,4000);});})();
+</script>
 </body>
 </html>

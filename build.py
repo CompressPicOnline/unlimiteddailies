@@ -7,7 +7,7 @@ SITE = "Unlimited Dailies"
 EMAIL = "contact@unlimiteddailies.com"
 TODAY = datetime.date.today().isoformat()
 OUT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "site")
-V = "1"  # bump to bust asset cache
+V = "2"  # bump to bust asset cache
 INDEXNOW_KEY = "3753766b9ea89f1d1682ceed22f858eb"  # IndexNow key file served at /<key>.txt
 
 NAV = [("/sumbreak-unlimited/", "Sumbreak Unlimited"), ("/sumbreak-solver/", "Solver"), ("/how-to-play-sumbreak/", "How to play")]
@@ -67,7 +67,7 @@ FOOT = f"""</div></main>
 """
 
 def page(path, title, desc, body, scripts="", schema=None, noindex=False):
-    html = head(title, desc, path, schema, noindex) + body + FOOT + scripts + "\n</body>\n</html>\n"
+    html = head(title, desc, path, schema, noindex) + body + FOOT + scripts + ("" if noindex else ADS) + "\n</body>\n</html>\n"
     d = os.path.join(OUT, path.strip("/"))
     os.makedirs(d, exist_ok=True)
     with open(os.path.join(d, "index.html"), "w") as f:
@@ -79,6 +79,14 @@ def faq_schema(faqs):
 
 def faq_html(faqs):
     return '<div class="faq">' + "".join(f"<details><summary>{q}</summary><p>{a}</p></details>" for q, a in faqs) + "</div>"
+
+ADS = """<script>
+/* Monetag vignette: loaded a few seconds after the page opens so the first view is never blocked.
+   Vignette ads only appear when the visitor follows a link (e.g. "Next puzzle" after a win),
+   never in the middle of a game. */
+(function(){var load=function(){var s=document.createElement('script');s.dataset.zone='12312406';s.src='https://n6wxm.com/vignette.min.js';s.async=true;document.body.appendChild(s);};
+if(document.readyState==='complete')setTimeout(load,4000);else window.addEventListener('load',function(){setTimeout(load,4000);});})();
+</script>"""
 
 GAME = """
 <div id="game" data-default="{default}">
@@ -103,7 +111,7 @@ GAME = """
   <div class="card">
     <h2 id="win-title" style="margin-top:0">🎉 Puzzle solved!</h2>
     <p data-win-text></p>
-    <button type="button" class="btn primary" data-next>Next puzzle</button>
+    <a class="btn primary" data-next href="#" style="text-decoration:none;display:inline-block">Next puzzle</a>
     <button type="button" class="btn" data-share>Share result</button>
     <button type="button" class="btn" data-close>Close</button>
   </div>
