@@ -27,6 +27,15 @@ h3{font-size:1.1rem;margin:1.3em 0 .4em}
 .board{display:grid;gap:8px;padding:10px;background:var(--line);border-radius:var(--radius);touch-action:none;user-select:none;-webkit-user-select:none}
 .cell{aspect-ratio:1;border:0;border-radius:12px;font:800 clamp(1rem,6vw,1.7rem)/1 system-ui,sans-serif;color:#fff;cursor:grab;transition:transform .12s,box-shadow .12s;text-shadow:0 1px 2px rgba(0,0,0,.25);padding:0}
 [data-level=hard] .cell{font-size:clamp(.85rem,4.6vw,1.35rem)}
+[data-level=expert] .cell{font-size:clamp(.75rem,3.8vw,1.15rem);border-radius:9px}
+[data-level=expert] .board{gap:5px}
+.cell.op{background:repeating-linear-gradient(135deg,#3b2f63,#3b2f63 8px,#4a3c7a 8px,#4a3c7a 16px);box-shadow:inset 0 0 0 3px #ffd23f;color:#ffd23f}
+.op-bar{display:flex;flex-wrap:wrap;gap:6px;margin:4px 0 10px}
+.op-bar button{font:inherit;font-weight:700;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:8px;padding:4px 10px;cursor:pointer}
+.steps li.hidden{display:none}
+.board-mini{display:grid;width:max-content;gap:3px;margin:6px 0 10px;font:700 .8rem system-ui,sans-serif}
+.board-mini span{min-width:2.2em;padding:3px 2px;text-align:center;border-radius:5px;background:var(--line)}
+.board-mini span.hl{background:#ffd23f;color:#1d2333}
 .cell.small{font-size:clamp(.8rem,4vw,1.2rem)}
 .cell.empty{background:transparent;box-shadow:inset 0 0 0 2px rgba(0,0,0,.06);cursor:default}
 .cell.selected{transform:scale(1.07);box-shadow:0 0 0 4px var(--ink)}

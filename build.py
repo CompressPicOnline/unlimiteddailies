@@ -7,7 +7,7 @@ SITE = "Unlimited Dailies"
 EMAIL = "contact@unlimiteddailies.com"
 TODAY = datetime.date.today().isoformat()
 OUT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "site")
-V = "2"  # bump to bust asset cache
+V = "3"  # bump to bust asset cache
 INDEXNOW_KEY = "3753766b9ea89f1d1682ceed22f858eb"  # IndexNow key file served at /<key>.txt
 
 NAV = [("/sumbreak-unlimited/", "Sumbreak Unlimited"), ("/sumbreak-solver/", "Solver"), ("/how-to-play-sumbreak/", "How to play")]
@@ -25,12 +25,12 @@ def head(title, desc, path, extra_schema=None, noindex=False):
     return f"""<!doctype html>
 <html lang="en">
 <head>
-<script async src="https://www.googletagmanager.com/gtm.js?id=GTM-52WF64FM"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
+  window.dataLayer.push({{'gtm.start': new Date().getTime(), event: 'gtm.js'}});
   function gtag(){{dataLayer.push(arguments);}}
-  gtag('js', new Date());
 </script>
+<script async src="https://www.googletagmanager.com/gtm.js?id=GTM-52WF64FM"></script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>{title}</title>
@@ -95,6 +95,7 @@ GAME = """
     <button type="button" data-level-btn="easy">Easy</button>
     <button type="button" data-level-btn="medium">Medium</button>
     <button type="button" data-level-btn="hard">Hard</button>
+    <button type="button" data-level-btn="expert">Expert</button>
   </div>
   <div class="meta"><span data-puzzle-title>Loading…</span><span>⏱ <span data-timer>0:00</span> · Merges <span data-moves>0</span></span></div>
   <div class="board" aria-label="Puzzle board"></div>
@@ -137,7 +138,9 @@ def build():
         ("Can I play Sumbreak more than once a day?", "The official game gives one puzzle per day. Here you can play unlimited puzzles: every time you press New puzzle you get a fresh, solvable board."),
         ("Is every puzzle solvable?", "Yes. Every board is built backwards from a single finished tile, so there is always at least one correct order of merges. If you get stuck, use Undo or the Hint button."),
         ("Do I need an account or download?", "No. The game runs in your browser on phone, tablet or computer. There is no sign-up, and your stats are saved only on your own device."),
-        ("What is the difference between Easy, Medium and Hard?", "Easy uses a 3×3 board like the early official puzzles, Medium uses 4×4, and Hard uses a 5×5 board with 25 tiles and many more possible wrong turns."),
+        ("What is the difference between Easy, Medium, Hard and Expert?", "Easy is a 3×3 board with plain numbers. Medium is 4×4 with one wildcard tile, Hard is 5×5 with two wildcards, and Expert is a big 6×6 board with 36 tiles and two wildcards."),
+        ("What are the ×2 and +3 tiles?", "They are wildcard tiles. A wildcard can merge with any number next to it, not just an identical one: ×2 doubles the number and +3 adds three to it. The result is a normal number that then has to find its own identical partner."),
+        ("I'm stuck – what does the Hint button do?", "Hint highlights the next merge on a correct path. If your current position can no longer be finished, it takes you back to your last good position first and then shows the next merge, so you never have to restart from scratch."),
     ]
     game_schema = {
         "@context": "https://schema.org", "@type": ["VideoGame", "WebApplication"],
@@ -151,7 +154,7 @@ def build():
     }
     body = f"""
 <h1>Sumbreak Unlimited – Play Free Sumbreak Puzzles With No Daily Limit</h1>
-<p class="lead">Merge identical neighbouring numbers until only one tile is left. Unlimited Easy, Medium and Hard boards, a free daily puzzle, hints and undo – no login needed.</p>
+<p class="lead">Merge identical neighbouring numbers until only one tile is left. Unlimited 3×3 to 6×6 boards with ×2 and +3 wildcard tiles, a free daily puzzle, hints and undo – no login needed.</p>
 {GAME.format(default="easy")}
 <div class="ad-slot"></div>
 
@@ -160,6 +163,7 @@ def build():
 <li><strong>Find a pair.</strong> Look for two identical numbers that touch side by side or above and below each other. Diagonal tiles do not count.</li>
 <li><strong>Merge them.</strong> Drag one number onto the other (or tap one, then tap the other). They combine into their sum: 4 + 4 becomes 8.</li>
 <li><strong>Watch the dead spot.</strong> The tile you moved leaves an empty space behind. Empty spaces can never be filled again, so they can cut the board into pieces.</li>
+<li><strong>Use wildcards wisely.</strong> Purple ×2 and +N tiles merge with <em>any</em> neighbouring number: ×2 doubles it, +3 adds three. Medium, Hard and Expert boards include them, just like the wildcard tiles in the newer official puzzles.</li>
 <li><strong>Finish with one tile.</strong> The puzzle is solved when a single number remains. Every board here is guaranteed to have a solution.</li>
 </ol>
 <p>New to the puzzle? Read our full <a href="/how-to-play-sumbreak/">Sumbreak rules and strategy guide</a>. Stuck on today's official board? Type it into the <a href="/sumbreak-solver/">Sumbreak solver</a> to get the answer step by step.</p>
@@ -169,9 +173,10 @@ def build():
 
 <h2>Features</h2>
 <ul>
-<li><strong>Unlimited puzzles</strong> in three difficulty levels, each with its own puzzle number you can share.</li>
+<li><strong>Unlimited puzzles</strong> in four difficulty levels – 3×3, 4×4, 5×5 and a 6×6 Expert board – each with its own puzzle number you can share.</li>
+<li><strong>Wildcard tiles</strong> (×2 and +1 to +3) on Medium, Hard and Expert, so you can practise the trickiest part of the real game.</li>
 <li><strong>Daily puzzle</strong> – one shared board for everyone each day, with a streak counter.</li>
-<li><strong>Hint, Undo and Restart</strong> so you can learn instead of guessing.</li>
+<li><strong>Hint, Undo and Restart</strong> so you can learn instead of guessing. Hint also rewinds you to your last good position when you hit a dead end.</li>
 <li><strong>Timer and best times</strong> saved on your device.</li>
 <li><strong>Works everywhere</strong> – drag on touch screens, click or use the keyboard on desktop.</li>
 </ul>
@@ -182,32 +187,41 @@ def build():
 <li>Count each value: an <strong>odd number of the smallest tile</strong> on the board means something has already gone wrong.</li>
 <li>Before each merge, check that you are not <strong>cutting the board in two</strong> with a new dead spot.</li>
 <li>Merge so the result lands <strong>next to a matching number</strong>, keeping chains going.</li>
+<li>Treat a <strong>wildcard as a rescue tool</strong>: look for the one number on the board that has no possible partner (an odd one like 13, or a lonely 8 surrounded by bigger tiles) – that is usually where the wildcard belongs.</li>
+<li>Remember that <strong>two wildcards never merge</strong> with each other, so don't let them end up side by side with no number around them.</li>
 </ul>
+
+<h2>Worked example: using a ×2 wildcard</h2>
+<p>Imagine a corner that reads <code>4 4 / ×2 16</code>. Merging the two 4s first gives 8, but then the ×2 has to double that 8 into 16 to meet the 16 – so the order matters: merge the right-hand 4 onto the left-hand 4 so the new 8 sits directly above the wildcard, then drag that 8 onto the ×2. The 16 lands where the wildcard was – right next to the other 16 – and the last merge makes 32. If you had used the ×2 on one of the 4s first, you would be left with an 8 and a 4 that can never meet. Wildcards are powerful, but only at the right moment.</p>
 
 <h2>Frequently asked questions</h2>
 {faq_html(faqs)}
 <p class="disclaimer">Unlimited Dailies is an independent website. It is not affiliated with, sponsored by or endorsed by LinkedIn Corporation or Microsoft. All puzzles on this page are generated by our own code.</p>
 """
-    page("/sumbreak-unlimited/", "Sumbreak Unlimited – Play Free Sumbreak Puzzles (No Daily Limit)",
-         "Play Sumbreak unlimited for free: merge identical numbers until one tile is left. Easy, Medium & Hard boards, daily puzzle, hints and undo. No login.",
+    page("/sumbreak-unlimited/", "Sumbreak Unlimited – Free Sumbreak Puzzles, No Daily Limit",
+         "Play Sumbreak unlimited for free: merge numbers until one tile is left. 3×3 to 6×6 boards, ×2 and +3 wildcards, daily puzzle, hints and undo. No login.",
          body, GAME_JS, [game_schema, faq_schema(faqs)])
 
     # ---------- Solver ----------
     sfaqs = [
         ("How do I get today's Sumbreak answer?", "Open today's puzzle on LinkedIn, choose the matching board size here, type each number into the same position (leave dead spots blank) and press Solve. You will get the full list of merges in order."),
-        ("Why does the solver say there is no solution?", "Usually one number was typed in the wrong cell. Also check the total: in a solvable board all the numbers add up to a power of two such as 64, 128, 256 or 512."),
-        ("Does the solver work for unlimited puzzles too?", "Yes. It works for any board that follows the merge rules: identical numbers that touch up, down, left or right combine into their sum."),
+        ("Why does the solver say there is no solution?", "Usually one number was typed in the wrong cell or a wildcard is missing. On boards without wildcards, all the numbers add up to a power of two such as 64, 128, 256 or 512 – a quick way to check your typing."),
+        ("Does the solver handle the ×2 and +3 wildcard tiles?", "Yes. Type a wildcard as x2, ×2 or +3 (or use the wildcard buttons under the grid). The solver knows that a wildcard can merge with any neighbouring number and that two wildcards cannot merge with each other."),
+        ("What board sizes are supported?", "Every size from 3×3 up to 6×6, including rectangular boards such as 4×5 and 5×6. Leave empty or dead spots blank."),
+        ("Can I see just one hint instead of the whole answer?", "Yes. After you press Solve, only the first merge is shown. Press Show next step to reveal one more merge at a time, or Show all steps for the full answer."),
+        ("Does the solver work for unlimited puzzles too?", "Yes. It works for any board that follows the merge rules: identical numbers that touch up, down, left or right combine into their sum, and wildcards change any number they touch."),
         ("Is using the solver cheating?", "That is up to you. Many players only reveal the first step or two, then finish the puzzle themselves. If you want practice instead, play our unlimited boards."),
     ]
     body = f"""
 <h1>Sumbreak Solver – Today's Sumbreak Answer, Step by Step</h1>
-<p class="lead">Stuck on the daily Sumbreak puzzle? Type the board below and get every merge in the right order.</p>
+<p class="lead">Stuck on the daily Sumbreak puzzle? Type the board below – wildcards included – and get every merge in the right order, one hint at a time if you prefer.</p>
 <form id="solver" class="card" autocomplete="off">
   <label>Board size:
-    <select name="size"><option>3x3</option><option>3x4</option><option>4x3</option><option>4x4</option><option>4x5</option><option>5x4</option><option>5x5</option></select>
+    <select name="size"><option>3x3</option><option>3x4</option><option>4x3</option><option>4x4</option><option>4x5</option><option>5x4</option><option>5x5</option><option>5x6</option><option>6x5</option><option>6x6</option></select>
   </label>
   <div class="solver-grid"></div>
-  <p style="font-size:.9rem;color:var(--muted)">Leave empty / dead spots blank. Rows go top to bottom, columns left to right.</p>
+  <div class="op-bar" aria-label="Insert a wildcard into the selected cell"><span style="font-size:.9rem;color:var(--muted);align-self:center">Wildcard:</span><button type="button" data-op="x2">×2</button><button type="button" data-op="x3">×3</button><button type="button" data-op="+1">+1</button><button type="button" data-op="+2">+2</button><button type="button" data-op="+3">+3</button><button type="button" data-op="">Clear cell</button></div>
+  <p style="font-size:.9rem;color:var(--muted)">Type numbers, wildcards as x2 or +3, and leave empty / dead spots blank. Rows go top to bottom, columns left to right.</p>
   <button class="btn primary" type="submit">Solve</button>
   <button class="btn" type="button" data-example>Load example (puzzle #1)</button>
   <button class="btn" type="button" data-clear>Clear</button>
@@ -215,8 +229,16 @@ def build():
 <div id="solver-out" aria-live="polite"></div>
 <div class="ad-slot"></div>
 
+<h2>Stuck on today's Sumbreak? Get the answer in three steps</h2>
+<ol>
+<li><strong>Pick the board size</strong> that matches the puzzle on your screen (most daily boards so far are 3×3).</li>
+<li><strong>Copy the tiles</strong> row by row. Numbers go in as they are; wildcard tiles go in as x2 or +3 – the buttons under the grid make this quick on a phone. If you have already made some merges, just enter what is left and leave the empty squares blank.</li>
+<li><strong>Press Solve</strong> and reveal one step at a time, or the whole answer at once. Each step shows a small picture of the board with the two tiles to merge highlighted.</li>
+</ol>
+
 <h2>How the Sumbreak solver works</h2>
 <p>The solver tries merges the same way you would, but much faster. It starts with the smallest numbers, because those are the tiles most likely to get stranded, and skips any position that cannot be finished – for example when a dead spot splits the board in two, or when an odd number of the smallest tile is left. As soon as it finds an order of merges that ends in one tile, it shows you the full path.</p>
+<p>Wildcard tiles make the search harder, because a ×2 or +3 can join any number and therefore opens many more possible moves. The solver handles this by checking the numbers first: if the smallest number on the board has neither an identical partner nor a wildcard left to use, that branch is dropped straight away. It also spots tiles that can never move again – for example a 4 that is surrounded only by bigger numbers and empty squares. The search runs in the background of your browser, so the page stays responsive even on 6×6 boards.</p>
 <h2>Example: Sumbreak puzzle #1</h2>
 <p>The first puzzle was a 3×3 board: <code>1 1 64 / 4 2 32 / 4 4 16</code>. Its numbers add up to 128, and it takes eight merges. Press <em>Load example</em> above and then <em>Solve</em> to see one correct order.</p>
 <h2>Want to get better instead?</h2>
@@ -225,8 +247,8 @@ def build():
 {faq_html(sfaqs)}
 <p class="disclaimer">Unofficial tool. Not affiliated with LinkedIn. The solver runs entirely in your browser; the numbers you type are not sent anywhere.</p>
 """
-    page("/sumbreak-solver/", "Sumbreak Solver – Today's Sumbreak Answer & Hints (Step by Step)",
-         "Free Sumbreak solver: type today's board and get the answer as a list of merges. Works for 3x3 to 5x5 boards. Also play unlimited Sumbreak puzzles.",
+    page("/sumbreak-solver/", "Sumbreak Solver – Today's Sumbreak Answer, Step by Step",
+         "Free Sumbreak solver: type today's board, including ×2 and +3 wildcard tiles, and get the answer one hint at a time. Works for 3x3 to 6x6 boards.",
          body, f'<script src="/assets/core.js?v={V}"></script>\n<script src="/assets/solver.js?v={V}"></script>',
          [faq_schema(sfaqs), {"@context": "https://schema.org", "@type": "WebApplication", "name": "Sumbreak Solver",
           "url": DOMAIN + "/sumbreak-solver/", "applicationCategory": "UtilitiesApplication", "operatingSystem": "Any",
@@ -235,9 +257,10 @@ def build():
     # ---------- How to play ----------
     hfaqs = [
         ("Can tiles merge diagonally in Sumbreak?", "No. Only tiles that share a side – up, down, left or right – can be merged."),
-        ("Can you merge two different numbers?", "No. Only identical numbers combine. A 4 can merge with a 4 to make 8, but never with a 2 or an 8."),
+        ("Can you merge two different numbers?", "Not two plain numbers. A 4 can merge with a 4 to make 8, but never with a 2 or an 8. The only exception is a wildcard tile such as ×2 or +3, which can merge with any number."),
         ("What happens to the tile you drag?", "It disappears and leaves an empty dead spot. The sum appears where you dropped it."),
-        ("What is the final number in Sumbreak?", "It is the total of all numbers on the starting board, which is always a power of two (for example 128 in the first puzzle)."),
+        ("What is the final number in Sumbreak?", "On a board without wildcards it is the total of all numbers on the starting board, which is always a power of two (for example 128 in the first puzzle). Wildcard tiles change the total, so on those boards the final number is worked out as you play."),
+        ("How do wildcard tiles work in Sumbreak?", "A wildcard such as ×2 or +3 merges with any number next to it and applies its operation to that number. Two wildcards cannot merge together, and the resulting number then needs an identical neighbour as usual."),
         ("When does Sumbreak reset?", "The official LinkedIn puzzle changes every day at midnight Pacific Time. Our unlimited boards never run out."),
     ]
     body = f"""
@@ -250,12 +273,22 @@ def build():
 
 <h2>The rules</h2>
 <ol>
-<li>You may merge two tiles only if they show the <strong>same number</strong>.</li>
+<li>You may merge two number tiles only if they show the <strong>same number</strong> (wildcard tiles are the exception – see below).</li>
 <li>The two tiles must be <strong>orthogonal neighbours</strong> – sharing a side, not just a corner.</li>
 <li>Drag one tile onto the other. The target becomes the <strong>sum</strong>; the tile you dragged becomes an <strong>empty dead spot</strong>.</li>
 <li>Dead spots stay empty for the rest of the puzzle. Tiles never slide or fall.</li>
 <li>The puzzle is solved when exactly <strong>one tile</strong> remains.</li>
 </ol>
+
+<h2>Wildcard tiles (×2 and +3)</h2>
+<p>Some puzzles include special wildcard tiles that show an operation instead of a number, such as <strong>×2</strong> or <strong>+3</strong>. They follow slightly different rules:</p>
+<ul>
+<li>A wildcard can merge with <strong>any number</strong> it touches – the numbers do not have to match.</li>
+<li>The operation is applied to that number: ×2 turns an 8 into 16, +3 turns a 5 into 8. The new number lands on the square you dropped onto, and the wildcard is used up.</li>
+<li>Two wildcards can never merge with each other.</li>
+<li>After a wildcard is used, the new number follows the normal rules again and needs an identical neighbour.</li>
+</ul>
+<p>Because wildcards change the total, the final tile is no longer simply the sum of the board. The trick is to find the number that has no natural partner – often an odd number or a lone tile – and save the wildcard for it. You can practise wildcard boards on Medium, Hard and Expert in <a href="/sumbreak-unlimited/">Sumbreak Unlimited</a>.</p>
 
 <h2>Strategy guide</h2>
 <h3>1. Start with the smallest numbers</h3>
@@ -269,7 +302,7 @@ def build():
 <h3>5. Work towards the big tile</h3>
 <p>Large numbers (like 64 or 256) usually can't move until late in the puzzle. Build matching numbers next to them, step by step, instead of dragging small tiles far away from the big ones.</p>
 <h3>6. Check the total</h3>
-<p>Add up all the numbers on the board. The final tile will be that total, and it is always a power of two. This also helps you check that you copied a board correctly into the <a href="/sumbreak-solver/">solver</a>.</p>
+<p>On boards without wildcards, add up all the numbers. The final tile will be that total, and it is always a power of two. This also helps you check that you copied a board correctly into the <a href="/sumbreak-solver/">solver</a>.</p>
 
 <h2>Worked example</h2>
 <p>Take the board <code>1 1 64 / 4 2 32 / 4 4 16</code> (total 128). First merge the two 1s into a 2 – it now sits next to the other 2. Merge those into a 4, then pair up the 4s into 8s and 16s, building up to 32 and 64 until a single 128 remains. Try it yourself in the <a href="/sumbreak-solver/">solver</a> using <em>Load example</em>.</p>
@@ -279,7 +312,7 @@ def build():
 <p class="disclaimer">This guide is written by Unlimited Dailies and is not affiliated with LinkedIn. Rules are described as they appear in the public game.</p>
 """
     page("/how-to-play-sumbreak/", "How to Play Sumbreak – Rules, Tips & Strategy Guide",
-         "Learn how to play Sumbreak, LinkedIn's daily number-merge puzzle: rules, dead spots, and 6 strategy tips to stop getting stuck. Then practise with unlimited puzzles.",
+         "Learn how to play Sumbreak, LinkedIn's daily number-merge puzzle: rules, ×2 and +3 wildcard tiles, dead spots and strategy tips to stop getting stuck.",
          body, "", [faq_schema(hfaqs), {"@context": "https://schema.org", "@type": "Article",
           "headline": "How to Play Sumbreak – Rules, Tips & Strategy Guide", "datePublished": TODAY, "dateModified": TODAY,
           "author": {"@type": "Organization", "name": SITE}, "publisher": {"@type": "Organization", "name": SITE},
@@ -290,8 +323,8 @@ def build():
 <h1>Unlimited Dailies – Play Your Favourite Daily Puzzles Without Limits</h1>
 <p class="lead">Love daily puzzle games but hate waiting until tomorrow? Play free, unlimited practice versions in your browser – no login, no download.</p>
 <div class="grid-links">
-  <a class="card" href="/sumbreak-unlimited/"><strong>Sumbreak Unlimited <span class="tag">New</span></strong><small>Merge identical numbers until one tile is left. Easy, Medium, Hard & daily.</small></a>
-  <a class="card" href="/sumbreak-solver/"><strong>Sumbreak Solver</strong><small>Stuck on today's board? Get the answer step by step.</small></a>
+  <a class="card" href="/sumbreak-unlimited/"><strong>Sumbreak Unlimited <span class="tag">New</span></strong><small>Merge numbers until one tile is left. 3×3 to 6×6 boards, wildcards & a daily puzzle.</small></a>
+  <a class="card" href="/sumbreak-solver/"><strong>Sumbreak Solver</strong><small>Stuck on today's board? Enter it (wildcards too) and get the answer one hint at a time.</small></a>
   <a class="card" href="/how-to-play-sumbreak/"><strong>How to Play Sumbreak</strong><small>Rules, dead spots and strategy tips.</small></a>
 </div>
 <h2>Today's free puzzle</h2>
@@ -307,7 +340,7 @@ def build():
 <p>We are starting with Sumbreak, the newest daily number puzzle, and will add more puzzle styles soon.</p>
 <p class="disclaimer">Unlimited Dailies is independent and not affiliated with LinkedIn, Microsoft, The New York Times or any other puzzle publisher.</p>
 """
-    page("/", "Unlimited Dailies – Free Unlimited Daily Puzzle Games (Sumbreak & more)",
+    page("/", "Unlimited Dailies – Free Unlimited Daily Puzzle Games",
          "Play daily puzzle games without the daily limit. Free unlimited Sumbreak puzzles, a Sumbreak solver and strategy guides. No login, works on any device.",
          body, GAME_JS, [{"@context": "https://schema.org", "@type": "WebSite", "name": SITE, "url": DOMAIN + "/"},
                          {"@context": "https://schema.org", "@type": "Organization", "name": SITE, "url": DOMAIN + "/", "logo": DOMAIN + "/favicon.svg", "email": EMAIL}])

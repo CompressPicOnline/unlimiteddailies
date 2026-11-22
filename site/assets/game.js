@@ -38,7 +38,7 @@
     root.setAttribute('data-level', level);
     root.querySelectorAll('[data-level-btn]').forEach(function (b) { b.setAttribute('aria-pressed', b.getAttribute('data-level-btn') === level ? 'true' : 'false'); });
     titleEl.textContent = (level === 'daily' ? 'Daily puzzle #' + state.id : C.LEVELS[level].label + ' puzzle #' + id);
-    setMsg('Drag a number onto an identical neighbour (or tap one, then the other).');
+    setMsg(C.opCount(p.cells) ? 'Merge identical neighbours – purple wildcards (×2, +N) work on any number.' : 'Drag a number onto an identical neighbour (or tap one, then the other).');
     clearInterval(tick); timerEl.textContent = '0:00'; movesEl.textContent = '0';
     if (history.replaceState) {
       var url = location.pathname + (level === 'daily' ? '' : '?level=' + level + '&p=' + id);
@@ -55,7 +55,7 @@
   }
 
   function colorFor(v) {
-    var lvl = Math.log2(v);
+    var lvl = Math.round(Math.log2(v));
     var hues = [200, 170, 140, 95, 50, 30, 10, 340, 300, 270, 240, 220, 190];
     return 'hsl(' + hues[lvl % hues.length] + ' 70% ' + (lvl > 9 ? 42 : 52) + '%)';
   }
@@ -67,9 +67,12 @@
       var v = state.cells[i];
       var b = document.createElement('button');
       b.type = 'button';
-      b.className = 'cell' + (v ? ' tile' : ' empty') + (i === selected ? ' selected' : '');
+      b.className = 'cell' + (v ? ' tile' : ' empty') + (v < 0 ? ' op' : '') + (i === selected ? ' selected' : '');
       b.setAttribute('data-i', i);
-      if (v) {
+      if (v < 0) {
+        b.textContent = C.label(v);
+        b.setAttribute('aria-label', 'Wildcard ' + C.label(v) + ', row ' + (Math.floor(i / state.cols) + 1) + ', column ' + (i % state.cols + 1));
+      } else if (v) {
         b.textContent = v;
         b.style.background = colorFor(v);
         b.setAttribute('aria-label', 'Tile ' + v + ', row ' + (Math.floor(i / state.cols) + 1) + ', column ' + (i % state.cols + 1));
@@ -88,7 +91,10 @@
   function doMerge(from, to) {
     if (state.solvedAt) return false;
     if (!C.canMerge(state.cells, from, to, state.rows, state.cols)) {
-      if (state.cells[from] && state.cells[to] && state.cells[from] !== state.cells[to]) setMsg('Only identical numbers can merge.', 'warn');
+      var a = state.cells[from], b = state.cells[to];
+      if (a < 0 && b < 0) setMsg('Two wildcards cannot merge. Use a wildcard on a number.', 'warn');
+      else if (a && b && C.neighbors(from, state.rows, state.cols).indexOf(to) === -1) setMsg('Tiles must be side by side (not diagonal).', 'warn');
+      else if (a > 0 && b > 0 && a !== b) setMsg('Only identical numbers can merge (or a wildcard with any number).', 'warn');
       else setMsg('Tiles must be side by side (not diagonal).', 'warn');
       return false;
     }
@@ -144,7 +150,7 @@
     var el = document.querySelector('[data-stats]');
     if (!el) return;
     var stats = store.get('stats', {}), parts = [];
-    ['easy', 'medium', 'hard', 'daily'].forEach(function (k) {
+    ['easy', 'medium', 'hard', 'expert', 'daily'].forEach(function (k) {
       if (stats[k]) parts.push(C.LEVELS[k].label + ': ' + stats[k].solved + ' solved, best ' + fmt(stats[k].best));
     });
     var st = store.get('streak', 0);
@@ -190,13 +196,31 @@
     if (state.solvedAt) return;
     var key = state.cells.join(','), mv = state.solutionMap[key];
     if (!mv) {
-      var res = C.solve(state.cells, state.rows, state.cols, 1200);
+      // short, time-limited search so the page never freezes
+      var res = C.solve(state.cells, state.rows, state.cols, 400);
       if (res.status === 'solved') mv = res.moves[0];
-      else if (res.status === 'impossible') { setMsg('This position is a dead end. Undo a few moves.', 'warn'); return; }
-      else { setMsg('Hard to say from here. Try "Undo" a couple of times, then ask again.', 'warn'); return; }
+      else if (!rewind(res.status === 'impossible')) return;
+      else { key = state.cells.join(','); mv = state.solutionMap[key]; if (!mv) return; }
     }
     flash(mv[0], mv[1]);
-    setMsg('Hint: drag the highlighted ' + state.cells[mv[0]] + ' onto its glowing neighbour.');
+    var lbl = C.label(state.cells[mv[0]]);
+    setMsg((state.msgPrefix || 'Hint: ') + 'drag the highlighted ' + lbl + ' onto its glowing neighbour.');
+    state.msgPrefix = '';
+  }
+  // "Last good move": go back to the latest position that is on a known solution path.
+  function rewind(deadEnd) {
+    var steps = 0;
+    for (var h = state.history.length - 1; h >= 0; h--) {
+      steps++;
+      if (state.solutionMap[state.history[h].join(',')]) {
+        state.cells = state.history[h].slice(); state.history = state.history.slice(0, h);
+        state.moves = Math.max(0, state.moves - steps); selected = -1; render();
+        state.msgPrefix = (deadEnd ? 'That position was a dead end, so we went back ' : 'Went back ') + steps + (steps === 1 ? ' move' : ' moves') + ' to your last good position. Next: ';
+        return true;
+      }
+    }
+    setMsg('Hard to say from here. Try Restart.', 'warn');
+    return false;
   }
   function flash(a, b) {
     clearTimeout(hintTimer);
