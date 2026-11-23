@@ -29,5 +29,14 @@ if (C.mergeValue(C.parseCell('x2'), C.parseCell('+3')) !== 0 || C.mergeValue(4, 
 if (!isNaN(C.parseCell('abc')) || C.parseCell('') !== 0 || C.parseCell('×3') !== -103 || C.parseCell('*2') !== -102) { fail++; console.log('FAIL parse'); }
 const w = C.solve([1, 1, C.parseCell('x2'), 4], 2, 2, 1000); // 1+1=2, x2 ->4, 4+4=8
 if (w.status !== 'solved') { fail++; console.log('FAIL wildcard solve', w.status); }
+// daily archive: the real date keys (zero-padded UTC dates from 2026-11-21) for the first 120 dailies
+for (let n = 1; n <= 120; n++) {
+  const d = new Date(Date.UTC(2026, 10, 21) + (n - 1) * 86400000);
+  const key = d.getUTCFullYear() + '-' + String(d.getUTCMonth() + 1).padStart(2, '0') + '-' + String(d.getUTCDate()).padStart(2, '0');
+  const p = C.generate('daily', key); total++;
+  let b = p.cells.slice(), ok = true;
+  for (const [f, t] of p.solution) { if (!C.canMerge(b, f, t, p.rows, p.cols)) { ok = false; break; } b = C.applyMerge(b, f, t); }
+  if (!ok || C.tileCount(b) !== 1) { fail++; console.log('FAIL archive daily', n, key); }
+}
 console.log(fail ? 'FAILURES: ' + fail : 'ALL PASS (' + total + ' generated puzzles)');
 process.exit(fail ? 1 : 0);

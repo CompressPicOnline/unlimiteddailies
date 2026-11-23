@@ -24,10 +24,10 @@
 <meta name="monetag" content="c643b64e9fb0e1e28f59dc44caa0c5cc">
 <meta name="msvalidate.01" content="DCD9377743936F2F6B4B5754198E0DD4">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="/assets/style.css?v=3">
+<link rel="stylesheet" href="/assets/style.css?v=4">
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Unlimited Dailies", "item": "https://unlimiteddailies.com/"}, {"@type": "ListItem", "position": 2, "name": "How to Play Sumbreak", "item": "https://unlimiteddailies.com/how-to-play-sumbreak/"}]}</script>
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Can tiles merge diagonally in Sumbreak?", "acceptedAnswer": {"@type": "Answer", "text": "No. Only tiles that share a side – up, down, left or right – can be merged."}}, {"@type": "Question", "name": "Can you merge two different numbers?", "acceptedAnswer": {"@type": "Answer", "text": "Not two plain numbers. A 4 can merge with a 4 to make 8, but never with a 2 or an 8. The only exception is a wildcard tile such as ×2 or +3, which can merge with any number."}}, {"@type": "Question", "name": "What happens to the tile you drag?", "acceptedAnswer": {"@type": "Answer", "text": "It disappears and leaves an empty dead spot. The sum appears where you dropped it."}}, {"@type": "Question", "name": "What is the final number in Sumbreak?", "acceptedAnswer": {"@type": "Answer", "text": "On a board without wildcards it is the total of all numbers on the starting board, which is always a power of two (for example 128 in the first puzzle). Wildcard tiles change the total, so on those boards the final number is worked out as you play."}}, {"@type": "Question", "name": "How do wildcard tiles work in Sumbreak?", "acceptedAnswer": {"@type": "Answer", "text": "A wildcard such as ×2 or +3 merges with any number next to it and applies its operation to that number. Two wildcards cannot merge together, and the resulting number then needs an identical neighbour as usual."}}, {"@type": "Question", "name": "When does Sumbreak reset?", "acceptedAnswer": {"@type": "Answer", "text": "The official LinkedIn puzzle changes every day at midnight Pacific Time. Our unlimited boards never run out."}}]}</script>
-<script type="application/ld+json">{"@context": "https://schema.org", "@type": "Article", "headline": "How to Play Sumbreak – Rules, Tips & Strategy Guide", "datePublished": "2026-11-22", "dateModified": "2026-11-22", "author": {"@type": "Organization", "name": "Unlimited Dailies"}, "publisher": {"@type": "Organization", "name": "Unlimited Dailies"}, "mainEntityOfPage": "https://unlimiteddailies.com/how-to-play-sumbreak/"}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "Article", "headline": "How to Play Sumbreak – Rules, Tips & Strategy Guide", "datePublished": "2026-11-23", "dateModified": "2026-11-23", "author": {"@type": "Organization", "name": "Unlimited Dailies"}, "publisher": {"@type": "Organization", "name": "Unlimited Dailies"}, "mainEntityOfPage": "https://unlimiteddailies.com/how-to-play-sumbreak/"}</script>
 </head>
 <body>
 <header class="site"><div class="wrap">
@@ -76,8 +76,19 @@
 <h3>6. Check the total</h3>
 <p>On boards without wildcards, add up all the numbers. The final tile will be that total, and it is always a power of two. This also helps you check that you copied a board correctly into the <a href="/sumbreak-solver/">solver</a>.</p>
 
-<h2>Worked example</h2>
+<h2>Worked example: which tile should move?</h2>
+<p>Picture a row that reads <code>2 2 4</code>, with nothing else touching those three tiles. Both 2s can merge, but the direction decides whether you can carry on:</p>
+<ul>
+<li><strong>Drag the middle 2 onto the left 2:</strong> the new 4 appears on the far left and the middle square becomes a dead spot. Now the two 4s are separated by a hole and can never meet – a dead end.</li>
+<li><strong>Drag the left 2 onto the middle 2:</strong> the new 4 appears in the middle, right next to the other 4. One more merge makes 8, and the row is finished.</li>
+</ul>
+<p>The rule of thumb: move the tile that is <em>further away</em> from the number the result needs to meet next, so the sum lands on the side that keeps the chain going.</p>
+
+<h2>Worked example: a full board</h2>
 <p>Take the board <code>1 1 64 / 4 2 32 / 4 4 16</code> (total 128). First merge the two 1s into a 2 – it now sits next to the other 2. Merge those into a 4, then pair up the 4s into 8s and 16s, building up to 32 and 64 until a single 128 remains. Try it yourself in the <a href="/sumbreak-solver/">solver</a> using <em>Load example</em>.</p>
+
+<h2>Daily puzzle or unlimited practice?</h2>
+<p>The official game gives you one board a day, and so does our own <a href="/">free daily puzzle</a>, which keeps a streak if you come back every day. If you missed a day, replay it from the <a href="/#archive">daily archive</a>. When you want to practise a specific skill – wildcards, big 6×6 boards or simply speed – switch to <a href="/sumbreak-unlimited/">Sumbreak Unlimited</a> and play as many boards as you like at the level you choose.</p>
 
 <h2>FAQ</h2>
 <div class="faq"><details><summary>Can tiles merge diagonally in Sumbreak?</summary><p>No. Only tiles that share a side – up, down, left or right – can be merged.</p></details><details><summary>Can you merge two different numbers?</summary><p>Not two plain numbers. A 4 can merge with a 4 to make 8, but never with a 2 or an 8. The only exception is a wildcard tile such as ×2 or +3, which can merge with any number.</p></details><details><summary>What happens to the tile you drag?</summary><p>It disappears and leaves an empty dead spot. The sum appears where you dropped it.</p></details><details><summary>What is the final number in Sumbreak?</summary><p>On a board without wildcards it is the total of all numbers on the starting board, which is always a power of two (for example 128 in the first puzzle). Wildcard tiles change the total, so on those boards the final number is worked out as you play.</p></details><details><summary>How do wildcard tiles work in Sumbreak?</summary><p>A wildcard such as ×2 or +3 merges with any number next to it and applies its operation to that number. Two wildcards cannot merge together, and the resulting number then needs an identical neighbour as usual.</p></details><details><summary>When does Sumbreak reset?</summary><p>The official LinkedIn puzzle changes every day at midnight Pacific Time. Our unlimited boards never run out.</p></details></div>

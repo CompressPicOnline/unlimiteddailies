@@ -72,3 +72,6 @@ footer.site{border-top:1px solid var(--line);padding:22px 0;color:var(--muted);f
 footer.site a{color:var(--muted);margin-right:14px}
 .ad-slot{margin:18px auto;text-align:center;min-height:0}
 @media (max-width:520px){h1{font-size:1.45rem}nav.top a{margin-left:10px;font-size:.88rem}.board{gap:6px;padding:8px}}
+.archive{list-style:none;padding:0;margin:10px 0;display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:6px}
+.archive li{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:6px 10px;font-size:.92rem}
+.archive .done{color:#1a8f3c;font-weight:700}

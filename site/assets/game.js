@@ -25,26 +25,40 @@
     return d.getUTCFullYear() + '-' + String(d.getUTCMonth() + 1).padStart(2, '0') + '-' + String(d.getUTCDate()).padStart(2, '0');
   }
   function dailyNumber() { return Math.floor((Date.UTC(new Date().getUTCFullYear(), new Date().getUTCMonth(), new Date().getUTCDate()) - Date.UTC(2026, 10, 21)) / 86400000) + 1; }
+  // Daily #n is generated from its own UTC date, so past dailies (archive) can be replayed.
+  function dailyKey(n) {
+    var d = new Date(Date.UTC(2026, 10, 21) + (n - 1) * 86400000);
+    return d.getUTCFullYear() + '-' + String(d.getUTCMonth() + 1).padStart(2, '0') + '-' + String(d.getUTCDate()).padStart(2, '0');
+  }
+  function dailyDone(n) { var d = store.get('daily_done', []); return d.indexOf(n) >= 0; }
 
   function load(level, id) {
-    var seed = level === 'daily' ? todayKey() : String(id);
+    var today = dailyNumber();
+    if (level === 'daily' && !(id > 0 && id < today)) id = 0; // 0 = today's daily
+    var archive = level === 'daily' && id > 0;
+    var seed = level === 'daily' ? (archive ? dailyKey(id) : todayKey()) : String(id);
     var p = C.generate(level, seed);
     var map = {}, b = p.cells.slice();
     for (var i = 0; i < p.solution.length; i++) { map[b.join(',')] = p.solution[i]; b = C.applyMerge(b, p.solution[i][0], p.solution[i][1]); }
-    state = { level: level, id: level === 'daily' ? dailyNumber() : id, rows: p.rows, cols: p.cols, cells: p.cells.slice(),
+    state = { level: level, archive: archive, id: level === 'daily' ? (archive ? id : today) : id, rows: p.rows, cols: p.cols, cells: p.cells.slice(),
       initial: p.cells.slice(), history: [], moves: 0, start: 0, solvedAt: 0, solutionMap: map };
     selected = -1;
-    store.set('last_' + level, id);
+    if (level !== 'daily') store.set('last_' + level, id);
     root.setAttribute('data-level', level);
     root.querySelectorAll('[data-level-btn]').forEach(function (b) { b.setAttribute('aria-pressed', b.getAttribute('data-level-btn') === level ? 'true' : 'false'); });
-    titleEl.textContent = (level === 'daily' ? 'Daily puzzle #' + state.id : C.LEVELS[level].label + ' puzzle #' + id);
+    titleEl.textContent = (level === 'daily' ? 'Daily puzzle #' + state.id + (archive ? ' (' + dailyKey(id) + ')' : '') : C.LEVELS[level].label + ' puzzle #' + id);
     setMsg(C.opCount(p.cells) ? 'Merge identical neighbours – purple wildcards (×2, +N) work on any number.' : 'Drag a number onto an identical neighbour (or tap one, then the other).');
     clearInterval(tick); timerEl.textContent = '0:00'; movesEl.textContent = '0';
     if (history.replaceState) {
-      var url = location.pathname + (level === 'daily' ? '' : '?level=' + level + '&p=' + id);
+      var url = location.pathname + puzzleQuery();
       history.replaceState(null, '', url);
     }
     render();
+  }
+
+  function puzzleQuery() {
+    if (state.level !== 'daily') return '?level=' + state.level + '&p=' + state.id;
+    return state.archive ? '?daily=' + state.id : '';
   }
 
   function fmt(ms) { var s = Math.floor(ms / 1000); return Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0'); }
@@ -135,6 +149,11 @@
     if (!s.best || time < s.best) s.best = time;
     stats[state.level] = s;
     if (state.level === 'daily') {
+      var done = store.get('daily_done', []);
+      if (done.indexOf(state.id) < 0) { done.push(state.id); store.set('daily_done', done); }
+      renderArchive();
+    }
+    if (state.level === 'daily' && !state.archive) {
       var last = store.get('daily_last', '');
       var y = new Date(Date.now() - 86400000);
       var yk = y.getUTCFullYear() + '-' + String(y.getUTCMonth() + 1).padStart(2, '0') + '-' + String(y.getUTCDate()).padStart(2, '0');
@@ -160,7 +179,7 @@
 
   function shareText(time) {
     var label = state.level === 'daily' ? 'Daily #' + state.id : C.LEVELS[state.level].label + ' #' + state.id;
-    return 'Sumbreak Unlimited ' + label + ' solved in ' + fmt(time) + ' (' + state.moves + ' merges) 🧮\n' + location.origin + location.pathname + (state.level === 'daily' ? '' : '?level=' + state.level + '&p=' + state.id);
+    return 'Sumbreak Unlimited ' + label + ' solved in ' + fmt(time) + ' (' + state.moves + ' merges) 🧮\n' + location.origin + location.pathname + puzzleQuery();
   }
 
   function showWin(time) {
@@ -179,17 +198,29 @@
   function hideWin() { if (modal) modal.hidden = true; }
 
   function nextTarget() {
+    if (state.archive && state.id + 1 < dailyNumber()) return { daily: state.id + 1 };
     var lv = state.level === 'daily' ? 'medium' : state.level;
     var id = state.level === 'daily' ? (store.get('last_medium', 0) || 0) + 1 : state.id + 1;
     return { lv: lv, id: id };
   }
-  function nextUrl() { var t = nextTarget(); return location.pathname + '?level=' + t.lv + '&p=' + t.id; }
+  function nextUrl() { var t = nextTarget(); return location.pathname + (t.daily ? '?daily=' + t.daily : '?level=' + t.lv + '&p=' + t.id); }
 
   function nextPuzzle() {
     hideWin();
-    var lv = state.level === 'daily' ? 'medium' : state.level;
-    var id = state.level === 'daily' ? (store.get('last_medium', 0) || 0) + 1 : state.id + 1;
-    load(lv, id);
+    var t = nextTarget();
+    if (t.daily) load('daily', t.daily); else load(t.lv, t.id);
+  }
+
+  // Archive of our own past daily puzzles (only on pages with a [data-archive] list).
+  function renderArchive() {
+    var el = document.querySelector('[data-archive]');
+    if (!el) return;
+    var today = dailyNumber(), html = '';
+    for (var n = today; n >= 1; n--) {
+      var href = n === today ? '/' : '/?daily=' + n;
+      html += '<li><a href="' + href + '">#' + n + ' · ' + dailyKey(n) + (n === today ? ' (today)' : '') + '</a>' + (dailyDone(n) ? ' <span class="done" title="Solved">✓</span>' : '') + '</li>';
+    }
+    el.innerHTML = html;
   }
 
   function hint() {
@@ -235,7 +266,7 @@
     render(); checkEnd();
   }
   function restart() {
-    if (state.solvedAt) { load(state.level, state.level === 'daily' ? 0 : state.id); return; }
+    if (state.solvedAt) { load(state.level, state.level === 'daily' && !state.archive ? 0 : state.id); return; }
     state.cells = state.initial.slice(); state.history = []; state.moves = 0; selected = -1;
     render(); setMsg('Puzzle restarted.');
   }
@@ -292,10 +323,14 @@
 
   // Initial puzzle from URL (?level=hard&p=12) or the page default.
   var q = new URLSearchParams(location.search);
-  var lv = q.get('level'), pid = parseInt(q.get('p'), 10);
-  if (!C.LEVELS[lv] || lv === 'daily') lv = root.getAttribute('data-default') || 'easy';
-  if (!(pid > 0)) pid = (store.get('last_' + lv, 0) || 0) + 1;
-  if (lv === 'daily') pid = 0;
+  var lv = q.get('level'), pid = parseInt(q.get('p'), 10), dn = parseInt(q.get('daily'), 10);
+  if (dn > 0) { lv = 'daily'; pid = dn; }
+  else {
+    if (!C.LEVELS[lv] || lv === 'daily') lv = root.getAttribute('data-default') || 'easy';
+    if (!(pid > 0)) pid = (store.get('last_' + lv, 0) || 0) + 1;
+    if (lv === 'daily') pid = 0;
+  }
   load(lv, pid);
   renderStats();
+  renderArchive();
 })();

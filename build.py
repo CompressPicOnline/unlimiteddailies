@@ -7,7 +7,7 @@ SITE = "Unlimited Dailies"
 EMAIL = "contact@unlimiteddailies.com"
 TODAY = datetime.date.today().isoformat()
 OUT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "site")
-V = "3"  # bump to bust asset cache
+V = "4"  # bump to bust asset cache
 INDEXNOW_KEY = "3753766b9ea89f1d1682ceed22f858eb"  # IndexNow key file served at /<key>.txt
 
 NAV = [("/sumbreak-unlimited/", "Sumbreak Unlimited"), ("/sumbreak-solver/", "Solver"), ("/how-to-play-sumbreak/", "How to play")]
@@ -132,7 +132,7 @@ def build():
 
     # ---------- Sumbreak Unlimited (main page) ----------
     faqs = [
-        ("What is Sumbreak Unlimited?", "Sumbreak Unlimited is a free, unofficial practice version of the Sumbreak-style number puzzle. Instead of one puzzle a day, you can play as many boards as you like in Easy, Medium and Hard, plus a free daily puzzle of our own."),
+        ("What is Sumbreak Unlimited?", "Sumbreak Unlimited is a free, unofficial practice version of the Sumbreak-style number puzzle. Instead of one puzzle a day, you can play as many boards as you like in Easy, Medium, Hard and Expert, plus a free daily puzzle of our own with an archive of every past daily."),
         ("Is this the official LinkedIn Sumbreak game?", "No. The official game is played on LinkedIn. This site is an independent fan-made practice tool that uses the same simple idea (merging identical neighbouring numbers) and creates its own puzzles. We are not affiliated with LinkedIn."),
         ("How do you play Sumbreak?", "Drag a number onto an identical number right next to it (up, down, left or right). The two tiles combine into their sum, and the tile you moved leaves an empty dead spot. Keep merging until only one number is left on the board."),
         ("Can I play Sumbreak more than once a day?", "The official game gives one puzzle per day. Here you can play unlimited puzzles: every time you press New puzzle you get a fresh, solvable board."),
@@ -140,6 +140,11 @@ def build():
         ("Do I need an account or download?", "No. The game runs in your browser on phone, tablet or computer. There is no sign-up, and your stats are saved only on your own device."),
         ("What is the difference between Easy, Medium, Hard and Expert?", "Easy is a 3×3 board with plain numbers. Medium is 4×4 with one wildcard tile, Hard is 5×5 with two wildcards, and Expert is a big 6×6 board with 36 tiles and two wildcards."),
         ("What are the ×2 and +3 tiles?", "They are wildcard tiles. A wildcard can merge with any number next to it, not just an identical one: ×2 doubles the number and +3 adds three to it. The result is a normal number that then has to find its own identical partner."),
+        ("Where should I start on a Sumbreak board?", "Start with the smallest numbers, especially any that sit on an edge or in a corner. They have the fewest neighbours, so they are the first tiles to get stranded. Then check that the merge you pick drops the result next to the number it has to meet next."),
+        ("Why won't two numbers merge?", "Two plain numbers merge only when they are exactly the same and share a side. A 4 next to an 8 cannot merge, and neither can two 4s that only touch at a corner. If one of the tiles is a wildcard (×2 or +N) it can merge with any number it touches, but two wildcards can never merge with each other."),
+        ("Can I play past daily puzzles?", "Yes. Every daily puzzle we have published is kept in the daily archive on our home page. Pick any number to replay it; solved ones get a tick. Archive games count towards your stats, but only today's puzzle extends your streak."),
+        ("Does using a hint or undo affect my streak?", "No. Hints and undo are there to help you learn, so they never reset your streak or your stats. Your best time is simply the time on the clock when you finish."),
+        ("Can I play with a keyboard?", "Yes. Press Tab to move between tiles, Enter or Space to pick a tile, then Enter or Space on a neighbour to merge. On touch screens you can drag, or tap one tile and then the other."),
         ("I'm stuck – what does the Hint button do?", "Hint highlights the next merge on a correct path. If your current position can no longer be finished, it takes you back to your last good position first and then shows the next merge, so you never have to restart from scratch."),
     ]
     game_schema = {
@@ -175,7 +180,7 @@ def build():
 <ul>
 <li><strong>Unlimited puzzles</strong> in four difficulty levels – 3×3, 4×4, 5×5 and a 6×6 Expert board – each with its own puzzle number you can share.</li>
 <li><strong>Wildcard tiles</strong> (×2 and +1 to +3) on Medium, Hard and Expert, so you can practise the trickiest part of the real game.</li>
-<li><strong>Daily puzzle</strong> – one shared board for everyone each day, with a streak counter.</li>
+<li><strong>Daily puzzle</strong> – one shared board for everyone each day, with a streak counter and an <a href="/#archive">archive of every past daily</a> to replay.</li>
 <li><strong>Hint, Undo and Restart</strong> so you can learn instead of guessing. Hint also rewinds you to your last good position when you hit a dead end.</li>
 <li><strong>Timer and best times</strong> saved on your device.</li>
 <li><strong>Works everywhere</strong> – drag on touch screens, click or use the keyboard on desktop.</li>
@@ -304,8 +309,19 @@ def build():
 <h3>6. Check the total</h3>
 <p>On boards without wildcards, add up all the numbers. The final tile will be that total, and it is always a power of two. This also helps you check that you copied a board correctly into the <a href="/sumbreak-solver/">solver</a>.</p>
 
-<h2>Worked example</h2>
+<h2>Worked example: which tile should move?</h2>
+<p>Picture a row that reads <code>2 2 4</code>, with nothing else touching those three tiles. Both 2s can merge, but the direction decides whether you can carry on:</p>
+<ul>
+<li><strong>Drag the middle 2 onto the left 2:</strong> the new 4 appears on the far left and the middle square becomes a dead spot. Now the two 4s are separated by a hole and can never meet – a dead end.</li>
+<li><strong>Drag the left 2 onto the middle 2:</strong> the new 4 appears in the middle, right next to the other 4. One more merge makes 8, and the row is finished.</li>
+</ul>
+<p>The rule of thumb: move the tile that is <em>further away</em> from the number the result needs to meet next, so the sum lands on the side that keeps the chain going.</p>
+
+<h2>Worked example: a full board</h2>
 <p>Take the board <code>1 1 64 / 4 2 32 / 4 4 16</code> (total 128). First merge the two 1s into a 2 – it now sits next to the other 2. Merge those into a 4, then pair up the 4s into 8s and 16s, building up to 32 and 64 until a single 128 remains. Try it yourself in the <a href="/sumbreak-solver/">solver</a> using <em>Load example</em>.</p>
+
+<h2>Daily puzzle or unlimited practice?</h2>
+<p>The official game gives you one board a day, and so does our own <a href="/">free daily puzzle</a>, which keeps a streak if you come back every day. If you missed a day, replay it from the <a href="/#archive">daily archive</a>. When you want to practise a specific skill – wildcards, big 6×6 boards or simply speed – switch to <a href="/sumbreak-unlimited/">Sumbreak Unlimited</a> and play as many boards as you like at the level you choose.</p>
 
 <h2>FAQ</h2>
 {faq_html(hfaqs)}
@@ -319,6 +335,17 @@ def build():
           "mainEntityOfPage": DOMAIN + "/how-to-play-sumbreak/"}])
 
     # ---------- Home ----------
+    launch = datetime.date(2026, 11, 21)
+    today_n = (datetime.date.today() - launch).days + 1
+    archive_html = "".join(
+        f'<li><a href="{"/" if n == today_n else "/?daily=%d" % n}">#{n} · {(launch + datetime.timedelta(days=n - 1)).isoformat()}{" (today)" if n == today_n else ""}</a></li>'
+        for n in range(today_n, 0, -1))
+    dfaqs = [
+        ("When does the daily puzzle change?", "A new daily puzzle appears every day at midnight UTC. Everyone who visits on the same day gets the same 4×4 board with one wildcard tile, so you can compare times with friends."),
+        ("Is this the same puzzle as the official LinkedIn Sumbreak?", "No. Our daily board is created by our own generator, so it is a different puzzle from the one on LinkedIn. It is a free extra puzzle to warm up with or to play after you have finished the official one."),
+        ("Can I play yesterday's daily puzzle?", "Yes. Use the daily puzzle archive above: every past daily is listed by number and date, and you can replay any of them as often as you like."),
+        ("How does the daily streak work?", "Solve today's puzzle to add one day to your streak. Miss a day and the streak starts again from one. Your streak is stored only in this browser, so it does not follow you to another device."),
+    ]
     body = f"""
 <h1>Unlimited Dailies – Play Your Favourite Daily Puzzles Without Limits</h1>
 <p class="lead">Love daily puzzle games but hate waiting until tomorrow? Play free, unlimited practice versions in your browser – no login, no download.</p>
@@ -338,11 +365,19 @@ def build():
 <li><strong>Fast and private</strong> – everything runs in your browser.</li>
 </ul>
 <p>We are starting with Sumbreak, the newest daily number puzzle, and will add more puzzle styles soon.</p>
+<h2 id="archive">Daily puzzle archive</h2>
+<p>Missed a day? Every daily puzzle we have published stays here. Pick a number to replay it – the ones you have solved on this device are ticked. Only today's puzzle counts towards your streak.</p>
+<ul class="archive" data-archive>{archive_html}</ul>
+<h2>The Sumbreak game in a nutshell</h2>
+<p>Sumbreak is a number-merge logic puzzle: drag a number onto an identical neighbour and the two tiles become their sum, leaving an empty square behind. Keep merging until only one tile is left. Tiles never slide, so every merge is a decision – merge in the wrong direction and a number can end up with no partner at all. Newer boards add wildcard tiles (×2 and +N) that can merge with any number.</p>
+<p>The daily puzzle above is the same for everyone today and changes at midnight UTC. For more, play <a href="/sumbreak-unlimited/">unlimited Sumbreak boards</a> from an easy 3×3 to a 6×6 expert grid, learn the patterns in our <a href="/how-to-play-sumbreak/">rules and strategy guide</a>, or check a tricky position with the <a href="/sumbreak-solver/">step-by-step solver</a>.</p>
+<h2>Daily puzzle FAQ</h2>
+{faq_html(dfaqs)}
 <p class="disclaimer">Unlimited Dailies is independent and not affiliated with LinkedIn, Microsoft, The New York Times or any other puzzle publisher.</p>
 """
-    page("/", "Unlimited Dailies – Free Unlimited Daily Puzzle Games",
-         "Play daily puzzle games without the daily limit. Free unlimited Sumbreak puzzles, a Sumbreak solver and strategy guides. No login, works on any device.",
-         body, GAME_JS, [{"@context": "https://schema.org", "@type": "WebSite", "name": SITE, "url": DOMAIN + "/"},
+    page("/", "Play Sumbreak Game Free – Daily Puzzles | Unlimited Dailies",
+         "Play the Sumbreak game free: a new daily puzzle, an archive of past dailies, unlimited boards, a step-by-step solver and strategy guides. No login needed.",
+         body, GAME_JS, [faq_schema(dfaqs), {"@context": "https://schema.org", "@type": "WebSite", "name": SITE, "url": DOMAIN + "/"},
                          {"@context": "https://schema.org", "@type": "Organization", "name": SITE, "url": DOMAIN + "/", "logo": DOMAIN + "/favicon.svg", "email": EMAIL}])
 
     # ---------- About / Contact / Privacy / Terms ----------
