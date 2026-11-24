@@ -14,8 +14,9 @@
 | Parseword | Josh Wardle (indie) | 2026-03 | skipped | cryptic wordplay clues need hand-written clue content; not new; not reproducible as a generator |
 | Thinky Dailies | Thinky Games | 2026-11 | skipped | story-driven daily puzzles whose rules change every day; not reproducible as one generated mechanic |
 
-Last scan: 2026-11-24 12:45 PKT (main run) — no new viral daily game in last 48h; added established game Queens (Section 2B).
-Previous: 2026-11-24 00:45 PKT (night run) — no new viral daily game in the last 48h (LinkedIn/NYT/Puzzmo/WaPo/Guardian/indie searches). Sumbreak (18 Nov) still the newest big launch. Live-site fetch was blocked by this run's network proxy (not a site outage).
+Last scan: 2026-11-25 00:45 PKT (night run) — no new viral daily game launched in the last 48h (LinkedIn/NYT/Puzzmo/WaPo/Guardian/indie searches). Krillion (Minecraft trivia, Mojang) noted: trivia content, not a reproducible generated puzzle → not a candidate. Site check via Search Console inspect_url: / and /queens-unlimited/ indexed, fetch OK (proxy blocks direct fetch).
+Previous: 2026-11-24 12:45 PKT (main run) — no new viral daily game in last 48h; added established game Queens (Section 2B).
+Older: 2026-11-24 00:45 PKT (night run) — no new viral daily game in the last 48h (LinkedIn/NYT/Puzzmo/WaPo/Guardian/indie searches). Sumbreak (18 Nov) still the newest big launch. Live-site fetch was blocked by this run's network proxy (not a site outage).
 
 Next in queue (2B): Tango (binary sun/moon grid), Zip, Mini Sudoku 6×6, Patches, Wend.
 
