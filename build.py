@@ -7,10 +7,10 @@ SITE = "Unlimited Dailies"
 EMAIL = "contact@unlimiteddailies.com"
 TODAY = datetime.date.today().isoformat()
 OUT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "site")
-V = "4"  # bump to bust asset cache
+V = "5"  # bump to bust asset cache
 INDEXNOW_KEY = "3753766b9ea89f1d1682ceed22f858eb"  # IndexNow key file served at /<key>.txt
 
-NAV = [("/sumbreak-unlimited/", "Sumbreak Unlimited"), ("/sumbreak-solver/", "Solver"), ("/how-to-play-sumbreak/", "How to play")]
+NAV = [("/sumbreak-unlimited/", "Sumbreak"), ("/queens-unlimited/", "Queens"), ("/sumbreak-solver/", "Sumbreak Solver"), ("/queens-solver/", "Queens Solver")]
 
 def head(title, desc, path, extra_schema=None, noindex=False):
     url = DOMAIN + path
@@ -61,8 +61,8 @@ def head(title, desc, path, extra_schema=None, noindex=False):
 
 FOOT = f"""</div></main>
 <footer class="site"><div class="wrap">
-<p><a href="/">Home</a><a href="/sumbreak-unlimited/">Sumbreak Unlimited</a><a href="/sumbreak-solver/">Sumbreak Solver</a><a href="/how-to-play-sumbreak/">How to Play</a><a href="/about/">About</a><a href="/contact/">Contact</a><a href="/privacy-policy/">Privacy</a><a href="/terms/">Terms</a></p>
-<p>© {datetime.date.today().year} {SITE}. Free, unofficial practice puzzles. Not affiliated with, endorsed by or connected to LinkedIn Corporation or Microsoft. "Sumbreak" is used only to describe the puzzle style.</p>
+<p><a href="/">Home</a><a href="/sumbreak-unlimited/">Sumbreak Unlimited</a><a href="/sumbreak-solver/">Sumbreak Solver</a><a href="/how-to-play-sumbreak/">How to Play Sumbreak</a><a href="/queens-unlimited/">Queens Unlimited</a><a href="/queens-solver/">Queens Solver</a><a href="/about/">About</a><a href="/contact/">Contact</a><a href="/privacy-policy/">Privacy</a><a href="/terms/">Terms</a></p>
+<p>© {datetime.date.today().year} {SITE}. Free, unofficial practice puzzles. Not affiliated with, endorsed by or connected to LinkedIn Corporation or Microsoft. "Sumbreak" and "Queens" are used only to describe puzzle styles.</p>
 </div></footer>
 """
 
@@ -115,10 +115,45 @@ GAME = """
     <a class="btn primary" data-next href="#" style="text-decoration:none;display:inline-block">Next puzzle</a>
     <button type="button" class="btn" data-share>Share result</button>
     <button type="button" class="btn" data-close>Close</button>
+    <p class="more-games">Try another game: <a href="/queens-unlimited/">Queens Unlimited</a> – one queen per row, column and colour.</p>
   </div>
 </div>
 """
 GAME_JS = f'<script src="/assets/core.js?v={V}"></script>\n<script src="/assets/game.js?v={V}"></script>'
+
+QGAME = """
+<div id="qgame" data-default="{default}">
+  <div class="levels" role="group" aria-label="Choose difficulty">
+    <button type="button" data-level-btn="daily">Daily</button>
+    <button type="button" data-level-btn="easy">Easy</button>
+    <button type="button" data-level-btn="medium">Medium</button>
+    <button type="button" data-level-btn="hard">Hard</button>
+    <button type="button" data-level-btn="expert">Expert</button>
+  </div>
+  <div class="meta"><span data-puzzle-title>Loading…</span><span>⏱ <span data-timer>0:00</span></span></div>
+  <div class="qboard" aria-label="Queens puzzle board"></div>
+  <p class="game-msg" aria-live="polite"></p>
+  <div class="ctrl">
+    <button type="button" data-action="undo">↶ Undo</button>
+    <button type="button" data-action="restart">Restart</button>
+    <button type="button" data-action="hint">💡 Hint</button>
+    <button type="button" data-action="new">New puzzle →</button>
+  </div>
+  <label class="autox"><input type="checkbox" data-autox> Auto ✕: cross out squares a queen rules out</label>
+  <p class="stats" data-stats></p>
+</div>
+<div class="modal" id="win-modal" hidden role="dialog" aria-modal="true" aria-labelledby="win-title">
+  <div class="card">
+    <h2 id="win-title" style="margin-top:0">👑 Puzzle solved!</h2>
+    <p data-win-text></p>
+    <a class="btn primary" data-next href="#" style="text-decoration:none;display:inline-block">Next puzzle</a>
+    <button type="button" class="btn" data-share>Share result</button>
+    <button type="button" class="btn" data-close>Close</button>
+    <p class="more-games">Try another game: <a href="/sumbreak-unlimited/">Sumbreak Unlimited</a> – merge numbers until one tile is left.</p>
+  </div>
+</div>
+"""
+QGAME_JS = f'<script src="/assets/queens-core.js?v={V}"></script>\n<script src="/assets/queens.js?v={V}"></script>'
 
 def build():
     if os.path.isdir(OUT):
@@ -334,6 +369,134 @@ def build():
           "author": {"@type": "Organization", "name": SITE}, "publisher": {"@type": "Organization", "name": SITE},
           "mainEntityOfPage": DOMAIN + "/how-to-play-sumbreak/"}])
 
+    # ---------- Queens Unlimited ----------
+    qfaqs = [
+        ("What is Queens Unlimited?", "Queens Unlimited is a free, unofficial practice version of the Queens-style logic puzzle. You place one queen in every row, every column and every coloured region, and no two queens may touch. Instead of one board a day, you can play as many boards as you like from 6×6 to 10×10, plus a free daily board of our own."),
+        ("Is this the official LinkedIn Queens game?", "No. The official Queens game is played on LinkedIn. This site is an independent practice tool that uses the same well-known rules (a variant of the classic star battle puzzle) and creates every board with its own generator. We are not affiliated with LinkedIn."),
+        ("What are the rules of Queens?", "Place exactly one queen in each row, each column and each coloured region. Queens may not touch each other – not side by side and not diagonally. The puzzle is solved when the board holds one queen per row, column and colour."),
+        ("Can I play Queens more than once a day?", "Yes. The official game gives one board per day, but here every press of New puzzle creates a fresh board, so you can play unlimited Queens puzzles at any level."),
+        ("Does every board have only one solution?", "Yes. Each board is checked by our solver before you see it, and it is only used if exactly one arrangement of queens works. That means you can always solve it by logic, without guessing."),
+        ("What are the ✕ marks for?", "Tap a square once to mark it with ✕ when you know a queen cannot go there. Tap again to place a queen, and a third time to clear the square. You can also drag across several squares to mark them all with ✕ in one go."),
+        ("What is the difference between the levels?", "Easy is a 6×6 board, Medium 7×7, Hard 9×9 and Expert a big 10×10 board. The daily puzzle is 8×8. Bigger boards have more regions and longer chains of deductions."),
+        ("What does the Hint button do?", "If you have a queen or ✕ in the wrong place, Hint clears that mistake first. Otherwise it places one correct queen in the smallest unsolved region, which is usually where a human solver would look next."),
+        ("What does Auto ✕ do?", "When Auto ✕ is switched on, placing a queen automatically crosses out its row, its column, its colour region and the eight squares around it. It saves taps on big boards; switch it off if you prefer to do every deduction yourself."),
+        ("Do hints or undo affect my stats?", "Undo never affects anything. Hints are counted only in the result you share, so you can be honest with friends; your solved count and streak still go up."),
+        ("Is there a Queens solver?", "Yes. If you are stuck on a board, open our Queens solver, colour the regions to match your puzzle and it shows the queens one at a time."),
+    ]
+    qgame_schema = {
+        "@context": "https://schema.org", "@type": ["VideoGame", "WebApplication"],
+        "name": "Queens Unlimited", "url": DOMAIN + "/queens-unlimited/",
+        "description": "Free unlimited Queens-style logic puzzles in the browser: one queen per row, column and colour region. 6×6 to 10×10 boards and a daily puzzle.",
+        "applicationCategory": "GameApplication", "operatingSystem": "Any (web browser)",
+        "genre": ["Puzzle", "Logic puzzle"], "gamePlatform": "Web browser", "playMode": "SinglePlayer",
+        "isAccessibleForFree": True, "inLanguage": "en",
+        "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"},
+        "publisher": {"@type": "Organization", "name": SITE, "url": DOMAIN}
+    }
+    body = f"""
+<h1>Queens Unlimited – Play Free Queens Puzzles With No Daily Limit</h1>
+<p class="lead">Place one queen in every row, column and colour – without any two queens touching. Unlimited 6×6 to 10×10 boards, a free daily puzzle, hints and undo. No login, no download.</p>
+{QGAME.format(default="easy")}
+<div class="ad-slot"></div>
+
+<h2>How to play Queens</h2>
+<ol>
+<li><strong>One queen per row and column.</strong> Every horizontal row and every vertical column ends up with exactly one queen.</li>
+<li><strong>One queen per colour.</strong> The board is split into coloured regions, and each region gets exactly one queen too.</li>
+<li><strong>Queens never touch.</strong> No queen may sit next to another one – not beside it, above it, below it or diagonally on any of the eight surrounding squares.</li>
+<li><strong>Mark what you rule out.</strong> Tap once to put ✕ on a square that cannot hold a queen, tap twice to place a queen. Drag across squares to cross out a whole row or region quickly.</li>
+<li><strong>Finish the board.</strong> When every row, column and colour has its queen and nothing clashes, the puzzle is solved. Clashing queens turn red so you notice mistakes at once.</li>
+</ol>
+<p>Stuck on a board – maybe today's official one? Colour it into the <a href="/queens-solver/">Queens solver</a> and reveal the answer one queen at a time.</p>
+
+<h2>Why practise with unlimited Queens puzzles?</h2>
+<p>The daily Queens board on LinkedIn takes most players a minute or two, and then the wait for tomorrow begins. The fastest solvers are not quicker because they guess better – they recognise a handful of patterns instantly: a region squeezed into a single row, two regions sharing the same two columns, a square that would block a whole region. The only way to learn those patterns is to see a lot of boards. Here every board is new, every board has exactly one solution, and you can pick the size that matches what you want to train.</p>
+
+<h2>Features</h2>
+<ul>
+<li><strong>Unlimited boards</strong> in four sizes – 6×6, 7×7, 9×9 and a 10×10 Expert board – each with a puzzle number you can share.</li>
+<li><strong>Always one solution</strong>: every board is checked by our solver before it reaches you, so it can be solved with pure logic.</li>
+<li><strong>Daily Queens puzzle</strong> – one 8×8 board for everyone each day, with a streak counter.</li>
+<li><strong>✕ marks, drag-to-mark, optional Auto ✕, Undo, Restart and Hint</strong>, plus red highlighting when two queens clash.</li>
+<li><strong>Timer, best times and a share button</strong> to post your result to friends or colleagues.</li>
+<li><strong>Keyboard play</strong>: arrow keys to move, Q for a queen, X for a mark, Enter to cycle.</li>
+</ul>
+
+<h2>Queens strategy: five techniques that solve most boards</h2>
+<h3>1. Start with the smallest region</h3>
+<p>A region with only two or three squares leaves very few options. If all its squares sit in one row, the queen of that row must be inside that region – so you can cross out every other square of the row.</p>
+<h3>2. Regions locked into a line</h3>
+<p>The same idea works for columns, and for groups: if two regions fit entirely inside the same two rows, those two rows are "used up" by them. Every other square in those two rows can be marked with ✕.</p>
+<h3>3. Cross out the neighbours of every queen</h3>
+<p>As soon as you place a queen, mark its row, its column, its region and all eight squares around it. Our drag-to-mark makes this fast. Many boards then fall like dominoes.</p>
+<h3>4. Test a square by its consequences</h3>
+<p>When a square looks possible, imagine a queen there and see what it would cover. If it would wipe out every remaining square of some other region, that square must be ✕. This "what would it block?" check is the key to Hard and Expert boards.</p>
+<h3>5. Count what is left</h3>
+<p>Near the end, count open rows, columns and regions. If one region has squares in only one open column, its queen is forced. Counting is also a quick way to notice a mistake before the board turns red.</p>
+
+<h2>Worked example: a two-square region</h2>
+<p>Suppose a small yellow region covers just two squares, side by side in row 3. Whichever of the two holds the queen, row 3 is now spoken for, so every other square in row 3 gets an ✕. And because the two squares are neighbours, the squares directly above and below <em>both</em> of them touch the queen either way – so those can be crossed out too. One tiny region has just removed up to a dozen squares, without placing a single queen.</p>
+
+<h2>Frequently asked questions</h2>
+{faq_html(qfaqs)}
+<p class="disclaimer">Unlimited Dailies is an independent website. It is not affiliated with, sponsored by or endorsed by LinkedIn Corporation or Microsoft. "Queens" is used only to describe the puzzle style. All boards on this page are generated by our own code.</p>
+"""
+    page("/queens-unlimited/", "Queens Unlimited – Free Queens Puzzles, No Daily Limit",
+         "Play Queens unlimited for free: one queen per row, column and colour region. 6×6 to 10×10 boards, a daily puzzle, hints and undo. No login needed.",
+         body, QGAME_JS, [qgame_schema, faq_schema(qfaqs)])
+
+    # ---------- Queens solver ----------
+    qsfaqs = [
+        ("How do I get the answer to today's Queens puzzle?", "Choose the board size that matches your puzzle, pick a colour and paint each region of the grid the same way it looks in the game (drag across squares to paint quickly). Press Solve and the solver reveals one queen at a time, or all of them at once."),
+        ("Do my colours have to match the official colours?", "No. Only the shape of each region matters. Use any colour for any region – just make sure squares that belong to the same region get the same colour and that you use exactly as many colours as there are rows."),
+        ("Why does the solver say there is no solution?", "Almost always one square was painted with the wrong colour. Compare the board row by row with your puzzle, fix the square and press Solve again."),
+        ("What sizes does the Queens solver support?", "Every square board from 5×5 up to 11×11, which covers all common Queens and star battle puzzles with one queen per row."),
+        ("Can I get a hint instead of the full answer?", "Yes. After you press Solve, only one queen is shown – the one in the smallest region, where you would usually start. Press Show next queen to reveal more, one at a time."),
+        ("Is my board sent anywhere?", "No. The solver runs completely in your browser. Nothing you paint is uploaded or saved on our servers."),
+    ]
+    body = f"""
+<h1>Queens Solver – Today's Queens Answer, One Queen at a Time</h1>
+<p class="lead">Stuck on a Queens puzzle? Paint the colour regions below, press Solve, and reveal the queens one by one – or all at once.</p>
+<form id="qsolver" class="card" autocomplete="off">
+  <label>Board size:
+    <select name="size"><option value="5">5×5</option><option value="6">6×6</option><option value="7">7×7</option><option value="8" selected>8×8</option><option value="9">9×9</option><option value="10">10×10</option><option value="11">11×11</option></select>
+  </label>
+  <div class="qpalette" aria-label="Choose a colour to paint with"></div>
+  <div class="qboard" aria-label="Paint the regions of your puzzle"></div>
+  <p style="font-size:.9rem;color:var(--muted)">Pick a colour, then tap or drag over the squares of one region. Repeat for every region. Colours do not have to match the game – only the shapes matter.</p>
+  <button class="btn primary" type="submit">Solve</button>
+  <button class="btn" type="button" data-example>Load example</button>
+  <button class="btn" type="button" data-clear>Clear</button>
+</form>
+<div id="qsolver-out" aria-live="polite"></div>
+<div class="ad-slot"></div>
+
+<h2>Stuck on today's Queens? Get the answer in three steps</h2>
+<ol>
+<li><strong>Pick the size.</strong> Count the rows of your puzzle – daily boards are usually between 7×7 and 10×10 – and choose that size.</li>
+<li><strong>Paint the regions.</strong> Choose colour 1 and paint every square of one region, then colour 2 for the next region, and so on. Dragging your finger or mouse paints many squares at once; the eraser fixes slips.</li>
+<li><strong>Press Solve.</strong> The first queen appears on the board. Use <em>Show next queen</em> if you only want a nudge, or <em>Show all queens</em> for the full answer.</li>
+</ol>
+
+<h2>How the Queens solver works</h2>
+<p>The solver places queens row by row. In each row it only tries columns that are still free, in regions that do not have a queen yet, and never next to the queen in the row above. After every placement it checks that each region without a queen still has at least one usable square further down the board; if one does not, that whole branch is dropped immediately. This pruning means even an 11×11 board is solved in a fraction of a second on a phone.</p>
+<p>The solver also keeps looking for a second solution. Real Queens puzzles have exactly one answer, so if your board has more than one, the solver tells you – a strong sign that a square was painted with the wrong colour.</p>
+<p>When it shows the answer, it starts with the queen in the smallest region. That is the same place a good human solver looks first, so revealing a single queen is often enough to get you going again.</p>
+
+<h2>Solve it yourself next time</h2>
+<p>Three habits solve most boards without help: start with the smallest region, cross out the row and column of any region that sits completely in one line, and after every queen mark all eight squares around it. Practise them on fresh boards in <a href="/queens-unlimited/">Queens Unlimited</a> – every board there is checked to have exactly one solution.</p>
+
+<h2>FAQ</h2>
+{faq_html(qsfaqs)}
+<p class="disclaimer">Unofficial tool. Not affiliated with LinkedIn. The solver runs entirely in your browser; your board is not sent anywhere.</p>
+"""
+    page("/queens-solver/", "Queens Solver – Today's Queens Answer, Step by Step",
+         "Free Queens solver: paint your board's colour regions and reveal the answer one queen at a time. Works for 5×5 to 11×11 Queens and star battle boards.",
+         body, f'<script src="/assets/queens-core.js?v={V}"></script>\n<script src="/assets/queens-solver.js?v={V}"></script>',
+         [faq_schema(qsfaqs), {"@context": "https://schema.org", "@type": "WebApplication", "name": "Queens Solver",
+          "url": DOMAIN + "/queens-solver/", "applicationCategory": "UtilitiesApplication", "operatingSystem": "Any",
+          "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}}])
+
     # ---------- Home ----------
     launch = datetime.date(2026, 11, 21)
     today_n = (datetime.date.today() - launch).days + 1
@@ -352,6 +515,8 @@ def build():
 <div class="grid-links">
   <a class="card" href="/sumbreak-unlimited/"><strong>Sumbreak Unlimited <span class="tag">New</span></strong><small>Merge numbers until one tile is left. 3×3 to 6×6 boards, wildcards & a daily puzzle.</small></a>
   <a class="card" href="/sumbreak-solver/"><strong>Sumbreak Solver</strong><small>Stuck on today's board? Enter it (wildcards too) and get the answer one hint at a time.</small></a>
+  <a class="card" href="/queens-unlimited/"><strong>Queens Unlimited <span class="tag">New</span></strong><small>One queen per row, column and colour. 6×6 to 10×10 boards & a daily puzzle.</small></a>
+  <a class="card" href="/queens-solver/"><strong>Queens Solver</strong><small>Paint your board's regions and reveal the answer one queen at a time.</small></a>
   <a class="card" href="/how-to-play-sumbreak/"><strong>How to Play Sumbreak</strong><small>Rules, dead spots and strategy tips.</small></a>
 </div>
 <h2>Today's free puzzle</h2>
@@ -364,7 +529,7 @@ def build():
 <li><strong>Always solvable</strong> puzzles, with hints and undo.</li>
 <li><strong>Fast and private</strong> – everything runs in your browser.</li>
 </ul>
-<p>We are starting with Sumbreak, the newest daily number puzzle, and will add more puzzle styles soon.</p>
+<p>Right now you can play <a href="/sumbreak-unlimited/">Sumbreak Unlimited</a>, the newest daily number-merge puzzle, and <a href="/queens-unlimited/">Queens Unlimited</a>, the colour-region logic puzzle with one queen per row, column and region – each with its own step-by-step solver. More puzzle styles are on the way.</p>
 <h2 id="archive">Daily puzzle archive</h2>
 <p>Missed a day? Every daily puzzle we have published stays here. Pick a number to replay it – the ones you have solved on this device are ticked. Only today's puzzle counts towards your streak.</p>
 <ul class="archive" data-archive>{archive_html}</ul>
@@ -383,7 +548,7 @@ def build():
     # ---------- About / Contact / Privacy / Terms ----------
     page("/about/", "About Unlimited Dailies", "About Unlimited Dailies: free unlimited practice versions of popular daily puzzle games.", f"""
 <h1>About Unlimited Dailies</h1>
-<p>Unlimited Dailies is a small independent website that makes free, unlimited practice versions of popular daily puzzle styles. Our first game is <a href="/sumbreak-unlimited/">Sumbreak Unlimited</a>, a number-merge logic puzzle, together with a <a href="/sumbreak-solver/">solver</a> and a <a href="/how-to-play-sumbreak/">strategy guide</a>.</p>
+<p>Unlimited Dailies is a small independent website that makes free, unlimited practice versions of popular daily puzzle styles. Our games are <a href="/sumbreak-unlimited/">Sumbreak Unlimited</a>, a number-merge logic puzzle with a <a href="/sumbreak-solver/">solver</a> and a <a href="/how-to-play-sumbreak/">strategy guide</a>, and <a href="/queens-unlimited/">Queens Unlimited</a>, a colour-region queen-placement puzzle with its own <a href="/queens-solver/">Queens solver</a>.</p>
 <p>All puzzles are created by our own generator, and every board is checked to be solvable. The site is free to use and is supported by advertising.</p>
 <p>We are not affiliated with LinkedIn, Microsoft, The New York Times or any other game publisher. Game names are used only to describe the style of puzzle.</p>
 <p>Questions or ideas for the next game? <a href="/contact/">Contact us</a>.</p>
@@ -412,7 +577,7 @@ def build():
 <h1>Terms of Use</h1>
 <p>Last updated: {TODAY}</p>
 <p>Unlimited Dailies provides free puzzle games and tools "as is", without warranties of any kind. You may use the site for personal, non-commercial entertainment.</p>
-<p>All puzzles are generated by our own code. Game names such as "Sumbreak" are trademarks of their respective owners and are used here only to describe a puzzle style. Unlimited Dailies is not affiliated with or endorsed by those owners.</p>
+<p>All puzzles are generated by our own code. Game names such as "Sumbreak" and "Queens" are trademarks of their respective owners and are used here only to describe a puzzle style. Unlimited Dailies is not affiliated with or endorsed by those owners.</p>
 <p>We may change or remove games at any time. Questions: <a href="mailto:{EMAIL}">{EMAIL}</a>.</p>
 """)
 
@@ -424,6 +589,7 @@ def build():
     open(os.path.join(OUT, "404.html"), "w").write(html404)
     open(os.path.join(OUT, "robots.txt"), "w").write(f"User-agent: *\nAllow: /\n\nSitemap: {DOMAIN}/sitemap.xml\n")
     urls = [("/", "1.0"), ("/sumbreak-unlimited/", "1.0"), ("/sumbreak-solver/", "0.9"), ("/how-to-play-sumbreak/", "0.8"),
+            ("/queens-unlimited/", "1.0"), ("/queens-solver/", "0.9"),
             ("/about/", "0.3"), ("/contact/", "0.3"), ("/privacy-policy/", "0.2"), ("/terms/", "0.2")]
     sm = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
     sm += "".join(f"  <url><loc>{DOMAIN}{u}</loc><lastmod>{TODAY}</lastmod><priority>{p}</priority></url>\n" for u, p in urls)

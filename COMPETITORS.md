@@ -1,8 +1,22 @@
 # Competitors
 
-Updated: 2026-11-23 (Asia/Karachi). Facts summarised from their public pages; nothing copied.
+Updated: 2026-11-24 (Asia/Karachi). Facts summarised from their public pages; nothing copied.
 
-## Sumbreak
+## Queens (added 2026-11-24)
+
+Keywords checked 2026-11-24 (WebSearch): "queens game unlimited", "linkedin queens solver". We are new (not ranked yet).
+
+| Site | Ranks for | Title / H1 | Words | FAQ | Features | Lacks |
+|---|---|---|---|---|---|---|
+| queensultimate.com (blog/queens-unlimited-beyond-linkedin) | queens game unlimited | "Queens Game Unlimited - Play LinkedIn Queens Game Without Limits" | ~1,300 | 9 (free? account? mobile? sizes? affiliated? streak? share?) | Daily Mini/Max, unlimited 5×5–12×12, archive, timer, auto-mark, accounts/leaderboards | hints, undo, solver |
+| wordle.global/en/queens/unlimited | queens unlimited | "Queens Unlimited - Endless Logic Puzzles" (H1 is only logo) | ~1,000 | 6 | fixed 8×8, red conflicts, 3-state tap, leaderboard, archive, links to solver | size choice, hints, auto-X, undo, share |
+| playqueensgame.com/linkedin-queens | queens game unlimited, linkedin queens | "LinkedIn Queens: Play the Queens Game Free, No Login" | ~1,100 | 7 | dailies 8–10×10, beat-the-clock, unlimited, archive, ranked multiplayer, guides | undo, auto-X, solver, share |
+| "linkedin queens solver" results | — | mostly GitHub/Medium/dev blogs (towardsdatascience, mspiegel.github.io, pypi) + thewordfinder hints | — | — | code projects, not usable web solvers | **easy-to-use web solver → weak competition, our chance** |
+
+Gap list (Queens) 2026-11-24:
+- Closed at launch: hints (they lack), undo (they lack), step-by-step web solver (they lack), share result (they lack), Auto ✕ (queensultimate has auto-mark), 4 sizes + daily, unique-solution guarantee, 10 FAQ + FAQPage schema, 1,300+ words.
+- Still open: 5×5 and 11×11/12×12 boards in game, archive of Queens dailies, "beat the clock" mode, how-to-play/strategy guide page (only with demand).
+
 
 Keywords checked 2026-11-22: "sumbreak unlimited", "sumbreak solver", "sumbreak wildcard tiles" (WebSearch).
 
@@ -35,6 +49,11 @@ New/re-fetched sites (23 Nov):
 - **sumbreak.io** – "Sumbreak Linkedin - Play Unlimited"; ~350 words, no FAQ; daily + unlimited, undo/hint, keyboard controls. Thin.
 - **alldle.net/game/sumbreak** – directory listing (7 FAQ incl. "Is Sumbreak unblocked?", "How often does it reset?"); links out to playsumbreak. Not a game.
 - **playsumbreak.com** (re-checked) – "Sumbreak Game: Play Sumbreak Free Online, Daily & Unlimited"; ~750 words; weekday difficulty ramp (Mon 4×4 → Sun 6×6 ×2); dated archive of past dailies; 14 FAQ (why can't two numbers merge, where to start, does a hint affect streak, keyboard, progress saved, when new daily, more than one a day…). No stats, share, solver.
+
+## 2026-11-24 check (main run, Sumbreak)
+
+Search Console still only has data to 21 Nov (no new rows): "sumbreak unlimited" pos ~8.2, "sumbreak" ~11, "sumbreak game" 9, "sumbreak answers" 25. WebSearch (not Google) for "sumbreak unlimited", "sumbreak solver", "sumbreak game", "sumbreak strategy" (rotating) returned no Sumbreak fan sites at all this run (unrelated results; solver query showed askdavetaylor, beebom, thewordfinder guides) — no new competitor visible above us; known list unchanged.
+Closed today: 3B(iv) "Try another game" cross-link in the Sumbreak win dialog (→ Queens) and Queens win dialog (→ Sumbreak); nav/footer/home now link both games. Share result already live on Sumbreak (3B(i) done).
 
 ## Gap list (Sumbreak) — 2026-11-23
 
