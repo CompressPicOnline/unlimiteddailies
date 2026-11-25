@@ -1,6 +1,28 @@
 # Competitors
 
-Updated: 2026-11-24 (Asia/Karachi). Facts summarised from their public pages; nothing copied.
+Updated: 2026-11-25 (Asia/Karachi). Facts summarised from their public pages; nothing copied.
+
+## 2026-11-25 check (main run)
+
+Search Console (28 days, data to 23 Nov): daily 10 → 59 → 32 → 58 impressions (20–23 Nov), 5 clicks total, avg pos ~10.
+| Keyword | Our pos (GSC) today | last run | Non-official sites above us (WebSearch, not Google) | Likely reasons |
+|---|---|---|---|---|
+| sumbreak unlimited | 9.9 (/sumbreak-unlimited/, 10 impr) | 8.2 | engine returned no Sumbreak sites (unrelated "limit break" pages); known list from 23 Nov stands (playsumbreak, thesumbreak, bettersumbreak, sumbreakpuzzle, sumbreak.io, sum-break, mergenumbersgame) | exact-match domains, older |
+| sumbreak solver / answer | 14 ("sumbreak answer"), 6 ("sumbreak solution"), 10 ("todays sumbreak") | 25 | askdavetaylor, beebom, thewordfinder (guides/hints, not solvers) | big-domain authority; real solver competition weak |
+| sumbreak game | 22 (home), 31 (unlimited) | 9 | none relevant shown | home title fix from 23 Nov not yet reflected (data lag) |
+| sumbreak answer today (rotating) | 22 (solver) | – | thewordfinder sumbreak-hints, beebom, askdavetaylor | daily hint articles (format we don't copy) |
+| queens unlimited / game | not ranked yet (page 1 day old) | new | wordle.global/en/queens/unlimited, queensultimate.com | older, daily archive, leaderboards |
+| linkedin queens solver | not ranked yet | new | GitHub/PyPI/blog solvers, thewordfinder hints, playqueensgame | still no easy web solver among top results → our chance |
+| tango solver (new game) | new today | – | guideflow tutorials, LinkedIn news, mytour guide – no real web solver | **weak competition → our Tango solver** |
+
+New site analysed: **tango-unlimited.com** (how-to page) – "How to Play Tango: 4 Rules, 2-Minute Guide + Strategy"; ~1,500 words; H2s: what is Tango, objective, four rules, step-by-step example, eight strategy techniques, common mistakes, tips, FAQ (4: = / × meaning, same as LinkedIn?, hints/answers?, Tango vs Queens vs Zip); features: 6×6 only, 4 levels, daily, archive, beat-the-clock, hint, undo/reset, shareable board link. Lacks: solver (says it publishes no answers), stats/streaks, result share, 8×8, explained hints, schema.
+Re-checked **wordle.global/en/queens/unlimited**: 8×8 only, unlimited + daily archive, conflict highlight, optional sign-in + leaderboard, streak, link to a solver; FAQ 6. Lacks hint, undo, share result, levels.
+
+Gap list 2026-11-25:
+- Closed today: Queens **daily archive** (wordle.global, queensultimate had one) → archive list on /queens-unlimited/; Tango launched with archive, **common-mistakes section** and **"Tango vs Queens vs Sumbreak" FAQ** (tango-unlimited.com has both), plus things they lack: 8×8 Expert, explained hints, solver with reasons, stats/streak, share result, FAQPage schema.
+- Still open: "beat the clock" mode (queens/tango competitors), leaderboards (needs accounts – skip), Sumbreak weekday difficulty ramp (3B iii).
+- We are better: only site with game + solver for all three games, hints that explain/repair, share result everywhere.
+
 
 ## Queens (added 2026-11-24)
 

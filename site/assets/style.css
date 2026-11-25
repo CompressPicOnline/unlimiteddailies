@@ -95,3 +95,25 @@ footer.site a{color:var(--muted);margin-right:14px}
 nav.top{display:flex;flex-wrap:wrap;gap:2px 14px}
 nav.top a{margin-left:0;white-space:nowrap}
 .autox{display:block;font-size:.9rem;color:var(--muted);margin-top:10px;cursor:pointer}
+/* tango (sun/moon grid) */
+#tgame{max-width:440px;margin:14px auto 0;text-align:center}
+.tboard{position:relative;display:grid;gap:0;border:3px solid #39415a;border-radius:10px;background:#fff;max-width:440px;margin:0 auto;touch-action:manipulation;user-select:none;-webkit-user-select:none}
+.tcell{position:relative;aspect-ratio:1;border:0;margin:0;padding:0;border-radius:0;background:#fbfaf6;box-shadow:inset 0 0 0 .5px #c9cdd8;cursor:pointer;font-size:calc(min(86vw,430px)/var(--tn,6)*.5);display:flex;align-items:center;justify-content:center}
+.tcell.given{background:#ecebe4;cursor:default}
+.tcell::after{content:"";display:block;width:1.15em;height:1.15em;border-radius:50%}
+.tcell.s1::after{background:radial-gradient(circle at 38% 35%,#ffe58a,#f2a516 70%);box-shadow:0 0 0 .14em rgba(242,165,22,.25)}
+.tcell.s2::after{width:1.05em;height:1.05em;box-shadow:inset -.34em -.1em 0 0 #4f68c8;transform:rotate(-18deg)}
+.tcell.reveal{background:#e7f4ea}
+.tcell.bad{background-image:repeating-linear-gradient(135deg,rgba(196,22,28,.22) 0 4px,transparent 4px 9px)}
+.tcell.hl{animation:glow 1s ease-in-out infinite}
+.tcell:focus-visible{outline:3px solid var(--brand);outline-offset:-3px;z-index:1}
+.tsign,.tedge{position:absolute;transform:translate(-50%,-50%);z-index:2;width:20px;height:20px;border-radius:50%;background:#fff;color:#39415a;font:800 14px/20px system-ui,sans-serif;text-align:center;box-shadow:0 0 0 1px #c9cdd8;pointer-events:none}
+.tsign.bad{color:#fff;background:#c4161c}
+.tedge{pointer-events:auto;border:0;padding:0;cursor:pointer;width:24px;height:24px;line-height:24px;font-size:14px;background:radial-gradient(circle,rgba(57,65,90,.28) 0 3px,transparent 4px);box-shadow:none;color:#1d2333}
+.tedge.on{background:radial-gradient(circle,#fff 0 10px,#39415a 10.5px 11.5px,transparent 12px)}
+#tsolver .tcell{font-size:calc(min(80vw,390px)/var(--tn,6)*.42)}
+.tboard.solved .tcell{animation:pop .3s ease}
+#tsolver .tboard{max-width:400px;margin:8px 0}
+.sym-sun,.sym-moon{display:inline-block;width:.95em;height:.95em;border-radius:50%;vertical-align:-.12em}
+.sym-sun{background:radial-gradient(circle at 38% 35%,#ffe58a,#f2a516 70%)}
+.sym-moon{box-shadow:inset -.3em -.08em 0 0 #4f68c8;transform:rotate(-18deg)}

@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<head>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  window.dataLayer.push({'gtm.start': new Date().getTime(), event: 'gtm.js'});
+  function gtag(){dataLayer.push(arguments);}
+</script>
+<script async src="https://www.googletagmanager.com/gtm.js?id=GTM-52WF64FM"></script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Tango Solver – Today's Tango Answer, Step by Step</title>
+<meta name="description" content="Free Tango solver: enter your suns, moons and = / × signs and get the answer one square at a time, with the reason for each step. 4×4 to 10×10 boards.">
+<link rel="canonical" href="https://unlimiteddailies.com/tango-solver/">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Unlimited Dailies">
+<meta property="og:title" content="Tango Solver – Today's Tango Answer, Step by Step">
+<meta property="og:description" content="Free Tango solver: enter your suns, moons and = / × signs and get the answer one square at a time, with the reason for each step. 4×4 to 10×10 boards.">
+<meta property="og:url" content="https://unlimiteddailies.com/tango-solver/">
+<meta property="og:image" content="https://unlimiteddailies.com/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#2f6fed">
+<meta name="monetag" content="c643b64e9fb0e1e28f59dc44caa0c5cc">
+<meta name="msvalidate.01" content="DCD9377743936F2F6B4B5754198E0DD4">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/assets/style.css?v=6">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Unlimited Dailies", "item": "https://unlimiteddailies.com/"}, {"@type": "ListItem", "position": 2, "name": "Tango Solver", "item": "https://unlimiteddailies.com/tango-solver/"}]}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "How do I get the answer to today's Tango puzzle?", "acceptedAnswer": {"@type": "Answer", "text": "Choose the board size (the daily LinkedIn board is 6×6), tap each square that already shows a sun or moon until it matches, and tap the small circles between squares to add the = and × signs. Press Solve: the solver fills one square at a time and tells you which row or column forces it, or shows the full answer at once."}}, {"@type": "Question", "name": "How do I enter the = and × signs?", "acceptedAnswer": {"@type": "Answer", "text": "Between every two neighbouring squares there is a small circle. Tap it once for =, twice for ×, and a third time to remove the sign again."}}, {"@type": "Question", "name": "Why does the solver say there is no solution?", "acceptedAnswer": {"@type": "Answer", "text": "One of the symbols or signs was entered differently from your puzzle. Compare row by row – a single wrong sign is enough to make the board impossible."}}, {"@type": "Question", "name": "Why does it say there is more than one answer?", "acceptedAnswer": {"@type": "Answer", "text": "Real Tango boards have exactly one solution. If the solver finds two, part of the puzzle is missing – usually a sign or a starting symbol that was not entered."}}, {"@type": "Question", "name": "Can I just get a hint instead of the whole answer?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. After Solve, only the first square is shown, together with the reason. Press Show next square for more, one at a time."}}, {"@type": "Question", "name": "What sizes does the Tango solver support?", "acceptedAnswer": {"@type": "Answer", "text": "4×4, 6×6, 8×8 and 10×10 boards – every even size used by Tango, Takuzu and binary puzzles with balanced rows and columns."}}, {"@type": "Question", "name": "Is my board sent anywhere?", "acceptedAnswer": {"@type": "Answer", "text": "No. The solver runs completely in your browser. Nothing you enter is uploaded or stored on our servers."}}]}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebApplication", "name": "Tango Solver", "url": "https://unlimiteddailies.com/tango-solver/", "applicationCategory": "UtilitiesApplication", "operatingSystem": "Any", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}}</script>
+</head>
+<body>
+<header class="site"><div class="wrap">
+<a class="logo" href="/"><span>∞</span> Unlimited Dailies</a>
+<nav class="top"><a href="/sumbreak-unlimited/">Sumbreak</a><a href="/queens-unlimited/">Queens</a><a href="/tango-unlimited/">Tango</a></nav>
+</div></header>
+<main><div class="wrap">
+
+<h1>Tango Solver – Today's Tango Answer, Square by Square</h1>
+<p class="lead">Stuck on a Tango puzzle? Enter the suns, moons and = / × signs from your board, press Solve, and reveal the answer one square at a time – each with the reason it is forced.</p>
+<form id="tsolver" class="card" autocomplete="off">
+  <label>Board size:
+    <select name="size"><option value="4">4×4</option><option value="6" selected>6×6</option><option value="8">8×8</option><option value="10">10×10</option></select>
+  </label>
+  <div class="tboard" aria-label="Enter your Tango board"></div>
+  <p style="font-size:.9rem;color:var(--muted)">Tap a square for a sun, again for a moon, again to clear. Tap the small circles between squares: once for =, twice for ×.</p>
+  <button class="btn primary" type="submit">Solve</button>
+  <button class="btn" type="button" data-example>Load example</button>
+  <button class="btn" type="button" data-clear>Clear</button>
+</form>
+<div id="tsolver-out" aria-live="polite"></div>
+<div class="ad-slot"></div>
+
+<h2>Stuck on today's Tango? Get the answer in three steps</h2>
+<ol>
+<li><strong>Pick the size.</strong> The daily Tango board on LinkedIn is 6×6, which is selected already. Use 8×8 or 10×10 for bigger binary puzzles.</li>
+<li><strong>Copy the board.</strong> Tap each pre-filled square until it shows the same symbol as your puzzle (<span class="sym-sun" aria-label="sun"></span> or <span class="sym-moon" aria-label="moon"></span>). Then tap the circle between two squares to add an = or a × sign wherever your puzzle has one.</li>
+<li><strong>Press Solve.</strong> The first forced square turns green on the board with a short explanation. Press <em>Show next square</em> for another nudge, or <em>Show full answer</em> to see everything.</li>
+</ol>
+
+<h2>How the Tango solver works</h2>
+<p>The solver thinks in whole lines, the way experienced players do. For every row and column it lists all the arrangements that are still allowed: the right number of suns and moons, never three in a row, matching every symbol already on the board and every sign inside that line. If one square has the same symbol in all of those arrangements, that symbol is forced – the solver writes it in and remembers which line proved it.</p>
+<p>Every new symbol also narrows the crossing column or row, so the solver keeps going round the board until nothing changes. Proper Tango puzzles are finished this way without a single guess. If a board cannot be completed by logic alone, the solver switches to a careful search, and it tells you if it finds no answer or more than one – the most common sign that something was entered wrongly.</p>
+<p>Because each step names its row or column, the list of steps doubles as a lesson: look at the line it mentions and try to see why the square is forced before you reveal the next one.</p>
+
+<h2>Solve it yourself next time</h2>
+<p>Most boards fall to three habits: put the opposite symbol at both ends of every pair, fill the gap between two equal symbols, and finish any line that already has its full share of one symbol. Practise them on fresh boards in <a href="/tango-unlimited/">Tango Unlimited</a> – every board there is checked to have exactly one solution that can be reached without guessing.</p>
+
+<h2>FAQ</h2>
+<div class="faq"><details><summary>How do I get the answer to today's Tango puzzle?</summary><p>Choose the board size (the daily LinkedIn board is 6×6), tap each square that already shows a sun or moon until it matches, and tap the small circles between squares to add the = and × signs. Press Solve: the solver fills one square at a time and tells you which row or column forces it, or shows the full answer at once.</p></details><details><summary>How do I enter the = and × signs?</summary><p>Between every two neighbouring squares there is a small circle. Tap it once for =, twice for ×, and a third time to remove the sign again.</p></details><details><summary>Why does the solver say there is no solution?</summary><p>One of the symbols or signs was entered differently from your puzzle. Compare row by row – a single wrong sign is enough to make the board impossible.</p></details><details><summary>Why does it say there is more than one answer?</summary><p>Real Tango boards have exactly one solution. If the solver finds two, part of the puzzle is missing – usually a sign or a starting symbol that was not entered.</p></details><details><summary>Can I just get a hint instead of the whole answer?</summary><p>Yes. After Solve, only the first square is shown, together with the reason. Press Show next square for more, one at a time.</p></details><details><summary>What sizes does the Tango solver support?</summary><p>4×4, 6×6, 8×8 and 10×10 boards – every even size used by Tango, Takuzu and binary puzzles with balanced rows and columns.</p></details><details><summary>Is my board sent anywhere?</summary><p>No. The solver runs completely in your browser. Nothing you enter is uploaded or stored on our servers.</p></details></div>
+<p class="disclaimer">Unofficial tool. Not affiliated with LinkedIn. The solver runs entirely in your browser; your board is not sent anywhere.</p>
+</div></main>
+<footer class="site"><div class="wrap">
+<p><a href="/">Home</a><a href="/sumbreak-unlimited/">Sumbreak Unlimited</a><a href="/sumbreak-solver/">Sumbreak Solver</a><a href="/how-to-play-sumbreak/">How to Play Sumbreak</a><a href="/queens-unlimited/">Queens Unlimited</a><a href="/queens-solver/">Queens Solver</a><a href="/tango-unlimited/">Tango Unlimited</a><a href="/tango-solver/">Tango Solver</a><a href="/about/">About</a><a href="/contact/">Contact</a><a href="/privacy-policy/">Privacy</a><a href="/terms/">Terms</a></p>
+<p>© 2026 Unlimited Dailies. Free, unofficial practice puzzles. Not affiliated with, endorsed by or connected to LinkedIn Corporation or Microsoft. "Sumbreak", "Queens" and "Tango" are used only to describe puzzle styles.</p>
+</div></footer>
+<script src="/assets/tango-core.js?v=6"></script>
+<script src="/assets/tango-solver.js?v=6"></script><script>
+/* Monetag vignette: loaded a few seconds after the page opens so the first view is never blocked.
+   Vignette ads only appear when the visitor follows a link (e.g. "Next puzzle" after a win),
+   never in the middle of a game. */
+(function(){var load=function(){var s=document.createElement('script');s.dataset.zone='12312406';s.src='https://n6wxm.com/vignette.min.js';s.async=true;document.body.appendChild(s);};
+if(document.readyState==='complete')setTimeout(load,4000);else window.addEventListener('load',function(){setTimeout(load,4000);});})();
+</script>
+</body>
+</html>

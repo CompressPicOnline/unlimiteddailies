@@ -7,10 +7,10 @@ SITE = "Unlimited Dailies"
 EMAIL = "contact@unlimiteddailies.com"
 TODAY = datetime.date.today().isoformat()
 OUT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "site")
-V = "5"  # bump to bust asset cache
+V = "6"  # bump to bust asset cache
 INDEXNOW_KEY = "3753766b9ea89f1d1682ceed22f858eb"  # IndexNow key file served at /<key>.txt
 
-NAV = [("/sumbreak-unlimited/", "Sumbreak"), ("/queens-unlimited/", "Queens"), ("/sumbreak-solver/", "Sumbreak Solver"), ("/queens-solver/", "Queens Solver")]
+NAV = [("/sumbreak-unlimited/", "Sumbreak"), ("/queens-unlimited/", "Queens"), ("/tango-unlimited/", "Tango")]
 
 def head(title, desc, path, extra_schema=None, noindex=False):
     url = DOMAIN + path
@@ -61,8 +61,8 @@ def head(title, desc, path, extra_schema=None, noindex=False):
 
 FOOT = f"""</div></main>
 <footer class="site"><div class="wrap">
-<p><a href="/">Home</a><a href="/sumbreak-unlimited/">Sumbreak Unlimited</a><a href="/sumbreak-solver/">Sumbreak Solver</a><a href="/how-to-play-sumbreak/">How to Play Sumbreak</a><a href="/queens-unlimited/">Queens Unlimited</a><a href="/queens-solver/">Queens Solver</a><a href="/about/">About</a><a href="/contact/">Contact</a><a href="/privacy-policy/">Privacy</a><a href="/terms/">Terms</a></p>
-<p>© {datetime.date.today().year} {SITE}. Free, unofficial practice puzzles. Not affiliated with, endorsed by or connected to LinkedIn Corporation or Microsoft. "Sumbreak" and "Queens" are used only to describe puzzle styles.</p>
+<p><a href="/">Home</a><a href="/sumbreak-unlimited/">Sumbreak Unlimited</a><a href="/sumbreak-solver/">Sumbreak Solver</a><a href="/how-to-play-sumbreak/">How to Play Sumbreak</a><a href="/queens-unlimited/">Queens Unlimited</a><a href="/queens-solver/">Queens Solver</a><a href="/tango-unlimited/">Tango Unlimited</a><a href="/tango-solver/">Tango Solver</a><a href="/about/">About</a><a href="/contact/">Contact</a><a href="/privacy-policy/">Privacy</a><a href="/terms/">Terms</a></p>
+<p>© {datetime.date.today().year} {SITE}. Free, unofficial practice puzzles. Not affiliated with, endorsed by or connected to LinkedIn Corporation or Microsoft. "Sumbreak", "Queens" and "Tango" are used only to describe puzzle styles.</p>
 </div></footer>
 """
 
@@ -115,7 +115,7 @@ GAME = """
     <a class="btn primary" data-next href="#" style="text-decoration:none;display:inline-block">Next puzzle</a>
     <button type="button" class="btn" data-share>Share result</button>
     <button type="button" class="btn" data-close>Close</button>
-    <p class="more-games">Try another game: <a href="/queens-unlimited/">Queens Unlimited</a> – one queen per row, column and colour.</p>
+    <p class="more-games">Try another game: <a href="/queens-unlimited/">Queens Unlimited</a> – one queen per row, column and colour – or <a href="/tango-unlimited/">Tango Unlimited</a> – balance suns and moons.</p>
   </div>
 </div>
 """
@@ -149,11 +149,51 @@ QGAME = """
     <a class="btn primary" data-next href="#" style="text-decoration:none;display:inline-block">Next puzzle</a>
     <button type="button" class="btn" data-share>Share result</button>
     <button type="button" class="btn" data-close>Close</button>
-    <p class="more-games">Try another game: <a href="/sumbreak-unlimited/">Sumbreak Unlimited</a> – merge numbers until one tile is left.</p>
+    <p class="more-games">Try another game: <a href="/tango-unlimited/">Tango Unlimited</a> – balance suns and moons – or <a href="/sumbreak-unlimited/">Sumbreak Unlimited</a> – merge numbers until one tile is left.</p>
   </div>
 </div>
 """
 QGAME_JS = f'<script src="/assets/queens-core.js?v={V}"></script>\n<script src="/assets/queens.js?v={V}"></script>'
+
+TGAME = """
+<div id="tgame" data-default="{default}">
+  <div class="levels" role="group" aria-label="Choose difficulty">
+    <button type="button" data-level-btn="daily">Daily</button>
+    <button type="button" data-level-btn="easy">Easy</button>
+    <button type="button" data-level-btn="medium">Medium</button>
+    <button type="button" data-level-btn="hard">Hard</button>
+    <button type="button" data-level-btn="expert">Expert</button>
+  </div>
+  <div class="meta"><span data-puzzle-title>Loading…</span><span>⏱ <span data-timer>0:00</span></span></div>
+  <div class="tboard" aria-label="Tango puzzle board"></div>
+  <p class="game-msg" aria-live="polite"></p>
+  <div class="ctrl">
+    <button type="button" data-action="undo">↶ Undo</button>
+    <button type="button" data-action="restart">Restart</button>
+    <button type="button" data-action="hint">💡 Hint</button>
+    <button type="button" data-action="new">New puzzle →</button>
+  </div>
+  <p class="stats" data-stats></p>
+</div>
+<div class="modal" id="win-modal" hidden role="dialog" aria-modal="true" aria-labelledby="win-title">
+  <div class="card">
+    <h2 id="win-title" style="margin-top:0">☀️ Puzzle solved!</h2>
+    <p data-win-text></p>
+    <a class="btn primary" data-next href="#" style="text-decoration:none;display:inline-block">Next puzzle</a>
+    <button type="button" class="btn" data-share>Share result</button>
+    <button type="button" class="btn" data-close>Close</button>
+    <p class="more-games">Try another game: <a href="/queens-unlimited/">Queens Unlimited</a> – one queen per row, column and colour – or <a href="/sumbreak-unlimited/">Sumbreak Unlimited</a> – merge numbers until one tile is left.</p>
+  </div>
+</div>
+"""
+TGAME_JS = f'<script src="/assets/tango-core.js?v={V}"></script>\n<script src="/assets/tango.js?v={V}"></script>'
+
+def game_archive(launch, path):
+    """Links to every past daily board of a game (query-string replays on the same page, not separate pages)."""
+    days = (datetime.date.today() - launch).days + 1
+    return '<ul class="archive">' + "".join(
+        f'<li><a href="{path}?daily={n}">#{n} · {(launch + datetime.timedelta(days=n - 1)).isoformat()}{" (today)" if n == days else ""}</a></li>'
+        for n in range(days, 0, -1)) + '</ul>'
 
 def build():
     if os.path.isdir(OUT):
@@ -422,6 +462,10 @@ def build():
 <li><strong>Keyboard play</strong>: arrow keys to move, Q for a queen, X for a mark, Enter to cycle.</li>
 </ul>
 
+<h2>Queens daily archive</h2>
+<p>Missed a day? Every daily 8×8 Queens board we have published stays playable here. Archive boards count towards your solved total and best time; only today's board extends your streak.</p>
+{game_archive(datetime.date(2026, 11, 24), "/queens-unlimited/")}
+
 <h2>Queens strategy: five techniques that solve most boards</h2>
 <h3>1. Start with the smallest region</h3>
 <p>A region with only two or three squares leaves very few options. If all its squares sit in one row, the queen of that row must be inside that region – so you can cross out every other square of the row.</p>
@@ -497,6 +541,153 @@ def build():
           "url": DOMAIN + "/queens-solver/", "applicationCategory": "UtilitiesApplication", "operatingSystem": "Any",
           "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}}])
 
+    # ---------- Tango Unlimited ----------
+    SUN = '<span class="sym-sun" aria-label="sun"></span>'
+    MOON = '<span class="sym-moon" aria-label="moon"></span>'
+    tfaqs = [
+        ("What is Tango Unlimited?", "Tango Unlimited is a free, unofficial practice version of the Tango-style sun and moon logic puzzle. You fill a grid so every row and column has the same number of suns and moons, never three of a kind in a row, and every = or × sign between two squares is respected. Instead of one board a day you can play as many as you like, plus a free daily board of our own."),
+        ("Is this the official LinkedIn Tango game?", "No. The official Tango game is played on LinkedIn. This site is an independent practice tool that uses the same well-known binary-grid rules (also known as Takuzu or binary puzzles) and creates every board with its own generator. We are not affiliated with LinkedIn."),
+        ("What are the rules of Tango?", "Fill every square with a sun or a moon. Each row and each column must contain the same number of suns and moons (three of each on a 6×6 board). No more than two identical symbols may be next to each other in a row or column. Two squares joined by = must be the same, and two squares joined by × must be opposite."),
+        ("What does the × sign mean in Tango?", "× means the two squares it sits between must hold different symbols: one sun and one moon. It does not tell you which one goes where – you find that out from the rest of the row or column."),
+        ("Can I play Tango more than once a day?", "Yes. The official game gives one board per day, but here every press of New puzzle creates a fresh board, so you can play unlimited Tango puzzles at four difficulty levels."),
+        ("Does every board have exactly one solution?", "Yes. Every board is checked by our logic solver before you see it. It is only used if it can be completed square by square without guessing, which also proves that the answer is unique."),
+        ("What is the difference between the levels?", "Easy, Medium and Hard are 6×6 boards like the daily puzzle on LinkedIn: Easy starts with many symbols filled in, Medium with fewer, and Hard with only the minimum needed. Expert is a bigger 8×8 board with four suns and four moons per line."),
+        ("What does the Hint button do?", "If a symbol you placed is wrong, Hint removes it first. Otherwise it fills one square that can be worked out right now and tells you which row or column proves it, so you learn the reasoning instead of just copying an answer."),
+        ("Do hints or undo affect my stats?", "Undo never affects anything. Hints are shown in the result you share, but your solved count, best times and daily streak still go up."),
+        ("Can I play with a keyboard?", "Yes. Use the arrow keys to move, press S or 1 for a sun, M or 2 for a moon, and Backspace to clear a square. Tapping or clicking cycles sun → moon → empty."),
+        ("How is Tango different from Queens and Sumbreak?", "Tango is about balance: two symbols, equal counts per line and = / × signs between squares. <a href=\"/queens-unlimited/\">Queens</a> is about placement: one queen per row, column and colour region, with no two queens touching. <a href=\"/sumbreak-unlimited/\">Sumbreak</a> is a number puzzle where you merge equal neighbours until one tile is left. All three are logic puzzles you can play free and unlimited here."),
+        ("Is there a Tango solver?", "Yes. If you are stuck, open our Tango solver, enter the suns, moons and signs from your board and it fills the grid one square at a time, explaining which row or column forces each step."),
+    ]
+    tgame_schema = {
+        "@context": "https://schema.org", "@type": ["VideoGame", "WebApplication"],
+        "name": "Tango Unlimited", "url": DOMAIN + "/tango-unlimited/",
+        "description": "Free unlimited Tango-style sun and moon logic puzzles in the browser: balance every row and column, never three in a row, follow the = and × signs. 6×6 and 8×8 boards and a daily puzzle.",
+        "applicationCategory": "GameApplication", "operatingSystem": "Any (web browser)",
+        "genre": ["Puzzle", "Logic puzzle"], "gamePlatform": "Web browser", "playMode": "SinglePlayer",
+        "isAccessibleForFree": True, "inLanguage": "en",
+        "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"},
+        "publisher": {"@type": "Organization", "name": SITE, "url": DOMAIN}
+    }
+    body = f"""
+<h1>Tango Unlimited – Play Free Tango Puzzles With No Daily Limit</h1>
+<p class="lead">Fill the grid with suns and moons: the same number of each in every row and column, never three in a row, and every = and × sign respected. Unlimited boards, a free daily puzzle, hints that explain themselves – no login.</p>
+{TGAME.format(default="easy")}
+<div class="ad-slot"></div>
+
+<h2>How to play Tango</h2>
+<ol>
+<li><strong>Fill every square.</strong> Tap a square once for a sun {SUN}, twice for a moon {MOON}, and a third time to clear it. Squares with a grey background are given and cannot be changed.</li>
+<li><strong>Balance each line.</strong> Every row and every column needs exactly as many suns as moons – three of each on a 6×6 board, four of each on the 8×8 Expert board.</li>
+<li><strong>Never three in a row.</strong> Two identical symbols may sit side by side, but a third one next to them, horizontally or vertically, breaks the rule.</li>
+<li><strong>Follow the signs.</strong> An <strong>=</strong> between two squares means they hold the same symbol; a <strong>×</strong> means they hold opposite symbols.</li>
+<li><strong>Finish the grid.</strong> Anything that breaks a rule is striped in red at once, and the puzzle is solved the moment the last square is filled correctly.</li>
+</ol>
+<p>Stuck on a board – maybe today's official one? Enter it into the <a href="/tango-solver/">Tango solver</a> and reveal the answer one square at a time, with the reason for each step.</p>
+
+<h2>Why practise with unlimited Tango puzzles?</h2>
+<p>The daily Tango board takes most people a minute or two, and fast players finish in well under thirty seconds. They are not guessing faster – they spot a few patterns instantly: a pair that must be closed off on both ends, a gap between two equal symbols, a line that already has its three suns. Seeing those patterns takes repetition, and one board a day is not much of it. Here every board is fresh, every board has exactly one answer that can be found without guessing, and you can choose how much help the board gives you at the start.</p>
+
+<h2>Features</h2>
+<ul>
+<li><strong>Unlimited boards</strong> at four levels – Easy, Medium and Hard 6×6 plus an 8×8 Expert grid – each with a puzzle number you can share.</li>
+<li><strong>No guessing needed</strong>: every board is checked by our logic solver, so the answer is unique and reachable step by step.</li>
+<li><strong>Daily Tango puzzle</strong> – one 6×6 board for everyone each day, with a streak counter.</li>
+<li><strong>Instant rule check</strong>: three-in-a-row, overfull lines and broken signs are highlighted the moment they happen.</li>
+<li><strong>Hint that teaches</strong>: it fixes a mistake if you have one, otherwise it fills one forced square and names the row or column that proves it.</li>
+<li><strong>Undo, Restart, timer, best times and a Share button</strong> to post your time to friends or colleagues.</li>
+<li><strong>Keyboard play</strong>: arrows to move, S or 1 for a sun, M or 2 for a moon, Backspace to clear.</li>
+</ul>
+
+<h2>Tango daily archive</h2>
+<p>Every daily Tango board we have published stays here, so you can catch up on days you missed. Archive boards count towards your stats; only today's board extends your streak.</p>
+{game_archive(datetime.date(2026, 11, 25), "/tango-unlimited/")}
+
+<h2>Tango strategy: six patterns that solve most boards</h2>
+<h3>1. Close off every pair</h3>
+<p>Whenever two identical symbols sit side by side, the squares at both ends of the pair must be the opposite symbol. Two suns together? Put a moon on each side. This is the single most common move in the game.</p>
+<h3>2. Fill the gap</h3>
+<p>If two identical symbols have exactly one empty square between them – sun, gap, sun – the gap must be the opposite symbol, otherwise you would get three suns in a row.</p>
+<h3>3. Complete a full half</h3>
+<p>On a 6×6 board, once a row has three suns, every remaining square in that row is a moon (and the other way round). Count after every move: this rule often finishes a line in one go.</p>
+<h3>4. Chain the signs</h3>
+<p>Signs pass information along. If A = B and B × C, then A and C are opposite. A run of signs across a row can fix three or four squares as soon as one of them is known.</p>
+<h3>5. Two moons left, three gaps</h3>
+<p>Near the end of a line, look at which arrangements are still possible. If a row needs two more moons and one sun in three empty squares, and the sun cannot go in the middle without creating a triple, the options shrink fast. Checking the few possible arrangements of one line is exactly how our hint finds its next square.</p>
+<h3>6. Switch between rows and columns</h3>
+<p>Every square belongs to one row and one column. When a row stops giving you anything, look at the column of the square you just filled – each new symbol is a new clue in the other direction.</p>
+
+<h2>Common Tango mistakes (and how to avoid them)</h2>
+<ul>
+<li><strong>Reading × as "empty".</strong> The × sign never means "leave blank" – every square gets a symbol. It only says the two squares differ.</li>
+<li><strong>Checking only rows.</strong> A row can look perfect while its columns already hold four suns. After each symbol, glance down its column as well as across its row.</li>
+<li><strong>Forgetting the gap rule.</strong> Most players spot pairs at once but miss sun–gap–sun. Scan for one-square gaps between equal symbols on every pass.</li>
+<li><strong>Guessing on Hard boards.</strong> Every board here can be solved without guessing. If you feel stuck, look for the line with the fewest empty squares and list its possible arrangements – usually only one or two remain.</li>
+<li><strong>Racing the clock too early.</strong> Speed comes from recognising patterns, not from tapping faster. Solve Easy and Medium boards cleanly first, then chase times on the daily.</li>
+</ul>
+
+<h2>Worked example: one row, one sign</h2>
+<p>Imagine a 6×6 row where the first two squares already hold suns, the sixth square holds a moon, and there is an <strong>=</strong> sign between the third and fourth squares. Because of the pair, square 3 must be a moon. The = sign then makes square 4 a moon too. The row now has two suns and three moons, so the last empty square, square 5, must be the third sun – giving sun, sun, moon, moon, sun, moon, with no triple anywhere. A sun, a pair and one sign filled three squares without any guessing – and each of them now gives you a new clue in its column.</p>
+
+<h2>Frequently asked questions</h2>
+{faq_html(tfaqs)}
+<p class="disclaimer">Unlimited Dailies is an independent website. It is not affiliated with, sponsored by or endorsed by LinkedIn Corporation or Microsoft. "Tango" is used only to describe the puzzle style. All boards on this page are generated by our own code, and the sun and moon symbols are our own drawings.</p>
+"""
+    page("/tango-unlimited/", "Tango Unlimited – Free Tango Puzzles, No Daily Limit",
+         "Play Tango unlimited for free: fill the grid with suns and moons, balance every line and follow the = and × signs. 4 levels, a daily puzzle, smart hints.",
+         body, TGAME_JS, [tgame_schema, faq_schema(tfaqs)])
+
+    # ---------- Tango solver ----------
+    tsfaqs = [
+        ("How do I get the answer to today's Tango puzzle?", "Choose the board size (the daily LinkedIn board is 6×6), tap each square that already shows a sun or moon until it matches, and tap the small circles between squares to add the = and × signs. Press Solve: the solver fills one square at a time and tells you which row or column forces it, or shows the full answer at once."),
+        ("How do I enter the = and × signs?", "Between every two neighbouring squares there is a small circle. Tap it once for =, twice for ×, and a third time to remove the sign again."),
+        ("Why does the solver say there is no solution?", "One of the symbols or signs was entered differently from your puzzle. Compare row by row – a single wrong sign is enough to make the board impossible."),
+        ("Why does it say there is more than one answer?", "Real Tango boards have exactly one solution. If the solver finds two, part of the puzzle is missing – usually a sign or a starting symbol that was not entered."),
+        ("Can I just get a hint instead of the whole answer?", "Yes. After Solve, only the first square is shown, together with the reason. Press Show next square for more, one at a time."),
+        ("What sizes does the Tango solver support?", "4×4, 6×6, 8×8 and 10×10 boards – every even size used by Tango, Takuzu and binary puzzles with balanced rows and columns."),
+        ("Is my board sent anywhere?", "No. The solver runs completely in your browser. Nothing you enter is uploaded or stored on our servers."),
+    ]
+    body = f"""
+<h1>Tango Solver – Today's Tango Answer, Square by Square</h1>
+<p class="lead">Stuck on a Tango puzzle? Enter the suns, moons and = / × signs from your board, press Solve, and reveal the answer one square at a time – each with the reason it is forced.</p>
+<form id="tsolver" class="card" autocomplete="off">
+  <label>Board size:
+    <select name="size"><option value="4">4×4</option><option value="6" selected>6×6</option><option value="8">8×8</option><option value="10">10×10</option></select>
+  </label>
+  <div class="tboard" aria-label="Enter your Tango board"></div>
+  <p style="font-size:.9rem;color:var(--muted)">Tap a square for a sun, again for a moon, again to clear. Tap the small circles between squares: once for =, twice for ×.</p>
+  <button class="btn primary" type="submit">Solve</button>
+  <button class="btn" type="button" data-example>Load example</button>
+  <button class="btn" type="button" data-clear>Clear</button>
+</form>
+<div id="tsolver-out" aria-live="polite"></div>
+<div class="ad-slot"></div>
+
+<h2>Stuck on today's Tango? Get the answer in three steps</h2>
+<ol>
+<li><strong>Pick the size.</strong> The daily Tango board on LinkedIn is 6×6, which is selected already. Use 8×8 or 10×10 for bigger binary puzzles.</li>
+<li><strong>Copy the board.</strong> Tap each pre-filled square until it shows the same symbol as your puzzle ({SUN} or {MOON}). Then tap the circle between two squares to add an = or a × sign wherever your puzzle has one.</li>
+<li><strong>Press Solve.</strong> The first forced square turns green on the board with a short explanation. Press <em>Show next square</em> for another nudge, or <em>Show full answer</em> to see everything.</li>
+</ol>
+
+<h2>How the Tango solver works</h2>
+<p>The solver thinks in whole lines, the way experienced players do. For every row and column it lists all the arrangements that are still allowed: the right number of suns and moons, never three in a row, matching every symbol already on the board and every sign inside that line. If one square has the same symbol in all of those arrangements, that symbol is forced – the solver writes it in and remembers which line proved it.</p>
+<p>Every new symbol also narrows the crossing column or row, so the solver keeps going round the board until nothing changes. Proper Tango puzzles are finished this way without a single guess. If a board cannot be completed by logic alone, the solver switches to a careful search, and it tells you if it finds no answer or more than one – the most common sign that something was entered wrongly.</p>
+<p>Because each step names its row or column, the list of steps doubles as a lesson: look at the line it mentions and try to see why the square is forced before you reveal the next one.</p>
+
+<h2>Solve it yourself next time</h2>
+<p>Most boards fall to three habits: put the opposite symbol at both ends of every pair, fill the gap between two equal symbols, and finish any line that already has its full share of one symbol. Practise them on fresh boards in <a href="/tango-unlimited/">Tango Unlimited</a> – every board there is checked to have exactly one solution that can be reached without guessing.</p>
+
+<h2>FAQ</h2>
+{faq_html(tsfaqs)}
+<p class="disclaimer">Unofficial tool. Not affiliated with LinkedIn. The solver runs entirely in your browser; your board is not sent anywhere.</p>
+"""
+    page("/tango-solver/", "Tango Solver – Today's Tango Answer, Step by Step",
+         "Free Tango solver: enter your suns, moons and = / × signs and get the answer one square at a time, with the reason for each step. 4×4 to 10×10 boards.",
+         body, f'<script src="/assets/tango-core.js?v={V}"></script>\n<script src="/assets/tango-solver.js?v={V}"></script>',
+         [faq_schema(tsfaqs), {"@context": "https://schema.org", "@type": "WebApplication", "name": "Tango Solver",
+          "url": DOMAIN + "/tango-solver/", "applicationCategory": "UtilitiesApplication", "operatingSystem": "Any",
+          "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}}])
+
     # ---------- Home ----------
     launch = datetime.date(2026, 11, 21)
     today_n = (datetime.date.today() - launch).days + 1
@@ -517,6 +708,8 @@ def build():
   <a class="card" href="/sumbreak-solver/"><strong>Sumbreak Solver</strong><small>Stuck on today's board? Enter it (wildcards too) and get the answer one hint at a time.</small></a>
   <a class="card" href="/queens-unlimited/"><strong>Queens Unlimited <span class="tag">New</span></strong><small>One queen per row, column and colour. 6×6 to 10×10 boards & a daily puzzle.</small></a>
   <a class="card" href="/queens-solver/"><strong>Queens Solver</strong><small>Paint your board's regions and reveal the answer one queen at a time.</small></a>
+  <a class="card" href="/tango-unlimited/"><strong>Tango Unlimited <span class="tag">New</span></strong><small>Fill the grid with suns and moons: equal counts, never three in a row, follow the = and × signs.</small></a>
+  <a class="card" href="/tango-solver/"><strong>Tango Solver</strong><small>Enter your suns, moons and signs and get the answer square by square, with the reason.</small></a>
   <a class="card" href="/how-to-play-sumbreak/"><strong>How to Play Sumbreak</strong><small>Rules, dead spots and strategy tips.</small></a>
 </div>
 <h2>Today's free puzzle</h2>
@@ -529,7 +722,7 @@ def build():
 <li><strong>Always solvable</strong> puzzles, with hints and undo.</li>
 <li><strong>Fast and private</strong> – everything runs in your browser.</li>
 </ul>
-<p>Right now you can play <a href="/sumbreak-unlimited/">Sumbreak Unlimited</a>, the newest daily number-merge puzzle, and <a href="/queens-unlimited/">Queens Unlimited</a>, the colour-region logic puzzle with one queen per row, column and region – each with its own step-by-step solver. More puzzle styles are on the way.</p>
+<p>Right now you can play <a href="/sumbreak-unlimited/">Sumbreak Unlimited</a>, the newest daily number-merge puzzle, <a href="/queens-unlimited/">Queens Unlimited</a>, the colour-region logic puzzle with one queen per row, column and region, and <a href="/tango-unlimited/">Tango Unlimited</a>, the sun-and-moon balance grid – each with its own step-by-step solver. More puzzle styles are on the way.</p>
 <h2 id="archive">Daily puzzle archive</h2>
 <p>Missed a day? Every daily puzzle we have published stays here. Pick a number to replay it – the ones you have solved on this device are ticked. Only today's puzzle counts towards your streak.</p>
 <ul class="archive" data-archive>{archive_html}</ul>
@@ -548,7 +741,7 @@ def build():
     # ---------- About / Contact / Privacy / Terms ----------
     page("/about/", "About Unlimited Dailies", "About Unlimited Dailies: free unlimited practice versions of popular daily puzzle games.", f"""
 <h1>About Unlimited Dailies</h1>
-<p>Unlimited Dailies is a small independent website that makes free, unlimited practice versions of popular daily puzzle styles. Our games are <a href="/sumbreak-unlimited/">Sumbreak Unlimited</a>, a number-merge logic puzzle with a <a href="/sumbreak-solver/">solver</a> and a <a href="/how-to-play-sumbreak/">strategy guide</a>, and <a href="/queens-unlimited/">Queens Unlimited</a>, a colour-region queen-placement puzzle with its own <a href="/queens-solver/">Queens solver</a>.</p>
+<p>Unlimited Dailies is a small independent website that makes free, unlimited practice versions of popular daily puzzle styles. Our games are <a href="/sumbreak-unlimited/">Sumbreak Unlimited</a>, a number-merge logic puzzle with a <a href="/sumbreak-solver/">solver</a> and a <a href="/how-to-play-sumbreak/">strategy guide</a>, <a href="/queens-unlimited/">Queens Unlimited</a>, a colour-region queen-placement puzzle with its own <a href="/queens-solver/">Queens solver</a>, and <a href="/tango-unlimited/">Tango Unlimited</a>, a sun-and-moon binary grid with a <a href="/tango-solver/">Tango solver</a>.</p>
 <p>All puzzles are created by our own generator, and every board is checked to be solvable. The site is free to use and is supported by advertising.</p>
 <p>We are not affiliated with LinkedIn, Microsoft, The New York Times or any other game publisher. Game names are used only to describe the style of puzzle.</p>
 <p>Questions or ideas for the next game? <a href="/contact/">Contact us</a>.</p>
@@ -577,7 +770,7 @@ def build():
 <h1>Terms of Use</h1>
 <p>Last updated: {TODAY}</p>
 <p>Unlimited Dailies provides free puzzle games and tools "as is", without warranties of any kind. You may use the site for personal, non-commercial entertainment.</p>
-<p>All puzzles are generated by our own code. Game names such as "Sumbreak" and "Queens" are trademarks of their respective owners and are used here only to describe a puzzle style. Unlimited Dailies is not affiliated with or endorsed by those owners.</p>
+<p>All puzzles are generated by our own code. Game names such as "Sumbreak", "Queens" and "Tango" are trademarks of their respective owners and are used here only to describe a puzzle style. Unlimited Dailies is not affiliated with or endorsed by those owners.</p>
 <p>We may change or remove games at any time. Questions: <a href="mailto:{EMAIL}">{EMAIL}</a>.</p>
 """)
 
@@ -590,6 +783,7 @@ def build():
     open(os.path.join(OUT, "robots.txt"), "w").write(f"User-agent: *\nAllow: /\n\nSitemap: {DOMAIN}/sitemap.xml\n")
     urls = [("/", "1.0"), ("/sumbreak-unlimited/", "1.0"), ("/sumbreak-solver/", "0.9"), ("/how-to-play-sumbreak/", "0.8"),
             ("/queens-unlimited/", "1.0"), ("/queens-solver/", "0.9"),
+            ("/tango-unlimited/", "1.0"), ("/tango-solver/", "0.9"),
             ("/about/", "0.3"), ("/contact/", "0.3"), ("/privacy-policy/", "0.2"), ("/terms/", "0.2")]
     sm = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
     sm += "".join(f"  <url><loc>{DOMAIN}{u}</loc><lastmod>{TODAY}</lastmod><priority>{p}</priority></url>\n" for u, p in urls)
