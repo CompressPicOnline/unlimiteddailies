@@ -117,3 +117,24 @@ nav.top a{margin-left:0;white-space:nowrap}
 .sym-sun,.sym-moon{display:inline-block;width:.95em;height:.95em;border-radius:50%;vertical-align:-.12em}
 .sym-sun{background:radial-gradient(circle at 38% 35%,#ffe58a,#f2a516 70%)}
 .sym-moon{box-shadow:inset -.3em -.08em 0 0 #4f68c8;transform:rotate(-18deg)}
+/* zip (numbered path) */
+#zgame{max-width:460px;margin:14px auto 0;text-align:center}
+.zboard{position:relative;isolation:isolate;display:grid;gap:0;border:3px solid #26304a;border-radius:10px;background:#fff;max-width:440px;margin:0 auto;touch-action:none;user-select:none;-webkit-user-select:none;overflow:hidden}
+.zcell{position:relative;aspect-ratio:1;border:0;margin:0;padding:0;border-radius:0;background:#fdfdfb;box-shadow:inset 0 0 0 .5px #cdd2de;cursor:pointer;display:flex;align-items:center;justify-content:center;touch-action:none}
+.zcell.on{background:#e4ecfd}
+.zcell.hl{animation:glow 1s ease-in-out infinite}
+.zcell:focus-visible{outline:3px solid var(--brand);outline-offset:-3px}
+.znum{position:relative;z-index:2;display:flex;align-items:center;justify-content:center;width:62%;height:62%;border-radius:50%;background:#fff;border:3px solid #26304a;color:#26304a;font:800 calc(min(84vw,420px)/var(--zn,6)*.3)/1 system-ui,sans-serif}
+.zcell.on .znum{border-color:#2f6fed;color:#173a8a}
+.zpath{position:absolute;inset:0;width:100%;height:100%;z-index:1;pointer-events:none}
+.zpath polyline{fill:none;stroke:#2f6fed;stroke-opacity:.8;stroke-width:.34;stroke-linecap:round;stroke-linejoin:round}
+.zwall{position:absolute;z-index:3;background:#26304a;border-radius:3px;pointer-events:none}
+.zwall.v{width:6px;transform:translateX(-50%)}
+.zwall.h{height:6px;transform:translateY(-50%)}
+.zedge{position:absolute;z-index:4;transform:translate(-50%,-50%);width:26px;height:26px;border:0;padding:0;border-radius:50%;cursor:pointer;background:radial-gradient(circle,rgba(38,48,74,.35) 0 3px,transparent 4px)}
+.zboard.solved .zpath polyline{stroke:#127a46}
+.zboard.solved .zcell.on{background:#e2f3e8;transition:background .4s}
+#zsolver .zboard{max-width:400px;margin:8px 0}
+.modebar{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0}
+.modebar button{font:inherit;font-weight:700;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:8px;padding:5px 12px;cursor:pointer}
+.modebar button[aria-pressed=true]{background:var(--brand);border-color:var(--brand);color:#fff}

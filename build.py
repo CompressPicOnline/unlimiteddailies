@@ -7,10 +7,10 @@ SITE = "Unlimited Dailies"
 EMAIL = "contact@unlimiteddailies.com"
 TODAY = datetime.date.today().isoformat()
 OUT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "site")
-V = "6"  # bump to bust asset cache
+V = "7"  # bump to bust asset cache
 INDEXNOW_KEY = "3753766b9ea89f1d1682ceed22f858eb"  # IndexNow key file served at /<key>.txt
 
-NAV = [("/sumbreak-unlimited/", "Sumbreak"), ("/queens-unlimited/", "Queens"), ("/tango-unlimited/", "Tango")]
+NAV = [("/sumbreak-unlimited/", "Sumbreak"), ("/queens-unlimited/", "Queens"), ("/tango-unlimited/", "Tango"), ("/zip-unlimited/", "Zip")]
 
 def head(title, desc, path, extra_schema=None, noindex=False):
     url = DOMAIN + path
@@ -61,8 +61,8 @@ def head(title, desc, path, extra_schema=None, noindex=False):
 
 FOOT = f"""</div></main>
 <footer class="site"><div class="wrap">
-<p><a href="/">Home</a><a href="/sumbreak-unlimited/">Sumbreak Unlimited</a><a href="/sumbreak-solver/">Sumbreak Solver</a><a href="/how-to-play-sumbreak/">How to Play Sumbreak</a><a href="/queens-unlimited/">Queens Unlimited</a><a href="/queens-solver/">Queens Solver</a><a href="/tango-unlimited/">Tango Unlimited</a><a href="/tango-solver/">Tango Solver</a><a href="/about/">About</a><a href="/contact/">Contact</a><a href="/privacy-policy/">Privacy</a><a href="/terms/">Terms</a></p>
-<p>© {datetime.date.today().year} {SITE}. Free, unofficial practice puzzles. Not affiliated with, endorsed by or connected to LinkedIn Corporation or Microsoft. "Sumbreak", "Queens" and "Tango" are used only to describe puzzle styles.</p>
+<p><a href="/">Home</a><a href="/sumbreak-unlimited/">Sumbreak Unlimited</a><a href="/sumbreak-solver/">Sumbreak Solver</a><a href="/how-to-play-sumbreak/">How to Play Sumbreak</a><a href="/queens-unlimited/">Queens Unlimited</a><a href="/queens-solver/">Queens Solver</a><a href="/tango-unlimited/">Tango Unlimited</a><a href="/tango-solver/">Tango Solver</a><a href="/zip-unlimited/">Zip Unlimited</a><a href="/zip-solver/">Zip Solver</a><a href="/about/">About</a><a href="/contact/">Contact</a><a href="/privacy-policy/">Privacy</a><a href="/terms/">Terms</a></p>
+<p>© {datetime.date.today().year} {SITE}. Free, unofficial practice puzzles. Not affiliated with, endorsed by or connected to LinkedIn Corporation or Microsoft. "Sumbreak", "Queens", "Tango" and "Zip" are used only to describe puzzle styles.</p>
 </div></footer>
 """
 
@@ -115,7 +115,7 @@ GAME = """
     <a class="btn primary" data-next href="#" style="text-decoration:none;display:inline-block">Next puzzle</a>
     <button type="button" class="btn" data-share>Share result</button>
     <button type="button" class="btn" data-close>Close</button>
-    <p class="more-games">Try another game: <a href="/queens-unlimited/">Queens Unlimited</a> – one queen per row, column and colour – or <a href="/tango-unlimited/">Tango Unlimited</a> – balance suns and moons.</p>
+    <p class="more-games">Try another game: <a href="/zip-unlimited/">Zip Unlimited</a> – one path through every square – <a href="/queens-unlimited/">Queens Unlimited</a> or <a href="/tango-unlimited/">Tango Unlimited</a>.</p>
   </div>
 </div>
 """
@@ -149,7 +149,7 @@ QGAME = """
     <a class="btn primary" data-next href="#" style="text-decoration:none;display:inline-block">Next puzzle</a>
     <button type="button" class="btn" data-share>Share result</button>
     <button type="button" class="btn" data-close>Close</button>
-    <p class="more-games">Try another game: <a href="/tango-unlimited/">Tango Unlimited</a> – balance suns and moons – or <a href="/sumbreak-unlimited/">Sumbreak Unlimited</a> – merge numbers until one tile is left.</p>
+    <p class="more-games">Try another game: <a href="/zip-unlimited/">Zip Unlimited</a> – one path through every square – <a href="/tango-unlimited/">Tango Unlimited</a> or <a href="/sumbreak-unlimited/">Sumbreak Unlimited</a>.</p>
   </div>
 </div>
 """
@@ -182,11 +182,44 @@ TGAME = """
     <a class="btn primary" data-next href="#" style="text-decoration:none;display:inline-block">Next puzzle</a>
     <button type="button" class="btn" data-share>Share result</button>
     <button type="button" class="btn" data-close>Close</button>
-    <p class="more-games">Try another game: <a href="/queens-unlimited/">Queens Unlimited</a> – one queen per row, column and colour – or <a href="/sumbreak-unlimited/">Sumbreak Unlimited</a> – merge numbers until one tile is left.</p>
+    <p class="more-games">Try another game: <a href="/zip-unlimited/">Zip Unlimited</a> – one path through every square – <a href="/queens-unlimited/">Queens Unlimited</a> or <a href="/sumbreak-unlimited/">Sumbreak Unlimited</a>.</p>
   </div>
 </div>
 """
 TGAME_JS = f'<script src="/assets/tango-core.js?v={V}"></script>\n<script src="/assets/tango.js?v={V}"></script>'
+
+ZGAME = """
+<div id="zgame" data-default="{default}">
+  <div class="levels" role="group" aria-label="Choose difficulty">
+    <button type="button" data-level-btn="daily">Daily</button>
+    <button type="button" data-level-btn="easy">Easy</button>
+    <button type="button" data-level-btn="medium">Medium</button>
+    <button type="button" data-level-btn="hard">Hard</button>
+    <button type="button" data-level-btn="expert">Expert</button>
+  </div>
+  <div class="meta"><span data-puzzle-title>Loading…</span><span>⏱ <span data-timer>0:00</span></span></div>
+  <div class="zboard" aria-label="Zip puzzle board"></div>
+  <p class="game-msg" aria-live="polite"></p>
+  <div class="ctrl">
+    <button type="button" data-action="undo">↶ Undo</button>
+    <button type="button" data-action="restart">Restart</button>
+    <button type="button" data-action="hint">💡 Hint</button>
+    <button type="button" data-action="new">New puzzle →</button>
+  </div>
+  <p class="stats" data-stats></p>
+</div>
+<div class="modal" id="win-modal" hidden role="dialog" aria-modal="true" aria-labelledby="win-title">
+  <div class="card">
+    <h2 id="win-title" style="margin-top:0">⚡ Puzzle solved!</h2>
+    <p data-win-text></p>
+    <a class="btn primary" data-next href="#" style="text-decoration:none;display:inline-block">Next puzzle</a>
+    <button type="button" class="btn" data-share>Share result</button>
+    <button type="button" class="btn" data-close>Close</button>
+    <p class="more-games">Try another game: <a href="/tango-unlimited/">Tango Unlimited</a> – balance suns and moons – <a href="/queens-unlimited/">Queens Unlimited</a> or <a href="/sumbreak-unlimited/">Sumbreak Unlimited</a>.</p>
+  </div>
+</div>
+"""
+ZGAME_JS = f'<script src="/assets/zip-core.js?v={V}"></script>\n<script src="/assets/zip.js?v={V}"></script>'
 
 def game_archive(launch, path):
     """Links to every past daily board of a game (query-string replays on the same page, not separate pages)."""
@@ -688,6 +721,148 @@ def build():
           "url": DOMAIN + "/tango-solver/", "applicationCategory": "UtilitiesApplication", "operatingSystem": "Any",
           "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}}])
 
+    # ---------- Zip unlimited ----------
+    zfaqs = [
+        ("What is Zip Unlimited?", "Zip Unlimited is a free practice version of the Zip path puzzle. Draw one line that starts on 1, passes every numbered square in order and fills the whole grid. Every board is made by our own generator, so you can play as many as you like instead of waiting for tomorrow's puzzle."),
+        ("Is this the official LinkedIn Zip game?", "No. Unlimited Dailies is an independent site and is not connected to LinkedIn. We only use the general rules of the puzzle style; every board here is generated by our own code and looks different from the official game."),
+        ("Does every Zip board have exactly one answer?", "Yes. Before a board is shown, our solver searches for a second path. If one exists, the generator adds a number or a wall and checks again, so every board has exactly one solution."),
+        ("Do I have to fill every square?", "Yes. The path must cover every square of the grid exactly once and finish on the highest number. Reaching the last number early is not allowed, which is why the game stops you if you try."),
+        ("What are the thick lines between some squares?", "They are walls. Your path cannot cross a wall, so treat it like the edge of the board. Walls appear on Hard, Expert and Daily boards and often force the path into a single direction."),
+        ("How do I go back if I took a wrong turn?", "Drag back over your own line to erase it square by square, tap any square of your path to continue from there, or press Undo to remove your last stroke. Restart clears the board."),
+        ("What does the Hint button do?", "If your path has gone the wrong way, Hint cuts it back to the last correct square. If everything is right so far, it draws the next few squares of the answer, up to the next number, and highlights where it stopped."),
+        ("Can I play Zip with a keyboard?", "Yes. Click the board and press any arrow key to start on 1, then use the arrow keys to extend the path. Moving back onto the previous square erases it, and Backspace removes the last square."),
+        ("When does the daily Zip change?", "The daily board changes at midnight UTC and is the same for everyone that day. Solving it on the day adds to your streak, and older dailies stay playable in the archive below."),
+        ("Is there a Zip solver?", "Yes. If you are stuck on any Zip board, open our Zip solver, tap in the numbers and walls from your board and reveal the path five squares at a time, or all at once."),
+    ]
+    zgame_schema = {
+        "@context": "https://schema.org", "@type": ["VideoGame", "WebApplication"],
+        "name": "Zip Unlimited", "url": DOMAIN + "/zip-unlimited/",
+        "description": "Free unlimited Zip-style path puzzles in the browser: draw one line from 1 through every numbered square in order that fills the whole grid. 5×5 to 8×8 boards, walls, hints and a daily puzzle.",
+        "applicationCategory": "GameApplication", "operatingSystem": "Any (web browser)",
+        "genre": ["Puzzle", "Logic puzzle"], "gamePlatform": "Web browser", "playMode": "SinglePlayer",
+        "isAccessibleForFree": True, "inLanguage": "en",
+        "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"},
+        "publisher": {"@type": "Organization", "name": SITE, "url": DOMAIN}
+    }
+    body = f"""
+<h1>Zip Unlimited – Play Free Zip Path Puzzles With No Daily Limit</h1>
+<p class="lead">Draw one line from 1 to the last number, passing every number in order and filling every square of the grid. Unlimited boards from 5×5 to 8×8, walls, a free daily puzzle and hints – no login, no download.</p>
+{ZGAME.format(default="easy")}
+<div class="ad-slot"></div>
+
+<h2>How to play Zip</h2>
+<ol>
+<li><strong>Start on 1.</strong> Press the square with the number 1 and drag your finger or mouse to draw the path. You can also tap neighbouring squares one at a time.</li>
+<li><strong>Visit the numbers in order.</strong> Your line must reach 2 before 3, 3 before 4 and so on. The game will not let you enter a number out of turn.</li>
+<li><strong>Fill every square.</strong> The path has to pass through every square on the board exactly once. It moves only up, down, left or right – never diagonally – and it can never cross itself.</li>
+<li><strong>Respect the walls.</strong> A thick bar between two squares is a wall; your path must go around it.</li>
+<li><strong>Finish on the highest number.</strong> When the line covers the whole grid and ends on the last number, the puzzle is solved.</li>
+</ol>
+<p>Made a wrong turn? Drag back along your line to erase it, or tap any square of the path to continue from there. Stuck on a board from somewhere else – perhaps today's official one? Enter it into the <a href="/zip-solver/">Zip solver</a> and reveal the path a few squares at a time.</p>
+
+<h2>Why practise with unlimited Zip puzzles?</h2>
+<p>A daily Zip board is over in a minute, and the fastest players finish in a few seconds. What separates them from everyone else is not quick fingers but a handful of patterns they see instantly: corners that can only be entered one way, narrow corridors that must be walked straight through, and walls that split the board into rooms. Those patterns only become automatic with practice. Here you get a fresh board every time, four sizes to grow into, and a hint that shows you where your path went wrong instead of just finishing the puzzle for you.</p>
+
+<h2>Features</h2>
+<ul>
+<li><strong>Unlimited boards</strong> at four levels: Easy 5×5, Medium 6×6, Hard 7×7 with walls and Expert 8×8 with walls. Every board has a number you can share or replay.</li>
+<li><strong>Exactly one answer</strong>: each board is checked by our solver before you see it.</li>
+<li><strong>Daily Zip puzzle</strong> – one 6×6 board for everyone each day, with a streak counter and an archive of earlier dailies.</li>
+<li><strong>Smooth drawing</strong> on phones and desktops: drag to draw, drag back to erase, tap any square of your line to continue from it.</li>
+<li><strong>Helpful hints</strong> that cut a wrong path back to the last correct square or draw the next stretch up to the next number.</li>
+<li><strong>Undo, Restart, timer, best times and a Share button</strong> to compare results with friends or colleagues.</li>
+<li><strong>Keyboard play</strong> with the arrow keys and Backspace.</li>
+</ul>
+
+<h2>Zip daily archive</h2>
+<p>Every daily Zip board we have published stays here, so you can catch up on days you missed. Archive boards count towards your stats; only today's board extends your streak.</p>
+{game_archive(datetime.date(2026, 11, 26), "/zip-unlimited/")}
+
+<h2>Zip strategy: patterns that solve most boards</h2>
+<h3>1. Corners have only two doors</h3>
+<p>A corner square touches just two neighbours. Unless the corner holds 1 or the final number, the path must come in through one of them and leave through the other – so both of those links are fixed before you draw anything. Mark the corners first and the edges of the board often fall into place.</p>
+<h3>2. Squares with two exits are fixed</h3>
+<p>The same idea works anywhere: if a square has only two open neighbours left – because of walls, the edge of the board or your own line – the path must use both. Walls create these squares all the time, which is why boards with walls are often easier to read than they look.</p>
+<h3>3. Never leave a dead end behind</h3>
+<p>Before each move, check the squares next to your line. If one of them now has only a single open neighbour, the path can enter it but never leave, so it must be the very last square. If it is not the final number, you have taken a wrong turn – back up straight away.</p>
+<h3>4. Do not cut the board in two</h3>
+<p>If your line separates a group of empty squares from the rest of the board, you can never come back to finish them. Sweeping along the edge, or filling one region completely before leaving it, keeps every empty square reachable.</p>
+<h3>5. Count the distance to the next number</h3>
+<p>The squares between two numbers must be filled before you reach the second one. If 4 and 5 are right next to each other but a whole corner of the board is still empty, that corner has to be visited later – on the way from 5 to 6 or further on.</p>
+<h3>6. Think in chessboard colours</h3>
+<p>Colour the grid like a chessboard. Every step changes colour, so on a board with an odd number of squares the path must start and end on the more common colour. This quick check tells you which of two routes can possibly be right without drawing either of them.</p>
+
+<h2>Common Zip mistakes</h2>
+<ul>
+<li><strong>Racing to the next number.</strong> The shortest way from 3 to 4 is rarely the right one; the empty squares around it still need to be filled later.</li>
+<li><strong>Ignoring walls.</strong> A wall is not just an obstacle – it reduces the exits of the squares beside it, and those squares are often forced.</li>
+<li><strong>Leaving single gaps.</strong> One empty square trapped between your line and the edge is almost always a dead end.</li>
+<li><strong>Starting over too quickly.</strong> Drag back to the point where things went wrong instead of restarting; most of your path is usually right.</li>
+</ul>
+
+<h2>Worked example: a corner that solves itself</h2>
+<p>Picture the top-left corner of a board where 1 sits two squares to the right of the corner and no number is in the corner itself. The corner square can only be reached from the square below it or the square to its right, so the path must use both links: below-corner → corner → right-of-corner. That right-hand neighbour sits directly next to 1. Unless the path is to end in this corner, the line from 1 has to start by turning left into it, run through the corner and continue straight down the left edge. Three squares are fixed before you draw a single line – and the next corner usually works the same way.</p>
+
+<h2>Frequently asked questions</h2>
+{faq_html(zfaqs)}
+<p class="disclaimer">Unlimited Dailies is an independent website. It is not affiliated with, sponsored by or endorsed by LinkedIn Corporation or Microsoft. "Zip" is used only to describe the puzzle style. All boards on this page are generated by our own code.</p>
+"""
+    page("/zip-unlimited/", "Zip Unlimited – Free Zip Path Puzzles, No Daily Limit",
+         "Play Zip unlimited free: draw one path from 1 through every number in order and fill the whole grid. 5×5 to 8×8 boards, walls, hints and a daily puzzle.",
+         body, ZGAME_JS, [zgame_schema, faq_schema(zfaqs)])
+
+    # ---------- Zip solver ----------
+    zsfaqs = [
+        ("How do I get the answer to today's Zip puzzle?", "Pick the board size, tap the squares in the order of their numbers (the first tap places 1, the next 2 and so on), switch to Walls and tap between squares to add any walls, then press Solve. The path appears five squares at a time, or all at once if you choose."),
+        ("I placed a number in the wrong square. How do I fix it?", "Tap the number again to remove it. The next tap on an empty square places the lowest missing number, so you can put it back in the right place."),
+        ("How do I add walls?", "Press the Walls button. Small dots appear between the squares; tap a dot to add a wall there and tap it again to remove it. Press Numbers to go back to placing numbers."),
+        ("Why does the solver say there is no path?", "A number is in the wrong square, a number is missing, or a wall was added where the puzzle has none. Compare your board with the original square by square."),
+        ("Why does it say there is more than one answer?", "Proper Zip boards have exactly one path. If the solver finds two, something from the puzzle – usually a wall or a number – has not been entered yet. It still shows one valid path."),
+        ("What sizes does the Zip solver support?", "Any square board from 4×4 to 9×9. Most daily Zip boards are 6×6, 7×7 or 8×8."),
+        ("Is my board sent anywhere?", "No. The solver runs entirely in your browser, in the background so the page never freezes. Nothing you enter is uploaded or stored."),
+    ]
+    body = f"""
+<h1>Zip Solver – Today's Zip Answer, a Few Squares at a Time</h1>
+<p class="lead">Stuck on a Zip puzzle? Tap in the numbers and walls from your board, press Solve and reveal the path five squares at a time – or the whole answer at once.</p>
+<form id="zsolver" class="card" autocomplete="off">
+  <label>Board size:
+    <select name="size"><option value="4">4×4</option><option value="5">5×5</option><option value="6" selected>6×6</option><option value="7">7×7</option><option value="8">8×8</option><option value="9">9×9</option></select>
+  </label>
+  <div class="modebar" role="group" aria-label="What to enter"><button type="button" data-mode="num" aria-pressed="true">Numbers</button><button type="button" data-mode="wall" aria-pressed="false">Walls</button></div>
+  <div class="zboard" aria-label="Enter your Zip board"></div>
+  <p style="font-size:.9rem;color:var(--muted)">Numbers: tap squares in order – 1, then 2, then 3… Tap a number again to remove it. Walls: tap the dot between two squares.</p>
+  <button class="btn primary" type="submit">Solve</button>
+  <button class="btn" type="button" data-example>Load example</button>
+  <button class="btn" type="button" data-clear>Clear</button>
+</form>
+<div id="zsolver-out" aria-live="polite"></div>
+<div class="ad-slot"></div>
+
+<h2>Stuck on today's Zip? Get the answer in three steps</h2>
+<ol>
+<li><strong>Pick the size.</strong> Count the squares in one row of your puzzle and choose the matching size – 6×6 is selected already.</li>
+<li><strong>Copy the board.</strong> Tap the square with 1, then the square with 2, and so on until every number is in place. If your board has walls, press <em>Walls</em> and tap the dot between the two squares each wall separates.</li>
+<li><strong>Press Solve.</strong> The first five squares of the path are drawn on your board. Press <em>Show next 5 squares</em> for another nudge, or <em>Show full answer</em> to see the complete path.</li>
+</ol>
+
+<h2>How the Zip solver works</h2>
+<p>The solver walks the path forward from 1, one square at a time, and tries each possible direction. After every step it checks three things that let it throw away hopeless routes early. First, every empty square still needs two open neighbours – one to come in and one to leave – except the final square, which needs only one. Second, the empty squares must all still be connected to the head of the path; if a group gets cut off, the route is abandoned. Third, it uses the chessboard rule: each step changes colour, so the number of empty light and dark squares has to match what the remaining path can cover.</p>
+<p>With those checks, a typical 6×6 to 8×8 board is solved in a fraction of a second. The solver then keeps searching for a second answer. If it finds one, it tells you, because a real Zip board has exactly one path and a second answer means part of the board is missing.</p>
+
+<h2>Solve it yourself next time</h2>
+<p>Three habits crack most Zip boards: fix the corners first, because a corner square can only be entered and left one way; never leave an empty square with just one open neighbour; and never cut a group of empty squares off from the rest of the board. Practise them on fresh boards in <a href="/zip-unlimited/">Zip Unlimited</a> – every board there has exactly one solution, and the hint shows you exactly where a path went wrong.</p>
+
+<h2>FAQ</h2>
+{faq_html(zsfaqs)}
+<p class="disclaimer">Unofficial tool. Not affiliated with LinkedIn. The solver runs entirely in your browser; your board is not sent anywhere.</p>
+"""
+    page("/zip-solver/", "Zip Solver – Today's Zip Answer, Step by Step",
+         "Free Zip solver: tap in the numbers and walls from your board and reveal the path five squares at a time or all at once. Works for any 4×4 to 9×9 board.",
+         body, f'<script src="/assets/zip-core.js?v={V}"></script>\n<script src="/assets/zip-solver.js?v={V}"></script>',
+         [faq_schema(zsfaqs), {"@context": "https://schema.org", "@type": "WebApplication", "name": "Zip Solver",
+          "url": DOMAIN + "/zip-solver/", "applicationCategory": "UtilitiesApplication", "operatingSystem": "Any",
+          "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}}])
+
     # ---------- Home ----------
     launch = datetime.date(2026, 11, 21)
     today_n = (datetime.date.today() - launch).days + 1
@@ -710,6 +885,8 @@ def build():
   <a class="card" href="/queens-solver/"><strong>Queens Solver</strong><small>Paint your board's regions and reveal the answer one queen at a time.</small></a>
   <a class="card" href="/tango-unlimited/"><strong>Tango Unlimited <span class="tag">New</span></strong><small>Fill the grid with suns and moons: equal counts, never three in a row, follow the = and × signs.</small></a>
   <a class="card" href="/tango-solver/"><strong>Tango Solver</strong><small>Enter your suns, moons and signs and get the answer square by square, with the reason.</small></a>
+  <a class="card" href="/zip-unlimited/"><strong>Zip Unlimited <span class="tag">New</span></strong><small>Draw one path from 1 through every number in order and fill every square. 5×5 to 8×8 & a daily.</small></a>
+  <a class="card" href="/zip-solver/"><strong>Zip Solver</strong><small>Tap in your numbers and walls and reveal the path five squares at a time.</small></a>
   <a class="card" href="/how-to-play-sumbreak/"><strong>How to Play Sumbreak</strong><small>Rules, dead spots and strategy tips.</small></a>
 </div>
 <h2>Today's free puzzle</h2>
@@ -722,7 +899,7 @@ def build():
 <li><strong>Always solvable</strong> puzzles, with hints and undo.</li>
 <li><strong>Fast and private</strong> – everything runs in your browser.</li>
 </ul>
-<p>Right now you can play <a href="/sumbreak-unlimited/">Sumbreak Unlimited</a>, the newest daily number-merge puzzle, <a href="/queens-unlimited/">Queens Unlimited</a>, the colour-region logic puzzle with one queen per row, column and region, and <a href="/tango-unlimited/">Tango Unlimited</a>, the sun-and-moon balance grid – each with its own step-by-step solver. More puzzle styles are on the way.</p>
+<p>Right now you can play <a href="/sumbreak-unlimited/">Sumbreak Unlimited</a>, the newest daily number-merge puzzle, <a href="/queens-unlimited/">Queens Unlimited</a>, the colour-region logic puzzle with one queen per row, column and region, <a href="/tango-unlimited/">Tango Unlimited</a>, the sun-and-moon balance grid, and <a href="/zip-unlimited/">Zip Unlimited</a>, the one-line path puzzle – each with its own step-by-step solver. More puzzle styles are on the way.</p>
 <h2 id="archive">Daily puzzle archive</h2>
 <p>Missed a day? Every daily puzzle we have published stays here. Pick a number to replay it – the ones you have solved on this device are ticked. Only today's puzzle counts towards your streak.</p>
 <ul class="archive" data-archive>{archive_html}</ul>
@@ -741,7 +918,7 @@ def build():
     # ---------- About / Contact / Privacy / Terms ----------
     page("/about/", "About Unlimited Dailies", "About Unlimited Dailies: free unlimited practice versions of popular daily puzzle games.", f"""
 <h1>About Unlimited Dailies</h1>
-<p>Unlimited Dailies is a small independent website that makes free, unlimited practice versions of popular daily puzzle styles. Our games are <a href="/sumbreak-unlimited/">Sumbreak Unlimited</a>, a number-merge logic puzzle with a <a href="/sumbreak-solver/">solver</a> and a <a href="/how-to-play-sumbreak/">strategy guide</a>, <a href="/queens-unlimited/">Queens Unlimited</a>, a colour-region queen-placement puzzle with its own <a href="/queens-solver/">Queens solver</a>, and <a href="/tango-unlimited/">Tango Unlimited</a>, a sun-and-moon binary grid with a <a href="/tango-solver/">Tango solver</a>.</p>
+<p>Unlimited Dailies is a small independent website that makes free, unlimited practice versions of popular daily puzzle styles. Our games are <a href="/sumbreak-unlimited/">Sumbreak Unlimited</a>, a number-merge logic puzzle with a <a href="/sumbreak-solver/">solver</a> and a <a href="/how-to-play-sumbreak/">strategy guide</a>, <a href="/queens-unlimited/">Queens Unlimited</a>, a colour-region queen-placement puzzle with its own <a href="/queens-solver/">Queens solver</a>, <a href="/tango-unlimited/">Tango Unlimited</a>, a sun-and-moon binary grid with a <a href="/tango-solver/">Tango solver</a>, and <a href="/zip-unlimited/">Zip Unlimited</a>, a numbered path puzzle with a <a href="/zip-solver/">Zip solver</a>.</p>
 <p>All puzzles are created by our own generator, and every board is checked to be solvable. The site is free to use and is supported by advertising.</p>
 <p>We are not affiliated with LinkedIn, Microsoft, The New York Times or any other game publisher. Game names are used only to describe the style of puzzle.</p>
 <p>Questions or ideas for the next game? <a href="/contact/">Contact us</a>.</p>
@@ -770,7 +947,7 @@ def build():
 <h1>Terms of Use</h1>
 <p>Last updated: {TODAY}</p>
 <p>Unlimited Dailies provides free puzzle games and tools "as is", without warranties of any kind. You may use the site for personal, non-commercial entertainment.</p>
-<p>All puzzles are generated by our own code. Game names such as "Sumbreak", "Queens" and "Tango" are trademarks of their respective owners and are used here only to describe a puzzle style. Unlimited Dailies is not affiliated with or endorsed by those owners.</p>
+<p>All puzzles are generated by our own code. Game names such as "Sumbreak", "Queens", "Tango" and "Zip" are trademarks of their respective owners and are used here only to describe a puzzle style. Unlimited Dailies is not affiliated with or endorsed by those owners.</p>
 <p>We may change or remove games at any time. Questions: <a href="mailto:{EMAIL}">{EMAIL}</a>.</p>
 """)
 
@@ -784,6 +961,7 @@ def build():
     urls = [("/", "1.0"), ("/sumbreak-unlimited/", "1.0"), ("/sumbreak-solver/", "0.9"), ("/how-to-play-sumbreak/", "0.8"),
             ("/queens-unlimited/", "1.0"), ("/queens-solver/", "0.9"),
             ("/tango-unlimited/", "1.0"), ("/tango-solver/", "0.9"),
+            ("/zip-unlimited/", "1.0"), ("/zip-solver/", "0.9"),
             ("/about/", "0.3"), ("/contact/", "0.3"), ("/privacy-policy/", "0.2"), ("/terms/", "0.2")]
     sm = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
     sm += "".join(f"  <url><loc>{DOMAIN}{u}</loc><lastmod>{TODAY}</lastmod><priority>{p}</priority></url>\n" for u, p in urls)

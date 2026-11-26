@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<head>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  window.dataLayer.push({'gtm.start': new Date().getTime(), event: 'gtm.js'});
+  function gtag(){dataLayer.push(arguments);}
+</script>
+<script async src="https://www.googletagmanager.com/gtm.js?id=GTM-52WF64FM"></script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Zip Solver – Today's Zip Answer, Step by Step</title>
+<meta name="description" content="Free Zip solver: tap in the numbers and walls from your board and reveal the path five squares at a time or all at once. Works for any 4×4 to 9×9 board.">
+<link rel="canonical" href="https://unlimiteddailies.com/zip-solver/">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Unlimited Dailies">
+<meta property="og:title" content="Zip Solver – Today's Zip Answer, Step by Step">
+<meta property="og:description" content="Free Zip solver: tap in the numbers and walls from your board and reveal the path five squares at a time or all at once. Works for any 4×4 to 9×9 board.">
+<meta property="og:url" content="https://unlimiteddailies.com/zip-solver/">
+<meta property="og:image" content="https://unlimiteddailies.com/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#2f6fed">
+<meta name="monetag" content="c643b64e9fb0e1e28f59dc44caa0c5cc">
+<meta name="msvalidate.01" content="DCD9377743936F2F6B4B5754198E0DD4">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/assets/style.css?v=7">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Unlimited Dailies", "item": "https://unlimiteddailies.com/"}, {"@type": "ListItem", "position": 2, "name": "Zip Solver", "item": "https://unlimiteddailies.com/zip-solver/"}]}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "How do I get the answer to today's Zip puzzle?", "acceptedAnswer": {"@type": "Answer", "text": "Pick the board size, tap the squares in the order of their numbers (the first tap places 1, the next 2 and so on), switch to Walls and tap between squares to add any walls, then press Solve. The path appears five squares at a time, or all at once if you choose."}}, {"@type": "Question", "name": "I placed a number in the wrong square. How do I fix it?", "acceptedAnswer": {"@type": "Answer", "text": "Tap the number again to remove it. The next tap on an empty square places the lowest missing number, so you can put it back in the right place."}}, {"@type": "Question", "name": "How do I add walls?", "acceptedAnswer": {"@type": "Answer", "text": "Press the Walls button. Small dots appear between the squares; tap a dot to add a wall there and tap it again to remove it. Press Numbers to go back to placing numbers."}}, {"@type": "Question", "name": "Why does the solver say there is no path?", "acceptedAnswer": {"@type": "Answer", "text": "A number is in the wrong square, a number is missing, or a wall was added where the puzzle has none. Compare your board with the original square by square."}}, {"@type": "Question", "name": "Why does it say there is more than one answer?", "acceptedAnswer": {"@type": "Answer", "text": "Proper Zip boards have exactly one path. If the solver finds two, something from the puzzle – usually a wall or a number – has not been entered yet. It still shows one valid path."}}, {"@type": "Question", "name": "What sizes does the Zip solver support?", "acceptedAnswer": {"@type": "Answer", "text": "Any square board from 4×4 to 9×9. Most daily Zip boards are 6×6, 7×7 or 8×8."}}, {"@type": "Question", "name": "Is my board sent anywhere?", "acceptedAnswer": {"@type": "Answer", "text": "No. The solver runs entirely in your browser, in the background so the page never freezes. Nothing you enter is uploaded or stored."}}]}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebApplication", "name": "Zip Solver", "url": "https://unlimiteddailies.com/zip-solver/", "applicationCategory": "UtilitiesApplication", "operatingSystem": "Any", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}}</script>
+</head>
+<body>
+<header class="site"><div class="wrap">
+<a class="logo" href="/"><span>∞</span> Unlimited Dailies</a>
+<nav class="top"><a href="/sumbreak-unlimited/">Sumbreak</a><a href="/queens-unlimited/">Queens</a><a href="/tango-unlimited/">Tango</a><a href="/zip-unlimited/">Zip</a></nav>
+</div></header>
+<main><div class="wrap">
+
+<h1>Zip Solver – Today's Zip Answer, a Few Squares at a Time</h1>
+<p class="lead">Stuck on a Zip puzzle? Tap in the numbers and walls from your board, press Solve and reveal the path five squares at a time – or the whole answer at once.</p>
+<form id="zsolver" class="card" autocomplete="off">
+  <label>Board size:
+    <select name="size"><option value="4">4×4</option><option value="5">5×5</option><option value="6" selected>6×6</option><option value="7">7×7</option><option value="8">8×8</option><option value="9">9×9</option></select>
+  </label>
+  <div class="modebar" role="group" aria-label="What to enter"><button type="button" data-mode="num" aria-pressed="true">Numbers</button><button type="button" data-mode="wall" aria-pressed="false">Walls</button></div>
+  <div class="zboard" aria-label="Enter your Zip board"></div>
+  <p style="font-size:.9rem;color:var(--muted)">Numbers: tap squares in order – 1, then 2, then 3… Tap a number again to remove it. Walls: tap the dot between two squares.</p>
+  <button class="btn primary" type="submit">Solve</button>
+  <button class="btn" type="button" data-example>Load example</button>
+  <button class="btn" type="button" data-clear>Clear</button>
+</form>
+<div id="zsolver-out" aria-live="polite"></div>
+<div class="ad-slot"></div>
+
+<h2>Stuck on today's Zip? Get the answer in three steps</h2>
+<ol>
+<li><strong>Pick the size.</strong> Count the squares in one row of your puzzle and choose the matching size – 6×6 is selected already.</li>
+<li><strong>Copy the board.</strong> Tap the square with 1, then the square with 2, and so on until every number is in place. If your board has walls, press <em>Walls</em> and tap the dot between the two squares each wall separates.</li>
+<li><strong>Press Solve.</strong> The first five squares of the path are drawn on your board. Press <em>Show next 5 squares</em> for another nudge, or <em>Show full answer</em> to see the complete path.</li>
+</ol>
+
+<h2>How the Zip solver works</h2>
+<p>The solver walks the path forward from 1, one square at a time, and tries each possible direction. After every step it checks three things that let it throw away hopeless routes early. First, every empty square still needs two open neighbours – one to come in and one to leave – except the final square, which needs only one. Second, the empty squares must all still be connected to the head of the path; if a group gets cut off, the route is abandoned. Third, it uses the chessboard rule: each step changes colour, so the number of empty light and dark squares has to match what the remaining path can cover.</p>
+<p>With those checks, a typical 6×6 to 8×8 board is solved in a fraction of a second. The solver then keeps searching for a second answer. If it finds one, it tells you, because a real Zip board has exactly one path and a second answer means part of the board is missing.</p>
+
+<h2>Solve it yourself next time</h2>
+<p>Three habits crack most Zip boards: fix the corners first, because a corner square can only be entered and left one way; never leave an empty square with just one open neighbour; and never cut a group of empty squares off from the rest of the board. Practise them on fresh boards in <a href="/zip-unlimited/">Zip Unlimited</a> – every board there has exactly one solution, and the hint shows you exactly where a path went wrong.</p>
+
+<h2>FAQ</h2>
+<div class="faq"><details><summary>How do I get the answer to today's Zip puzzle?</summary><p>Pick the board size, tap the squares in the order of their numbers (the first tap places 1, the next 2 and so on), switch to Walls and tap between squares to add any walls, then press Solve. The path appears five squares at a time, or all at once if you choose.</p></details><details><summary>I placed a number in the wrong square. How do I fix it?</summary><p>Tap the number again to remove it. The next tap on an empty square places the lowest missing number, so you can put it back in the right place.</p></details><details><summary>How do I add walls?</summary><p>Press the Walls button. Small dots appear between the squares; tap a dot to add a wall there and tap it again to remove it. Press Numbers to go back to placing numbers.</p></details><details><summary>Why does the solver say there is no path?</summary><p>A number is in the wrong square, a number is missing, or a wall was added where the puzzle has none. Compare your board with the original square by square.</p></details><details><summary>Why does it say there is more than one answer?</summary><p>Proper Zip boards have exactly one path. If the solver finds two, something from the puzzle – usually a wall or a number – has not been entered yet. It still shows one valid path.</p></details><details><summary>What sizes does the Zip solver support?</summary><p>Any square board from 4×4 to 9×9. Most daily Zip boards are 6×6, 7×7 or 8×8.</p></details><details><summary>Is my board sent anywhere?</summary><p>No. The solver runs entirely in your browser, in the background so the page never freezes. Nothing you enter is uploaded or stored.</p></details></div>
+<p class="disclaimer">Unofficial tool. Not affiliated with LinkedIn. The solver runs entirely in your browser; your board is not sent anywhere.</p>
+</div></main>
+<footer class="site"><div class="wrap">
+<p><a href="/">Home</a><a href="/sumbreak-unlimited/">Sumbreak Unlimited</a><a href="/sumbreak-solver/">Sumbreak Solver</a><a href="/how-to-play-sumbreak/">How to Play Sumbreak</a><a href="/queens-unlimited/">Queens Unlimited</a><a href="/queens-solver/">Queens Solver</a><a href="/tango-unlimited/">Tango Unlimited</a><a href="/tango-solver/">Tango Solver</a><a href="/zip-unlimited/">Zip Unlimited</a><a href="/zip-solver/">Zip Solver</a><a href="/about/">About</a><a href="/contact/">Contact</a><a href="/privacy-policy/">Privacy</a><a href="/terms/">Terms</a></p>
+<p>© 2026 Unlimited Dailies. Free, unofficial practice puzzles. Not affiliated with, endorsed by or connected to LinkedIn Corporation or Microsoft. "Sumbreak", "Queens", "Tango" and "Zip" are used only to describe puzzle styles.</p>
+</div></footer>
+<script src="/assets/zip-core.js?v=7"></script>
+<script src="/assets/zip-solver.js?v=7"></script><script>
+/* Monetag vignette: loaded a few seconds after the page opens so the first view is never blocked.
+   Vignette ads only appear when the visitor follows a link (e.g. "Next puzzle" after a win),
+   never in the middle of a game. */
+(function(){var load=function(){var s=document.createElement('script');s.dataset.zone='12312406';s.src='https://n6wxm.com/vignette.min.js';s.async=true;document.body.appendChild(s);};
+if(document.readyState==='complete')setTimeout(load,4000);else window.addEventListener('load',function(){setTimeout(load,4000);});})();
+</script>
+</body>
+</html>
