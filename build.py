@@ -16,6 +16,7 @@ def head(title, desc, path, extra_schema=None, noindex=False):
     url = DOMAIN + path
     schemas = [{
         "@context": "https://schema.org", "@type": "BreadcrumbList",
+        "name": (title.split(" – ")[0].split(" | ")[0] if path != "/" else SITE) + " breadcrumb",
         "itemListElement": [{"@type": "ListItem", "position": 1, "name": SITE, "item": DOMAIN + "/"}] +
         ([{"@type": "ListItem", "position": 2, "name": title.split(" – ")[0].split(" | ")[0], "item": url}] if path != "/" else [])
     }]
