@@ -51,7 +51,7 @@
 
   form.querySelector('[data-example]').addEventListener('click', function () {
     sizeEl.value = '3x3'; gridEl._d = null; build();
-    var ex = [1, 1, 64, 4, 2, 32, 4, 4, 16];
+    var ex = [2, 2, 4, 8, 16, 4, 8, 16, 4]; // our own example board
     inputs().forEach(function (inp, i) { inp.value = ex[i]; });
   });
   form.querySelector('[data-clear]').addEventListener('click', function () {

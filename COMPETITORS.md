@@ -1,6 +1,32 @@
 # Competitors
 
-Updated: 2026-11-25 (Asia/Karachi). Facts summarised from their public pages; nothing copied.
+Updated: 2026-11-26 (Asia/Karachi). Facts summarised from their public pages; nothing copied.
+
+## 2026-11-26 check (main run)
+
+Search Console (28 days, data to 24 Nov): daily impressions 59 → 32 → 58 → 26 (21–24 Nov), 5 clicks total (0 on 24 Nov), avg pos ~10–13.
+| Keyword | Our pos (GSC) today | last run | Non-official sites above us (WebSearch, not Google) | Likely reasons |
+|---|---|---|---|---|
+| sumbreak unlimited | 9.9 (/sumbreak-unlimited/), 15 (home) | 9.9 | search engine returned no Sumbreak sites at all (unrelated "limit break" pages); known list stands | exact-match domains, older |
+| sumbreak solver / answer | 8.9 page avg (solver, 56 impr, 0 clicks); "sumbreak answer" 14 | 14 | askdavetaylor, beebom, thewordfinder (guides) | big-domain guides; our CTR 0 → title/meta rewritten today |
+| sumbreak game | 22 (home), 30 (unlimited) | 22 | none relevant shown | head term slipping (14 avg for "sumbreak") |
+| sumbreak hints (rotating) | – | – | no Sumbreak results at all | – |
+| queens game unlimited | 19 (first impression) | new | queensultimate.com, wordle.global, playqueensgame.com | older, leaderboards, archives |
+| tango game unlimited | not ranked yet | new | tango-unlimited.com, **8tango.com (new)**, tango-game.pages.dev, pinpointanswer.pages.dev | exact-match domains, 10×10 sizes, journey mode |
+| tango solver | not ranked yet | new | only guides/news (guideflow, mytour) – still no real web solver | our chance |
+| zip unlimited / zip game unlimited (new game) | new today | – | pinpointanswer.pages.dev/linkedin-zip-game-unlimited, playground.aglasem.com/games/zip, ProductHunt "Zip Game Unlimited", app-store apps | thin pages (230–400 words), no hints/solver |
+| linkedin zip solver | new today | – | thewordfinder hints, sportsdunia daily answers, Chrome extension, askdavetaylor | **no web solver where you enter your own board → our Zip solver** |
+
+New sites analysed today:
+- **8tango.com** – "∞ Tango Unlimited — Free Online Tango Game"; ~600 words; FAQ 6 (what is it, free?, unlimited?, rules, affiliated?, binary puzzle?); no JSON-LD; 4×4/6×6/8×8/10×10, journey mode (200+ levels, stars), free-play with a daily free limit + paid premium, login leaderboard, smart hints, best times, streak, share link, themes, level editor. Lacks: undo (not visible), daily archive, result share grid, solver, FAQ schema.
+- **pinpointanswer.pages.dev/linkedin-zip-game-unlimited** – "LinkedIn Zip Game Unlimited - Play All Levels Free Online"; ~400 words; FAQ 4; no schema; numbered level list with solved filter, timer with pause, click/drag drawing with straight-line tracing, walls. Lacks hints, undo, share, streaks, solver, difficulty levels.
+- **playground.aglasem.com/games/zip** – multi-game portal; ~230 words; FAQ 3; one daily board, leaderboard/XP/gems, drag back to undo. Lacks sizes, walls, hints, timer, archive, share, solver.
+
+Gap list 2026-11-26:
+- Closed today: **Zip game + Zip solver** (nobody above us has a solver; we add hints, undo, share, streak, 4 sizes, walls, daily archive, 10 FAQ + FAQPage schema, ~1,500 words vs 230–400); **straight-line tracing** for fast drags (pinpointanswer had it); **Sumbreak solver worked example** with our own board (3B ii) and CTR title/meta; replaced the old solver example (it reproduced an official-looking board) with our own board.
+- Still open: Tango 10×10 and 4×4 sizes in game (8tango), Queens 5×5/11×11, "beat the clock"/journey modes, weekday difficulty ramp for our dailies (3B iii).
+- We are better: only site with game + solver for all four games, explained hints, share result, stats/streaks, daily archives, FAQ schema everywhere.
+- Nobody does well: a real "enter your board" solver for Zip and Tango.
 
 ## 2026-11-25 check (main run)
 

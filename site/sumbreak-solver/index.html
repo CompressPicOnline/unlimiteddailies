@@ -9,14 +9,14 @@
 <script async src="https://www.googletagmanager.com/gtm.js?id=GTM-52WF64FM"></script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Sumbreak Solver – Today's Sumbreak Answer, Step by Step</title>
-<meta name="description" content="Free Sumbreak solver: type today's board, including ×2 and +3 wildcard tiles, and get the answer one hint at a time. Works for 3x3 to 6x6 boards.">
+<title>Sumbreak Solver – Today's Answer, Free & Step by Step</title>
+<meta name="description" content="Stuck on today's Sumbreak? Type your board (×2 and +3 wildcards too) and get the answer free, one merge at a time or all at once. 3×3 to 6×6, no sign-up.">
 <link rel="canonical" href="https://unlimiteddailies.com/sumbreak-solver/">
 <meta name="robots" content="index,follow,max-image-preview:large">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Unlimited Dailies">
-<meta property="og:title" content="Sumbreak Solver – Today's Sumbreak Answer, Step by Step">
-<meta property="og:description" content="Free Sumbreak solver: type today's board, including ×2 and +3 wildcard tiles, and get the answer one hint at a time. Works for 3x3 to 6x6 boards.">
+<meta property="og:title" content="Sumbreak Solver – Today's Answer, Free & Step by Step">
+<meta property="og:description" content="Stuck on today's Sumbreak? Type your board (×2 and +3 wildcards too) and get the answer free, one merge at a time or all at once. 3×3 to 6×6, no sign-up.">
 <meta property="og:url" content="https://unlimiteddailies.com/sumbreak-solver/">
 <meta property="og:image" content="https://unlimiteddailies.com/og.png">
 <meta name="twitter:card" content="summary_large_image">
@@ -46,7 +46,7 @@
   <div class="op-bar" aria-label="Insert a wildcard into the selected cell"><span style="font-size:.9rem;color:var(--muted);align-self:center">Wildcard:</span><button type="button" data-op="x2">×2</button><button type="button" data-op="x3">×3</button><button type="button" data-op="+1">+1</button><button type="button" data-op="+2">+2</button><button type="button" data-op="+3">+3</button><button type="button" data-op="">Clear cell</button></div>
   <p style="font-size:.9rem;color:var(--muted)">Type numbers, wildcards as x2 or +3, and leave empty / dead spots blank. Rows go top to bottom, columns left to right.</p>
   <button class="btn primary" type="submit">Solve</button>
-  <button class="btn" type="button" data-example>Load example (puzzle #1)</button>
+  <button class="btn" type="button" data-example>Load example</button>
   <button class="btn" type="button" data-clear>Clear</button>
 </form>
 <div id="solver-out" aria-live="polite"></div>
@@ -62,8 +62,19 @@
 <h2>How the Sumbreak solver works</h2>
 <p>The solver tries merges the same way you would, but much faster. It starts with the smallest numbers, because those are the tiles most likely to get stranded, and skips any position that cannot be finished – for example when a dead spot splits the board in two, or when an odd number of the smallest tile is left. As soon as it finds an order of merges that ends in one tile, it shows you the full path.</p>
 <p>Wildcard tiles make the search harder, because a ×2 or +3 can join any number and therefore opens many more possible moves. The solver handles this by checking the numbers first: if the smallest number on the board has neither an identical partner nor a wildcard left to use, that branch is dropped straight away. It also spots tiles that can never move again – for example a 4 that is surrounded only by bigger numbers and empty squares. The search runs in the background of your browser, so the page stays responsive even on 6×6 boards.</p>
-<h2>Example: Sumbreak puzzle #1</h2>
-<p>The first puzzle was a 3×3 board: <code>1 1 64 / 4 2 32 / 4 4 16</code>. Its numbers add up to 128, and it takes eight merges. Press <em>Load example</em> above and then <em>Solve</em> to see one correct order.</p>
+<h2>Worked example: a 3×3 board in eight merges</h2>
+<p>Here is a small board we made for this page: <code>2 2 4 / 8 16 4 / 8 16 4</code>. Its numbers add up to 64, a power of two, so a full solution is possible. The solver's answer shows why order matters:</p>
+<ol>
+<li>Merge the two 2s in the top row into the middle square: now <code>· 4 4</code>.</li>
+<li>Merge that 4 into the top-right 4, making 8 in the corner.</li>
+<li>Merge the bottom-right 4 up into the 4 in the middle of the right column, making 8 there.</li>
+<li>Drop the corner 8 onto that 8: the right column now holds a single 16 in its middle square.</li>
+<li>Merge the two 8s in the left column, making 16 at the bottom left.</li>
+<li>Merge the right-hand 16 into the centre 16, making 32 in the centre.</li>
+<li>Merge the bottom-left 16 into the bottom-middle 16, making 32 below the centre.</li>
+<li>Merge the centre 32 down onto it: one tile, 64. Solved.</li>
+</ol>
+<p>Notice that the solver starts with the smallest tiles and keeps every new number next to a partner. Merge the two 16s in the middle column first instead and the board can no longer be finished – the 32 is left without a partner it can ever reach, and the solver will tell you there is no solution. Press <em>Load example</em> above and then <em>Solve</em> to watch the same order with a picture of the board for every step.</p>
 <h2>Want to get better instead?</h2>
 <p>Practise with unlimited boards in <a href="/sumbreak-unlimited/">Sumbreak Unlimited</a>, or read the <a href="/how-to-play-sumbreak/">strategy guide</a> to learn the patterns the solver uses.</p>
 <h2>FAQ</h2>

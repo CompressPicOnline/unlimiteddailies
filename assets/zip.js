@@ -152,8 +152,23 @@
   boardEl.addEventListener('pointermove', function (e) {
     if (!drawing || !state || state.solvedAt) return;
     var i = cellAt(e.clientX, e.clientY); if (i < 0) return;
-    if (stepTo(i)) afterChange();
+    if (traceTo(i)) afterChange();
   });
+  // Fast drags can skip squares: walk the straight line from the head to the pointer one square at a time
+  function traceTo(j) {
+    var p = state.path, n = state.n;
+    if (!p.length) return stepTo(j);
+    var h = p[p.length - 1], hr = Math.floor(h / n), hc = h % n, jr = Math.floor(j / n), jc = j % n, moved = false;
+    if (j === h) return false;
+    if (Z.adjacent(n, h, j) || (hr !== jr && hc !== jc)) return stepTo(j);
+    var step = hr === jr ? (jc > hc ? 1 : -1) : (jr > hr ? n : -n);
+    for (var c = h + step, guard = 0; guard < n; guard++, c += step) {
+      if (!stepTo(c)) break;
+      moved = true;
+      if (c === j) break;
+    }
+    return moved;
+  }
   function stopDraw() { drawing = false; }
   boardEl.addEventListener('pointerup', stopDraw);
   boardEl.addEventListener('pointercancel', stopDraw);
