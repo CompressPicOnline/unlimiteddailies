@@ -17,7 +17,8 @@
 | Parseword | Josh Wardle (indie) | 2026-03 | skipped | cryptic wordplay clues need hand-written clue content; not new; not reproducible as a generator |
 | Thinky Dailies | Thinky Games | 2026-11 | skipped | story-driven daily puzzles whose rules change every day; not reproducible as one generated mechanic |
 
-Last scan: 2026-11-27 12:45 PKT (main run) — no new viral daily game launched in the last 48h (LinkedIn/NYT/Puzzmo/indie/new-daily-game lists; newest LinkedIn game still Sumbreak 18 Nov). Added established game Mini Sudoku (Section 2B).
+Last scan: 2026-11-28 00:45 PKT (night run) — no new viral daily game launched in the last 48h (LinkedIn/NYT/new-daily-game lists/indie searches; newest LinkedIn game still Sumbreak 18 Nov). Site check via Search Console inspect_url: / and /sumbreak-unlimited/ indexed, fetch OK (proxy blocks direct fetch).
+Previous: 2026-11-27 12:45 PKT (main run) — no new viral daily game launched in the last 48h (LinkedIn/NYT/Puzzmo/indie/new-daily-game lists; newest LinkedIn game still Sumbreak 18 Nov). Added established game Mini Sudoku (Section 2B).
 Previous: 2026-11-27 00:45 PKT (night run) — no new viral daily game launched in the last 48h (LinkedIn/NYT/Puzzmo/Britannica/indie searches; newest LinkedIn game still Sumbreak 18 Nov; Britannica "Revealed" is older, not new). Site check via Search Console inspect_url: / and /zip-unlimited/ indexed, fetch OK (proxy blocks direct fetch).
 Previous: 2026-11-26 12:45 PKT (main run) — no new viral daily game launched in the last 48h (LinkedIn/NYT/Puzzmo/indie searches; newest LinkedIn game still Sumbreak 18 Nov). Added established game Zip (Section 2B).
 Older: 2026-11-26 00:45 PKT (night run) — no new viral daily game launched in the last 48h (LinkedIn/NYT/Puzzmo/WaPo/Guardian/Apple News/indie searches; newest LinkedIn game still Sumbreak 18 Nov). Site check via Search Console inspect_url: / and /tango-unlimited/ indexed, fetch OK (proxy blocks direct fetch).
