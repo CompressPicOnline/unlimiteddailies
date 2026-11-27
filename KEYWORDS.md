@@ -19,8 +19,14 @@ Property: sc-domain:unlimiteddailies.com. Data lags 2–3 days.
 | queens game unlimited | /queens-unlimited/ | 19 | 1 | 2026-11-26 | already in title/H1; page changed <5 days ago → recheck next week |
 | sumbreak game unlimited | / | 14.3 | 3 | 2026-11-26 | covered (home title "Sumbreak Game" + unlimited link) |
 | sumbreak unlimited | / | 15 | 6 | 2026-11-26 | home competes with /sumbreak-unlimited/ (9.9); no change, unlimited page is the target |
+| sumbreak game online free | / | 28 | 1 | 2026-11-27 | covered (home title "Play Sumbreak Game Free") |
+| tango daily | /tango-unlimited/ | 5 | 1 | 2026-11-27 | covered (Daily Tango + archive) |
+| tango unlimited | /tango-unlimited/ | 37 | 1 | 2026-11-27 | in title/H1; page new – recheck |
+| infinite daily | / | 5 | 1 | 2026-11-27 | ignore (brand-ish variant) |
 | sumbreak games / sumbreak puzzel | /sumbreak-unlimited/ / solver | 11 / 17 | 2 / 1 | 2026-11-25 | ignore (variants) |
 
 Last full sweep: 2026-11-26 (Thursday; 28 days, data to 24 Nov, 21 query+page rows). Worked in: /sumbreak-solver/ title+meta CTR fix (56 impr, pos 8.9, 0 clicks) and new worked example (sumbreak solution/answer). "sumbreak" head term slipped to ~14 (how-to 33 impr). No query yet deserves its own page (4B skipped: no proven demand).
 Previous full sweep: 2026-11-24 (file created; data to 2026-11-21 only).
 Daily check 2026-11-25 (data to 23 Nov): new queries logged above; no page edited for keywords because every page changed in the last 5 days (rule) – next full sweep Thursday 26 Nov.
+
+Daily check 2026-11-27 (data to 25 Nov): new queries logged above; no keyword edits – every matching page (home, Sumbreak pages) changed in the last 5 days (rule). Next full sweep Thursday 3 Dec.

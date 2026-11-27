@@ -1,6 +1,32 @@
 # Competitors
 
-Updated: 2026-11-26 (Asia/Karachi). Facts summarised from their public pages; nothing copied.
+Updated: 2026-11-27 (Asia/Karachi). Facts summarised from their public pages; nothing copied.
+
+## 2026-11-27 check (main run)
+
+Search Console (data to 25 Nov): daily impressions 59 → 32 → 58 → 26 → 28 (21–25 Nov), clicks 2/1/2/0/1 → 6 clicks total, avg pos slipped 10 → 16.4 on 25 Nov (Sumbreak interest fading after launch week; new games not yet ranking).
+| Keyword | Our pos (GSC, 28d) today | last run | Non-official sites above us (WebSearch, not Google) | Likely reasons |
+|---|---|---|---|---|
+| sumbreak unlimited | 10.6 (/sumbreak-unlimited/, 12 impr), 15.5 (home, 8) | 9.9 | search engine again returned no Sumbreak sites; known list stands (playsumbreak, thesumbreak, bettersumbreak, sumbreakpuzzle, sumbreak.io, sum-break, mergenumbersgame) | exact-match domains, older |
+| sumbreak solver / answer | "sumbreak answer" 14, "todays sumbreak" 10, "sumbreak solution" 6 | same | askdavetaylor, beebom, thewordfinder (guides) | big-domain guides |
+| sumbreak game | 19.3 (home), 29 (unlimited) | 22 | none relevant shown | head term; home slightly up |
+| sumbreak strategy (rotating) | – | – | no Sumbreak results at all | – |
+| queens game unlimited | 19 (1 impr) | 19 | queensultimate.com, wordle.global, playqueensgame.com | older, leaderboards, archives |
+| tango unlimited | 37 (1 impr); "tango daily" 5 (1 impr) | new | 8tango.com, tango-unlimited.com, tango-game.pages.dev | exact-match domains |
+| zip game unlimited | not ranked yet | new | engine shows only unrelated moddb/indiedb "Zip Unlimited" pages | – |
+| mini sudoku unlimited / solver (new game) | new today | – | sudoku-online.org/en/mini.php, mini-sudoku.pages.dev, dcode.fr 6x6 solver, sudokuwiki 6x6 solver, daily-sudoku.com | big sudoku domains for the solver term; weak for "unlimited" |
+
+New sites analysed today:
+- **tango-game.pages.dev** – "How to Play Tango Game Unlimited"; ~550 words; FAQ 8 (what is it, vs LinkedIn, free?, how to play, levels, mobile, account, same rules?); 6×6 and 8×8, daily challenge, unlimited, clear, red rule borders, local stats. Lacks hints, undo, timer, archive, share, solver.
+- **mini-sudoku.pages.dev** – "Mini Sudoku – 2×3 blocks"; ~650 words, keyword-heavy; FAQ heading with no visible questions; easy/medium/hard 6×6, unlimited, undo/redo, notes, hints, error check, timer + move counter, keypad, **local auto-save**. Lacks daily, archive, stats/streaks, share, solver, 9×9.
+- **sudoku-online.org/en/mini.php** – "Mini Sudoku: daily game"; ~600 words; no FAQ; one dated daily 6×6, last-7-days archive, community average time, **printable PDF**, email signup, accounts. Lacks levels, hints, notes, undo ("no aids"), share, solver.
+- **daily-sudoku.com/variants/mini-sudoku** – rules page only, ~180 words, no board on the page; site has general solver/printables/leaderboard.
+
+Gap list 2026-11-27:
+- Closed today: **Mini Sudoku game + solver** (4 levels incl. 9×9, daily + archive, notes with auto-clean, explained hints, undo, stats/streak, share, FAQ schema, ~1,900 words vs 180–650); **auto-save of an unfinished board** (mini-sudoku.pages.dev has it); **weekday difficulty ramp for the Mini Sudoku daily** (3B iii; playsumbreak does this for Sumbreak) – Monday 18 givens → Sunday minimum.
+- Still open: printable worksheets (sudoku-online has PDF; only if demand shows – 3B v), redo button, community average time (needs server – skip), Tango 4×4/10×10 in game, Queens 5×5/11×11, weekday ramp for the other dailies (would change existing archive boards – postpone).
+- We are better: only site offering game + solver for all five games, explained hints, share result, stats/streaks, daily archives, FAQ schema.
+- Nobody does well: an explained, step-by-step 6×6 solver (dcode/sudokuwiki solve but are generic tools).
 
 ## 2026-11-26 check (main run)
 

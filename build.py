@@ -7,7 +7,7 @@ SITE = "Unlimited Dailies"
 EMAIL = "contact@unlimiteddailies.com"
 TODAY = datetime.date.today().isoformat()
 OUT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "site")
-V = "8"  # bump to bust asset cache
+V = "9"  # bump to bust asset cache
 INDEXNOW_KEY = "3753766b9ea89f1d1682ceed22f858eb"  # IndexNow key file served at /<key>.txt
 
 NAV = [("/sumbreak-unlimited/", "Sumbreak"), ("/queens-unlimited/", "Queens"), ("/tango-unlimited/", "Tango"), ("/zip-unlimited/", "Zip"), ("/mini-sudoku-unlimited/", "Mini Sudoku")]
@@ -920,6 +920,8 @@ def build():
         ("How do notes (pencil marks) work?", "Press Notes to switch note mode on. Now a number you tap is written small in the corner of the square instead of being placed. Tap it again to remove it. When you place a real number, the same note is cleared from its row, column and box automatically."),
         ("What does the Hint button do?", "If a number you placed is wrong, Hint removes it and tells you which square it was. Otherwise it fills one square that can be worked out right now and explains why – for example that a 4 can only go in one square of a row, or that a square has only one number left."),
         ("Can I play more than one mini sudoku a day?", "Yes. The official game gives one puzzle per day. Here every press of New puzzle creates a fresh board at the level you choose, and there is also a free daily board of our own with an archive of past days."),
+        ("Does the daily Mini Sudoku get harder during the week?", "Yes. Our daily board follows a weekly ramp: Monday starts with 18 given numbers, and each day gives fewer, down to Saturday's 11 and a Sunday board with only the minimum our generator can leave. Every day still has exactly one answer that can be found without guessing."),
+        ("Is my progress saved if I close the page?", "Yes. The board you are working on, your notes, hints and the clock are saved in your own browser after every move. Open the same puzzle again and you continue where you stopped. Nothing is sent to our servers."),
         ("Can I play with a keyboard?", "Yes. Click a square, then use the arrow keys to move, type 1–6 (or 1–9 on Expert) to place a number, Backspace to clear it and N to switch notes on or off."),
         ("Do hints or undo affect my stats?", "Undo never affects anything. Hints are shown in the result you share, but your solved count, best times and daily streak still go up."),
         ("Is there a mini sudoku solver?", "Yes. If you are stuck on a board from anywhere – a newspaper, an app or the daily puzzle – open our Mini Sudoku solver, type in the starting numbers and reveal the answer one square at a time, each with the reason."),
@@ -958,7 +960,8 @@ def build():
 <ul>
 <li><strong>Unlimited boards</strong> at four levels – Easy, Medium and Hard 6×6 plus a classic 9×9 Expert – each with a puzzle number you can share or replay.</li>
 <li><strong>No guessing needed</strong>: every board is solved by our logic solver before you see it, so it has one answer that can be found step by step.</li>
-<li><strong>Daily Mini Sudoku</strong> – one 6×6 board for everyone each day, with a streak counter and an archive of past days.</li>
+<li><strong>Daily Mini Sudoku</strong> – one 6×6 board for everyone each day that gets harder through the week (gentle on Monday, toughest on Sunday), with a streak counter and an archive of past days.</li>
+<li><strong>Progress saved automatically</strong>: close the tab halfway through and the board, your notes and the clock are waiting when you come back.</li>
 <li><strong>Notes (pencil marks)</strong> with automatic clean-up, plus highlighting of the row, column, box and matching numbers of the selected square.</li>
 <li><strong>Hint that teaches</strong>: it removes a wrong number if you have one, otherwise it places one square and tells you exactly why it is forced.</li>
 <li><strong>Undo, Restart, timer, best times and a Share button</strong> to post your time to friends or colleagues.</li>

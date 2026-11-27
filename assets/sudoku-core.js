@@ -143,8 +143,14 @@
     return g;
   }
 
+  // Daily boards get harder through the week: Monday gentlest, Sunday hardest (daily #1 = Friday 27 Nov 2026).
+  var WEEK_KEEP = [18, 16, 14, 13, 12, 11, 0], WEEK_NAMES = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+  function dailyWeekday(id) { return ((id - 1 + 4) % 7 + 7) % 7; }
+
   function generate(level, seed) {
-    var L = LEVELS[level] || LEVELS.medium, n = L.n, N = n * n, rand = rng((Math.imul(seed, 2246822519) + n * 97) >>> 0);
+    var L = LEVELS[level] || LEVELS.medium;
+    if (level === 'daily') L = { n: 6, label: 'Daily', keep: WEEK_KEEP[dailyWeekday(seed - 900000)] };
+    var n = L.n, N = n * n, rand = rng((Math.imul(seed, 2246822519) + n * 97) >>> 0);
     for (var attempt = 0; attempt < 20; attempt++) {
       var sol = randomSolution(n, rand), giv = sol.slice(), order = [];
       for (var c = 0; c < N; c++) order.push(c);
@@ -163,6 +169,7 @@
   }
 
   var api = { rng: rng, LEVELS: LEVELS, geo: geo, unitName: unitName, candidates: function (n, g, i) { return candidates(geo(n), g, i); },
+    dailyWeekday: dailyWeekday, WEEK_NAMES: WEEK_NAMES, WEEK_KEEP: WEEK_KEEP,
     logicSolve: logicSolve, countSolutions: countSolutions, check: check, generate: generate };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
   else root.SudokuCore = api;

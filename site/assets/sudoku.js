@@ -39,13 +39,22 @@
     root.setAttribute('data-level', level);
     root.style.setProperty('--sn', p.n);
     root.querySelectorAll('[data-level-btn]').forEach(function (b) { b.setAttribute('aria-pressed', b.getAttribute('data-level-btn') === level ? 'true' : 'false'); });
-    titleEl.textContent = level === 'daily' ? 'Daily Mini Sudoku #' + id : S.LEVELS[level].label + ' ' + p.n + '×' + p.n + ' #' + id;
+    titleEl.textContent = level === 'daily' ? 'Daily Mini Sudoku #' + id + ' · ' + S.WEEK_NAMES[S.dailyWeekday(id)] : S.LEVELS[level].label + ' ' + p.n + '×' + p.n + ' #' + id;
     setMsg('Tap a square, then a number. Each row, column and box needs 1–' + p.n + ' once.');
     clearInterval(tick); timerEl.textContent = '0:00';
     boardEl.classList.remove('solved');
     if (history.replaceState) history.replaceState(null, '', location.pathname + query());
-    build(); render();
+    build();
+    var sv = store.get('prog', null);
+    if (sv && sv.k === level + ':' + id && sv.g && sv.g.length === p.n * p.n) {
+      state.grid = sv.g; state.notes = sv.nt || state.notes; state.hints = sv.h || 0;
+      if (sv.t > 0) { state.start = Date.now() - sv.t; resumeClock(); }
+      setMsg('Welcome back – your progress on this board was restored.');
+    }
+    render();
   }
+
+  function save() { store.set('prog', state.solvedAt ? null : { k: state.level + ':' + state.id, g: state.grid, nt: state.notes, h: state.hints, t: state.start ? Date.now() - state.start : 0 }); }
 
   function query() { return state.level === 'daily' ? '?daily=' + state.id : '?level=' + state.level + '&p=' + state.id; }
 
@@ -91,7 +100,11 @@
   function startClock() {
     if (state.start) return;
     state.start = Date.now();
+    resumeClock();
+  }
+  function resumeClock() {
     clearInterval(tick);
+    timerEl.textContent = fmt(Date.now() - state.start);
     tick = setInterval(function () { if (!state.solvedAt) timerEl.textContent = fmt(Date.now() - state.start); }, 500);
   }
 
@@ -107,7 +120,7 @@
       if (state.grid[i]) return;
       state.history.push(snapshot());
       state.notes[i] ^= 1 << d;
-      render(); return;
+      render(); save(); return;
     }
     if (state.grid[i] === d && !state.notes[i]) return;
     state.history.push(snapshot());
@@ -118,7 +131,8 @@
 
   function afterChange() {
     var res = render();
-    if (res.solved) return win();
+    if (res.solved) { win(); save(); return; }
+    save();
     var left = state.grid.filter(function (v) { return !v; }).length;
     if (Object.keys(res.bad).length) setMsg('A number appears twice in a row, column or box (red).', 'warn');
     else setMsg(left ? left + ' squares left.' : 'Board full – check the red squares.');
@@ -203,7 +217,7 @@
 
   function flash(i) { var el = boardEl.children[i]; if (!el) return; el.classList.add('hl'); setTimeout(function () { el.classList.remove('hl'); }, 1500); }
   function undo() { if (state.solvedAt || !state.history.length) return; var h = state.history.pop(); state.grid = h.g; state.notes = h.nt; afterChange(); }
-  function restart() { state.grid = state.givens.slice(); state.notes = new Array(state.n * state.n).fill(0); state.history = []; state.solvedAt = 0; state.start = 0; state.hints = 0; state.sel = -1; boardEl.classList.remove('solved'); clearInterval(tick); timerEl.textContent = '0:00'; render(); setMsg('Board cleared.'); }
+  function restart() { state.grid = state.givens.slice(); state.notes = new Array(state.n * state.n).fill(0); state.history = []; state.solvedAt = 0; state.start = 0; state.hints = 0; state.sel = -1; boardEl.classList.remove('solved'); clearInterval(tick); timerEl.textContent = '0:00'; render(); save(); setMsg('Board cleared.'); }
   function select(i) { state.sel = i; render(); }
 
   boardEl.addEventListener('click', function (e) {
