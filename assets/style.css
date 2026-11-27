@@ -138,3 +138,28 @@ nav.top a{margin-left:0;white-space:nowrap}
 .modebar{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0}
 .modebar button{font:inherit;font-weight:700;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:8px;padding:5px 12px;cursor:pointer}
 .modebar button[aria-pressed=true]{background:var(--brand);border-color:var(--brand);color:#fff}
+/* mini sudoku */
+#sgame{max-width:440px;margin:14px auto 0;text-align:center}
+.sboard{display:grid;gap:0;border:3px solid #2b3350;border-radius:10px;overflow:hidden;background:#fff;max-width:440px;margin:0 auto;touch-action:manipulation;user-select:none;-webkit-user-select:none}
+.scell{position:relative;aspect-ratio:1;border:0;margin:0;padding:0;border-radius:0;background:#fff;box-shadow:inset 0 0 0 .5px #c6cbd8;cursor:pointer;color:#2f6fed;font:700 calc(min(86vw,430px)/var(--sn,6)*.46)/1 system-ui,sans-serif;display:flex;align-items:center;justify-content:center}
+.scell.br{border-right:3px solid #2b3350}
+.scell.bb{border-bottom:3px solid #2b3350}
+.scell.given{color:#1d2333;background:#f1f2f6;cursor:default}
+.scell.peer{background:#eef3fe}
+.scell.given.peer{background:#e5e9f3}
+.scell.same{background:#d6e3fd}
+.scell.sel{background:#c3d6fb}
+.scell.bad{color:#c4161c;background-image:repeating-linear-gradient(135deg,rgba(196,22,28,.16) 0 4px,transparent 4px 9px)}
+.scell.reveal{background:#e7f4ea;color:#127a46}
+.scell.hl{animation:glow 1s ease-in-out infinite}
+.scell:focus-visible{outline:3px solid var(--brand);outline-offset:-3px;z-index:1}
+.snotes{position:absolute;inset:6%;display:grid;grid-template-columns:repeat(3,1fr);font:600 calc(min(86vw,430px)/var(--sn,6)*.2)/1 system-ui,sans-serif;color:#5b6479}
+.snotes i{font-style:normal;display:flex;align-items:center;justify-content:center}
+.sboard.solved .scell{animation:pop .3s ease}
+.spad{display:flex;flex-wrap:wrap;justify-content:center;gap:6px;margin:12px auto 4px;max-width:440px}
+.spad button{flex:1 1 0;min-width:34px;max-width:58px;height:48px;font:800 1.3rem/1 system-ui,sans-serif;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:10px;cursor:pointer}
+.spad button.done{opacity:.35}
+[data-action=notes][aria-pressed=true]{background:var(--brand);border-color:var(--brand);color:#fff}
+#ssolver .sboard{max-width:400px;margin:8px 0}
+#ssolver .spad{margin:10px 0;justify-content:flex-start;max-width:400px}
+#ssolver .scell{font-size:calc(min(80vw,390px)/var(--sn,6)*.42)}

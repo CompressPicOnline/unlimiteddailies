@@ -7,10 +7,10 @@ SITE = "Unlimited Dailies"
 EMAIL = "contact@unlimiteddailies.com"
 TODAY = datetime.date.today().isoformat()
 OUT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "site")
-V = "7"  # bump to bust asset cache
+V = "8"  # bump to bust asset cache
 INDEXNOW_KEY = "3753766b9ea89f1d1682ceed22f858eb"  # IndexNow key file served at /<key>.txt
 
-NAV = [("/sumbreak-unlimited/", "Sumbreak"), ("/queens-unlimited/", "Queens"), ("/tango-unlimited/", "Tango"), ("/zip-unlimited/", "Zip")]
+NAV = [("/sumbreak-unlimited/", "Sumbreak"), ("/queens-unlimited/", "Queens"), ("/tango-unlimited/", "Tango"), ("/zip-unlimited/", "Zip"), ("/mini-sudoku-unlimited/", "Mini Sudoku")]
 
 def head(title, desc, path, extra_schema=None, noindex=False):
     url = DOMAIN + path
@@ -62,8 +62,8 @@ def head(title, desc, path, extra_schema=None, noindex=False):
 
 FOOT = f"""</div></main>
 <footer class="site"><div class="wrap">
-<p><a href="/">Home</a><a href="/sumbreak-unlimited/">Sumbreak Unlimited</a><a href="/sumbreak-solver/">Sumbreak Solver</a><a href="/how-to-play-sumbreak/">How to Play Sumbreak</a><a href="/queens-unlimited/">Queens Unlimited</a><a href="/queens-solver/">Queens Solver</a><a href="/tango-unlimited/">Tango Unlimited</a><a href="/tango-solver/">Tango Solver</a><a href="/zip-unlimited/">Zip Unlimited</a><a href="/zip-solver/">Zip Solver</a><a href="/about/">About</a><a href="/contact/">Contact</a><a href="/privacy-policy/">Privacy</a><a href="/terms/">Terms</a></p>
-<p>© {datetime.date.today().year} {SITE}. Free, unofficial practice puzzles. Not affiliated with, endorsed by or connected to LinkedIn Corporation or Microsoft. "Sumbreak", "Queens", "Tango" and "Zip" are used only to describe puzzle styles.</p>
+<p><a href="/">Home</a><a href="/sumbreak-unlimited/">Sumbreak Unlimited</a><a href="/sumbreak-solver/">Sumbreak Solver</a><a href="/how-to-play-sumbreak/">How to Play Sumbreak</a><a href="/queens-unlimited/">Queens Unlimited</a><a href="/queens-solver/">Queens Solver</a><a href="/tango-unlimited/">Tango Unlimited</a><a href="/tango-solver/">Tango Solver</a><a href="/zip-unlimited/">Zip Unlimited</a><a href="/zip-solver/">Zip Solver</a><a href="/mini-sudoku-unlimited/">Mini Sudoku Unlimited</a><a href="/mini-sudoku-solver/">Mini Sudoku Solver</a><a href="/about/">About</a><a href="/contact/">Contact</a><a href="/privacy-policy/">Privacy</a><a href="/terms/">Terms</a></p>
+<p>© {datetime.date.today().year} {SITE}. Free, unofficial practice puzzles. Not affiliated with, endorsed by or connected to LinkedIn Corporation or Microsoft. "Sumbreak", "Queens", "Tango", "Zip" and "Mini Sudoku" are used only to describe puzzle styles.</p>
 </div></footer>
 """
 
@@ -183,7 +183,7 @@ TGAME = """
     <a class="btn primary" data-next href="#" style="text-decoration:none;display:inline-block">Next puzzle</a>
     <button type="button" class="btn" data-share>Share result</button>
     <button type="button" class="btn" data-close>Close</button>
-    <p class="more-games">Try another game: <a href="/zip-unlimited/">Zip Unlimited</a> – one path through every square – <a href="/queens-unlimited/">Queens Unlimited</a> or <a href="/sumbreak-unlimited/">Sumbreak Unlimited</a>.</p>
+    <p class="more-games">Try another game: <a href="/mini-sudoku-unlimited/">Mini Sudoku Unlimited</a> – 6×6 sudoku – <a href="/zip-unlimited/">Zip Unlimited</a> or <a href="/queens-unlimited/">Queens Unlimited</a>.</p>
   </div>
 </div>
 """
@@ -216,11 +216,46 @@ ZGAME = """
     <a class="btn primary" data-next href="#" style="text-decoration:none;display:inline-block">Next puzzle</a>
     <button type="button" class="btn" data-share>Share result</button>
     <button type="button" class="btn" data-close>Close</button>
-    <p class="more-games">Try another game: <a href="/tango-unlimited/">Tango Unlimited</a> – balance suns and moons – <a href="/queens-unlimited/">Queens Unlimited</a> or <a href="/sumbreak-unlimited/">Sumbreak Unlimited</a>.</p>
+    <p class="more-games">Try another game: <a href="/mini-sudoku-unlimited/">Mini Sudoku Unlimited</a> – 6×6 sudoku – <a href="/tango-unlimited/">Tango Unlimited</a> or <a href="/queens-unlimited/">Queens Unlimited</a>.</p>
   </div>
 </div>
 """
 ZGAME_JS = f'<script src="/assets/zip-core.js?v={V}"></script>\n<script src="/assets/zip.js?v={V}"></script>'
+
+SGAME = """
+<div id="sgame" data-default="{default}">
+  <div class="levels" role="group" aria-label="Choose difficulty">
+    <button type="button" data-level-btn="daily">Daily</button>
+    <button type="button" data-level-btn="easy">Easy</button>
+    <button type="button" data-level-btn="medium">Medium</button>
+    <button type="button" data-level-btn="hard">Hard</button>
+    <button type="button" data-level-btn="expert">Expert 9×9</button>
+  </div>
+  <div class="meta"><span data-puzzle-title>Loading…</span><span>⏱ <span data-timer>0:00</span></span></div>
+  <div class="sboard" aria-label="Mini Sudoku puzzle board"></div>
+  <div class="spad" aria-label="Number pad"></div>
+  <p class="game-msg" aria-live="polite"></p>
+  <div class="ctrl">
+    <button type="button" data-action="undo">↶ Undo</button>
+    <button type="button" data-action="notes" aria-pressed="false">✏️ Notes: off</button>
+    <button type="button" data-action="restart">Restart</button>
+    <button type="button" data-action="hint">💡 Hint</button>
+    <button type="button" data-action="new">New puzzle →</button>
+  </div>
+  <p class="stats" data-stats></p>
+</div>
+<div class="modal" id="win-modal" hidden role="dialog" aria-modal="true" aria-labelledby="win-title">
+  <div class="card">
+    <h2 id="win-title" style="margin-top:0">🔢 Puzzle solved!</h2>
+    <p data-win-text></p>
+    <a class="btn primary" data-next href="#" style="text-decoration:none;display:inline-block">Next puzzle</a>
+    <button type="button" class="btn" data-share>Share result</button>
+    <button type="button" class="btn" data-close>Close</button>
+    <p class="more-games">Try another game: <a href="/queens-unlimited/">Queens Unlimited</a> – one queen per colour – <a href="/tango-unlimited/">Tango Unlimited</a> or <a href="/zip-unlimited/">Zip Unlimited</a>.</p>
+  </div>
+</div>
+"""
+SGAME_JS = f'<script src="/assets/sudoku-core.js?v={V}"></script>\n<script src="/assets/sudoku.js?v={V}"></script>'
 
 def game_archive(launch, path):
     """Links to every past daily board of a game (query-string replays on the same page, not separate pages)."""
@@ -875,6 +910,151 @@ def build():
           "url": DOMAIN + "/zip-solver/", "applicationCategory": "UtilitiesApplication", "operatingSystem": "Any",
           "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}}])
 
+    # ---------- Mini Sudoku unlimited ----------
+    sfaqs = [
+        ("What is Mini Sudoku Unlimited?", "Mini Sudoku Unlimited is a free practice version of the 6×6 mini sudoku puzzle. Fill the grid so every row, every column and every 2×3 box contains the numbers 1 to 6 exactly once. Every board is made by our own generator, so you can play as many as you like instead of waiting for tomorrow's puzzle."),
+        ("Is this the official LinkedIn Mini Sudoku?", "No. Unlimited Dailies is an independent website and is not connected to LinkedIn. Sudoku rules are a classic, public puzzle format; every board on this page is created by our own code and none is copied from LinkedIn or any other publisher."),
+        ("What are the rules of mini sudoku?", "The board is 6 squares wide and 6 tall, split into six boxes of 2 rows × 3 columns. Place the numbers 1 to 6 so that no number repeats in any row, any column or any box. Some numbers are given at the start and cannot be changed."),
+        ("Does every board have exactly one answer?", "Yes. Before a board is shown, our solver fills it using only logical steps – no guessing. If it cannot finish, the board is thrown away. A board that can be completed step by step this way can only have one solution."),
+        ("What is the difference between the levels?", "Easy, Medium and Hard are 6×6 boards. Easy starts with 18 numbers, Medium with 13, and Hard with as few as our generator can leave while keeping one logical answer – usually 9 to 11. Expert is a classic 9×9 sudoku with 3×3 boxes."),
+        ("How do notes (pencil marks) work?", "Press Notes to switch note mode on. Now a number you tap is written small in the corner of the square instead of being placed. Tap it again to remove it. When you place a real number, the same note is cleared from its row, column and box automatically."),
+        ("What does the Hint button do?", "If a number you placed is wrong, Hint removes it and tells you which square it was. Otherwise it fills one square that can be worked out right now and explains why – for example that a 4 can only go in one square of a row, or that a square has only one number left."),
+        ("Can I play more than one mini sudoku a day?", "Yes. The official game gives one puzzle per day. Here every press of New puzzle creates a fresh board at the level you choose, and there is also a free daily board of our own with an archive of past days."),
+        ("Can I play with a keyboard?", "Yes. Click a square, then use the arrow keys to move, type 1–6 (or 1–9 on Expert) to place a number, Backspace to clear it and N to switch notes on or off."),
+        ("Do hints or undo affect my stats?", "Undo never affects anything. Hints are shown in the result you share, but your solved count, best times and daily streak still go up."),
+        ("Is there a mini sudoku solver?", "Yes. If you are stuck on a board from anywhere – a newspaper, an app or the daily puzzle – open our Mini Sudoku solver, type in the starting numbers and reveal the answer one square at a time, each with the reason."),
+        ("How is Mini Sudoku different from Queens, Tango and Zip?", "Mini Sudoku is about numbers: each 1 to 6 once per row, column and box. <a href=\"/queens-unlimited/\">Queens</a> is about placing one queen per row, column and colour region, <a href=\"/tango-unlimited/\">Tango</a> balances suns and moons, and <a href=\"/zip-unlimited/\">Zip</a> draws one path through every square. All of them are free and unlimited here."),
+    ]
+    sgame_schema = {
+        "@context": "https://schema.org", "@type": ["VideoGame", "WebApplication"],
+        "name": "Mini Sudoku Unlimited", "url": DOMAIN + "/mini-sudoku-unlimited/",
+        "description": "Free unlimited 6×6 mini sudoku puzzles in the browser: fill every row, column and 2×3 box with 1–6. Easy, Medium and Hard 6×6, an Expert 9×9 level, notes, explained hints and a daily puzzle.",
+        "applicationCategory": "GameApplication", "operatingSystem": "Any (web browser)",
+        "genre": ["Puzzle", "Logic puzzle", "Sudoku"], "gamePlatform": "Web browser", "playMode": "SinglePlayer",
+        "isAccessibleForFree": True, "inLanguage": "en",
+        "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"},
+        "publisher": {"@type": "Organization", "name": SITE, "url": DOMAIN}
+    }
+    body = f"""
+<h1>Mini Sudoku Unlimited – Play Free 6×6 Sudoku With No Daily Limit</h1>
+<p class="lead">Fill the 6×6 grid so every row, column and 2×3 box holds the numbers 1 to 6 once. Unlimited boards, a free daily puzzle, notes and hints that explain themselves – no login.</p>
+{SGAME.format(default="easy")}
+<div class="ad-slot"></div>
+
+<h2>How to play Mini Sudoku</h2>
+<ol>
+<li><strong>Pick a square.</strong> Tap any empty square – its row, column and box light up so you can see what it is up against. Grey squares with dark numbers are given and cannot be changed.</li>
+<li><strong>Place a number.</strong> Tap a number on the pad below the board (or type it). Each row, each column and each of the six 2×3 boxes must end up with 1, 2, 3, 4, 5 and 6 exactly once.</li>
+<li><strong>Use notes when unsure.</strong> Switch on Notes to write small candidates in a square. They are cleared automatically when the number is placed elsewhere in the same row, column or box.</li>
+<li><strong>Watch for red.</strong> A number that repeats in a row, column or box turns red at once, so you never get far down a wrong path without noticing.</li>
+<li><strong>Finish the grid.</strong> The puzzle is solved the moment the last square is filled correctly. Share your time, or go straight to the next board.</li>
+</ol>
+<p>Stuck on a board from somewhere else – maybe today's official one? Type it into the <a href="/mini-sudoku-solver/">Mini Sudoku solver</a> and reveal the answer one square at a time, with the reason for each step.</p>
+
+<h2>Why practise with unlimited mini sudoku?</h2>
+<p>A 6×6 sudoku looks small, but it uses exactly the same thinking as the full 9×9 puzzle: scanning a box for the one place a number fits, and spotting a square whose row and column already rule out every number but one. Because the board is small, you can do a full puzzle in a minute or two – perfect for a coffee break – and you get many more repetitions of those two skills than with a big sudoku. One puzzle a day is a nice habit; a dozen in a row is how you actually get fast. When 6×6 starts to feel easy, the Expert level gives you a classic 9×9 board with the same tools.</p>
+
+<h2>Features</h2>
+<ul>
+<li><strong>Unlimited boards</strong> at four levels – Easy, Medium and Hard 6×6 plus a classic 9×9 Expert – each with a puzzle number you can share or replay.</li>
+<li><strong>No guessing needed</strong>: every board is solved by our logic solver before you see it, so it has one answer that can be found step by step.</li>
+<li><strong>Daily Mini Sudoku</strong> – one 6×6 board for everyone each day, with a streak counter and an archive of past days.</li>
+<li><strong>Notes (pencil marks)</strong> with automatic clean-up, plus highlighting of the row, column, box and matching numbers of the selected square.</li>
+<li><strong>Hint that teaches</strong>: it removes a wrong number if you have one, otherwise it places one square and tells you exactly why it is forced.</li>
+<li><strong>Undo, Restart, timer, best times and a Share button</strong> to post your time to friends or colleagues.</li>
+<li><strong>Keyboard play</strong>: arrows to move, number keys to fill, Backspace to clear, N for notes.</li>
+</ul>
+
+<h2>Mini Sudoku daily archive</h2>
+<p>Every daily mini sudoku we have published stays here, so you can catch up on days you missed. Archive boards count towards your stats; only today's board extends your streak.</p>
+{game_archive(datetime.date(2026, 11, 27), "/mini-sudoku-unlimited/")}
+
+<h2>Mini sudoku strategy: five techniques that solve every board here</h2>
+<h3>1. Scan one number across the boxes</h3>
+<p>Pick a number – say 3 – and look at every box that does not have it yet. Each 3 already on the board blocks its whole row and column. Often only one square in a box is left unblocked, and that is where the 3 goes. Sweep the numbers 1 to 6 one after another; this alone solves most Easy boards.</p>
+<h3>2. Look for the last number in a line</h3>
+<p>A row, column or box with five numbers filled is a free square: the missing number is the only one left. On a 6×6 board this happens far more often than on a 9×9 board, so check for it after every move.</p>
+<h3>3. Count what a square can see</h3>
+<p>For a single empty square, list the numbers already in its row, its column and its box. If five different numbers appear, the sixth is the answer. This "only candidate" step is what our hint calls "its row, column and box already hold every other number".</p>
+<h3>4. Use the box pairs</h3>
+<p>The six boxes sit in three bands of two. If a number appears in one box of a band, it is ruled out of that row in the neighbouring box. On a 6×6 board each box only has two rows, so knowing one row is ruled out often pins the number to the other row straight away.</p>
+<h3>5. Write notes only where it pays</h3>
+<p>On Hard boards, pencil in the two or three candidates of the most crowded squares rather than every square. As soon as one of them is filled, the notes in the same row, column and box are cleaned up for you and a new single usually appears.</p>
+
+<h2>Common mini sudoku mistakes</h2>
+<ul>
+<li><strong>Forgetting the box.</strong> A number can be fine in its row and column and still clash inside its 2×3 box. Remember the boxes are wide (three columns) and short (two rows).</li>
+<li><strong>Guessing on Hard.</strong> No board here needs a guess. If you are stuck, go back to scanning each number across the boxes – there is always one forced square somewhere.</li>
+<li><strong>Filling notes everywhere.</strong> Pencil marks on every square slow you down on a small board. Use them on the two or three squares that matter.</li>
+<li><strong>Racing too early.</strong> Speed comes from spotting the two techniques above at a glance. Solve Easy and Medium cleanly first, then chase times on the daily.</li>
+</ul>
+
+<h2>Worked example: one box, one number</h2>
+<p>Imagine the top-left box (rows 1–2, columns 1–3) still needs a 5. Row 1 already has a 5 further to the right, so neither square of row 1 in this box can take it. That leaves row 2 – but column 1 also has a 5 lower down the board, and column 2 is already filled. Only row 2, column 3 is left, so the 5 goes there. Two given numbers outside the box were enough to place a number inside it, without any guessing – and that new 5 now blocks row 2 and column 3 for the rest of the board.</p>
+
+<h2>Frequently asked questions</h2>
+{faq_html(sfaqs)}
+<p class="disclaimer">Unlimited Dailies is an independent website. It is not affiliated with, sponsored by or endorsed by LinkedIn Corporation, Microsoft or any puzzle publisher. "Mini Sudoku" is used only to describe the puzzle style. All boards on this page are generated by our own code.</p>
+"""
+    page("/mini-sudoku-unlimited/", "Mini Sudoku Unlimited – Free 6×6 Sudoku, No Limit",
+         "Play Mini Sudoku unlimited for free: 6×6 boards with 1–6 in every row, column and box. Easy to Hard plus 9×9 Expert, notes, smart hints and a daily puzzle.",
+         body, SGAME_JS, [sgame_schema, faq_schema(sfaqs)])
+
+    # ---------- Mini Sudoku solver ----------
+    ssfaqs = [
+        ("How do I get the answer to today's Mini Sudoku?", "Keep 6×6 selected, tap the first square that has a number in your puzzle and type it (or use the number pad). The cursor moves on automatically. When every starting number is in, press Solve: the solver shows one square at a time with the reason, or the full answer at once."),
+        ("Why does the solver say there is no solution?", "One of the numbers was entered in the wrong square, or a number is missing. Compare the board row by row with your puzzle – a single misplaced number is enough to make it impossible."),
+        ("Why does it say there is more than one answer?", "A proper sudoku has exactly one solution. If the solver finds two, a starting number was left out. Add the missing number and solve again."),
+        ("Can I just get a hint instead of the whole answer?", "Yes. After Solve, only the first square is filled, together with the reason it is forced. Press Show next square for one more at a time."),
+        ("Does it solve normal 9×9 sudoku too?", "Yes. Choose 9×9 in the size box. The solver uses the same logical steps first and switches to a fast search if a very hard 9×9 puzzle needs more advanced techniques."),
+        ("Is my board sent anywhere?", "No. The solver runs completely in your browser. Nothing you type is uploaded or stored on our servers."),
+    ]
+    body = f"""
+<h1>Mini Sudoku Solver – Today's 6×6 Sudoku Answer, Step by Step</h1>
+<p class="lead">Stuck on a mini sudoku? Type in the starting numbers, press Solve and reveal the answer one square at a time – each with the reason it is forced. Works for 6×6 and classic 9×9 boards.</p>
+<form id="ssolver" class="card" autocomplete="off">
+  <label>Board size:
+    <select name="size"><option value="6" selected>6×6 (2×3 boxes)</option><option value="9">9×9 (3×3 boxes)</option></select>
+  </label>
+  <div class="sboard" aria-label="Enter your sudoku board"></div>
+  <div class="spad" aria-label="Number pad"></div>
+  <p style="font-size:.9rem;color:var(--muted)">Tap a square, then a number (or type it). The cursor moves to the next square after each number; ⌫ clears a square.</p>
+  <button class="btn primary" type="submit">Solve</button>
+  <button class="btn" type="button" data-example>Load example</button>
+  <button class="btn" type="button" data-clear>Clear</button>
+</form>
+<div id="ssolver-out" aria-live="polite"></div>
+<div class="ad-slot"></div>
+
+<h2>Stuck on today's Mini Sudoku? Get the answer in three steps</h2>
+<ol>
+<li><strong>Keep 6×6 selected.</strong> The daily Mini Sudoku on LinkedIn is a 6×6 board with six 2×3 boxes. Switch to 9×9 for a classic sudoku from a newspaper or app.</li>
+<li><strong>Copy the starting numbers.</strong> Tap a square and type its number. Empty squares stay empty – just tap past them. A number entered twice in a row, column or box is shown in red straight away.</li>
+<li><strong>Press Solve.</strong> The first forced square turns green with a short explanation. Press <em>Show next square</em> for another nudge, or <em>Show full answer</em> to see everything.</li>
+</ol>
+
+<h2>How the Mini Sudoku solver works</h2>
+<p>The solver uses the same two moves a person uses, in the same order. First it looks for <strong>hidden singles</strong>: inside one row, column or box, a number that fits in only one empty square. Then it looks for <strong>naked singles</strong>: a square whose row, column and box already contain every number except one. Each time it places a number, it remembers which move proved it, and it repeats until the board is full.</p>
+<p>Almost every 6×6 puzzle is finished this way. For a hard 9×9 board that needs more advanced logic, the solver switches to a fast search that tries the square with the fewest candidates first. Either way, it also checks for a second solution and tells you if there is one – the usual sign that a starting number was missed.</p>
+<p>Because each step names its row, column or box, the list of steps doubles as a lesson: look at the place it mentions and try to see why the number is forced before revealing the next one.</p>
+
+<h2>Worked example</h2>
+<p>Press <em>Load example</em> to put one of our own Hard 6×6 boards on the solver – it starts with only nine numbers – then press Solve. The first step reads "Row 1, column 4: 2 – the only square in row 1 where 2 fits". Look along row 1: every other empty square in it already sees a 2, either in its own column or inside its 2×3 box, so the 2 has nowhere else to go. The next three steps all happen in row 5 in the same way, and each new number opens up the column and box around it. Scanning one number along one row, column or box is enough to finish this whole board. On other boards you will also meet steps that say "its row, column and box already hold every other number": count the numbers around that square and only one is missing.</p>
+
+<h2>Solve it yourself next time</h2>
+<p>Two habits crack most mini sudokus: sweep each number from 1 to 6 across the six boxes, and check any row, column or box that has only one or two empty squares left. Practise them on fresh boards in <a href="/mini-sudoku-unlimited/">Mini Sudoku Unlimited</a> – every board there has exactly one answer, and the hint explains each move.</p>
+
+<h2>FAQ</h2>
+{faq_html(ssfaqs)}
+<p class="disclaimer">Unofficial tool. Not affiliated with LinkedIn or any puzzle publisher. The solver runs entirely in your browser; your board is not sent anywhere.</p>
+"""
+    page("/mini-sudoku-solver/", "Mini Sudoku Solver – Today's Answer, Step by Step",
+         "Free Mini Sudoku solver: type the numbers from your 6×6 or 9×9 board and reveal the answer one square at a time, with the reason for each step.",
+         body, f'<script src="/assets/sudoku-core.js?v={V}"></script>\n<script src="/assets/sudoku-solver.js?v={V}"></script>',
+         [faq_schema(ssfaqs), {"@context": "https://schema.org", "@type": "WebApplication", "name": "Mini Sudoku Solver",
+          "url": DOMAIN + "/mini-sudoku-solver/", "applicationCategory": "UtilitiesApplication", "operatingSystem": "Any",
+          "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}}])
+
     # ---------- Home ----------
     launch = datetime.date(2026, 11, 21)
     today_n = (datetime.date.today() - launch).days + 1
@@ -899,6 +1079,8 @@ def build():
   <a class="card" href="/tango-solver/"><strong>Tango Solver</strong><small>Enter your suns, moons and signs and get the answer square by square, with the reason.</small></a>
   <a class="card" href="/zip-unlimited/"><strong>Zip Unlimited <span class="tag">New</span></strong><small>Draw one path from 1 through every number in order and fill every square. 5×5 to 8×8 & a daily.</small></a>
   <a class="card" href="/zip-solver/"><strong>Zip Solver</strong><small>Tap in your numbers and walls and reveal the path five squares at a time.</small></a>
+  <a class="card" href="/mini-sudoku-unlimited/"><strong>Mini Sudoku Unlimited <span class="tag">New</span></strong><small>6×6 sudoku: 1–6 once in every row, column and box. Notes, hints, a daily & a 9×9 Expert level.</small></a>
+  <a class="card" href="/mini-sudoku-solver/"><strong>Mini Sudoku Solver</strong><small>Type in your 6×6 or 9×9 board and reveal the answer square by square, with the reason.</small></a>
   <a class="card" href="/how-to-play-sumbreak/"><strong>How to Play Sumbreak</strong><small>Rules, dead spots and strategy tips.</small></a>
 </div>
 <h2>Today's free puzzle</h2>
@@ -911,7 +1093,7 @@ def build():
 <li><strong>Always solvable</strong> puzzles, with hints and undo.</li>
 <li><strong>Fast and private</strong> – everything runs in your browser.</li>
 </ul>
-<p>Right now you can play <a href="/sumbreak-unlimited/">Sumbreak Unlimited</a>, the newest daily number-merge puzzle, <a href="/queens-unlimited/">Queens Unlimited</a>, the colour-region logic puzzle with one queen per row, column and region, <a href="/tango-unlimited/">Tango Unlimited</a>, the sun-and-moon balance grid, and <a href="/zip-unlimited/">Zip Unlimited</a>, the one-line path puzzle – each with its own step-by-step solver. More puzzle styles are on the way.</p>
+<p>Right now you can play <a href="/sumbreak-unlimited/">Sumbreak Unlimited</a>, the newest daily number-merge puzzle, <a href="/queens-unlimited/">Queens Unlimited</a>, the colour-region logic puzzle with one queen per row, column and region, <a href="/tango-unlimited/">Tango Unlimited</a>, the sun-and-moon balance grid, <a href="/zip-unlimited/">Zip Unlimited</a>, the one-line path puzzle, and <a href="/mini-sudoku-unlimited/">Mini Sudoku Unlimited</a>, the 6×6 number grid – each with its own step-by-step solver. More puzzle styles are on the way.</p>
 <h2 id="archive">Daily puzzle archive</h2>
 <p>Missed a day? Every daily puzzle we have published stays here. Pick a number to replay it – the ones you have solved on this device are ticked. Only today's puzzle counts towards your streak.</p>
 <ul class="archive" data-archive>{archive_html}</ul>
@@ -930,7 +1112,7 @@ def build():
     # ---------- About / Contact / Privacy / Terms ----------
     page("/about/", "About Unlimited Dailies", "About Unlimited Dailies: free unlimited practice versions of popular daily puzzle games.", f"""
 <h1>About Unlimited Dailies</h1>
-<p>Unlimited Dailies is a small independent website that makes free, unlimited practice versions of popular daily puzzle styles. Our games are <a href="/sumbreak-unlimited/">Sumbreak Unlimited</a>, a number-merge logic puzzle with a <a href="/sumbreak-solver/">solver</a> and a <a href="/how-to-play-sumbreak/">strategy guide</a>, <a href="/queens-unlimited/">Queens Unlimited</a>, a colour-region queen-placement puzzle with its own <a href="/queens-solver/">Queens solver</a>, <a href="/tango-unlimited/">Tango Unlimited</a>, a sun-and-moon binary grid with a <a href="/tango-solver/">Tango solver</a>, and <a href="/zip-unlimited/">Zip Unlimited</a>, a numbered path puzzle with a <a href="/zip-solver/">Zip solver</a>.</p>
+<p>Unlimited Dailies is a small independent website that makes free, unlimited practice versions of popular daily puzzle styles. Our games are <a href="/sumbreak-unlimited/">Sumbreak Unlimited</a>, a number-merge logic puzzle with a <a href="/sumbreak-solver/">solver</a> and a <a href="/how-to-play-sumbreak/">strategy guide</a>, <a href="/queens-unlimited/">Queens Unlimited</a>, a colour-region queen-placement puzzle with its own <a href="/queens-solver/">Queens solver</a>, <a href="/tango-unlimited/">Tango Unlimited</a>, a sun-and-moon binary grid with a <a href="/tango-solver/">Tango solver</a>, <a href="/zip-unlimited/">Zip Unlimited</a>, a numbered path puzzle with a <a href="/zip-solver/">Zip solver</a>, and <a href="/mini-sudoku-unlimited/">Mini Sudoku Unlimited</a>, a 6×6 sudoku with a <a href="/mini-sudoku-solver/">Mini Sudoku solver</a>.</p>
 <p>All puzzles are created by our own generator, and every board is checked to be solvable. The site is free to use and is supported by advertising.</p>
 <p>We are not affiliated with LinkedIn, Microsoft, The New York Times or any other game publisher. Game names are used only to describe the style of puzzle.</p>
 <p>Questions or ideas for the next game? <a href="/contact/">Contact us</a>.</p>
@@ -959,7 +1141,7 @@ def build():
 <h1>Terms of Use</h1>
 <p>Last updated: {TODAY}</p>
 <p>Unlimited Dailies provides free puzzle games and tools "as is", without warranties of any kind. You may use the site for personal, non-commercial entertainment.</p>
-<p>All puzzles are generated by our own code. Game names such as "Sumbreak", "Queens", "Tango" and "Zip" are trademarks of their respective owners and are used here only to describe a puzzle style. Unlimited Dailies is not affiliated with or endorsed by those owners.</p>
+<p>All puzzles are generated by our own code. Game names such as "Sumbreak", "Queens", "Tango", "Zip" and "Mini Sudoku" are trademarks of their respective owners and are used here only to describe a puzzle style. Unlimited Dailies is not affiliated with or endorsed by those owners.</p>
 <p>We may change or remove games at any time. Questions: <a href="mailto:{EMAIL}">{EMAIL}</a>.</p>
 """)
 
@@ -974,6 +1156,7 @@ def build():
             ("/queens-unlimited/", "1.0"), ("/queens-solver/", "0.9"),
             ("/tango-unlimited/", "1.0"), ("/tango-solver/", "0.9"),
             ("/zip-unlimited/", "1.0"), ("/zip-solver/", "0.9"),
+            ("/mini-sudoku-unlimited/", "1.0"), ("/mini-sudoku-solver/", "0.9"),
             ("/about/", "0.3"), ("/contact/", "0.3"), ("/privacy-policy/", "0.2"), ("/terms/", "0.2")]
     sm = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
     sm += "".join(f"  <url><loc>{DOMAIN}{u}</loc><lastmod>{TODAY}</lastmod><priority>{p}</priority></url>\n" for u, p in urls)
