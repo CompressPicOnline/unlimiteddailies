@@ -42,7 +42,21 @@
     setMsg('Tap once for ✕, twice for a queen. Drag to mark several ✕ at once.');
     clearInterval(tick); timerEl.textContent = '0:00';
     if (history.replaceState) history.replaceState(null, '', location.pathname + query());
-    build(); render();
+    build();
+    var sv = store.get('prog', null);
+    if (sv && sv.k === level + ':' + id && sv.m) {
+      state.marks = sv.m; state.hints = sv.h || 0;
+      if (sv.t > 0) { state.start = Date.now() - sv.t; resumeClock(); }
+      setMsg('Welcome back – your progress on this board was restored.');
+    }
+    render();
+  }
+
+  function save() { if (!state || (!state.solvedAt && !state.start && state.marks.indexOf(1) < 0 && state.marks.indexOf(2) < 0)) return; store.set('prog', state.solvedAt ? null : { k: state.level + ':' + state.id, m: state.marks, h: state.hints, t: state.start ? Date.now() - state.start : 0 }); }
+  function resumeClock() {
+    clearInterval(tick);
+    tick = setInterval(function () { if (!state.solvedAt) timerEl.textContent = fmt(Date.now() - state.start); }, 500);
+    timerEl.textContent = fmt(Date.now() - state.start);
   }
 
   function query() { return state.level === 'daily' ? '?daily=' + state.id : '?level=' + state.level + '&p=' + state.id; }
@@ -64,6 +78,7 @@
   function queensMap() { var m = {}; state.marks.forEach(function (v, i) { if (v === 2) m[i] = true; }); return m; }
 
   function render() {
+    save();
     var res = Q.check(state.n, state.regions, queensMap());
     var cells = boardEl.children;
     for (var i = 0; i < cells.length; i++) {
@@ -116,6 +131,7 @@
     var time = state.solvedAt - (state.start || state.solvedAt);
     timerEl.textContent = fmt(time);
     setMsg('Solved! 🎉', 'ok');
+    save();
     boardEl.classList.add('solved');
     recordWin(time);
     setTimeout(function () { showWin(time); }, 500);
@@ -194,7 +210,7 @@
   function flash(i) { var el = boardEl.children[i]; if (!el) return; el.classList.add('hl'); setTimeout(function () { el.classList.remove('hl'); }, 1500); }
 
   function undo() { if (state.solvedAt || !state.history.length) return; state.marks = state.history.pop(); afterChange(); }
-  function restart() { state.marks.fill(0); state.history = []; state.solvedAt = 0; state.start = 0; state.hints = 0; boardEl.classList.remove('solved'); clearInterval(tick); timerEl.textContent = '0:00'; render(); setMsg('Board cleared.'); }
+  function restart() { store.set('prog', null); state.marks.fill(0); state.history = []; state.solvedAt = 0; state.start = 0; state.hints = 0; boardEl.classList.remove('solved'); clearInterval(tick); timerEl.textContent = '0:00'; render(); setMsg('Board cleared.'); }
 
   // Pointer: tap cycles empty → ✕ → queen → empty; dragging from a cell paints ✕ (or clears ✕) on the cells it crosses.
   function idxAt(x, y) { var el = document.elementFromPoint(x, y); return el && el.parentNode === boardEl ? +el.getAttribute('data-i') : -1; }

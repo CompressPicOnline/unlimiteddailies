@@ -163,3 +163,23 @@ nav.top a{margin-left:0;white-space:nowrap}
 #ssolver .sboard{max-width:400px;margin:8px 0}
 #ssolver .spad{margin:10px 0;justify-content:flex-start;max-width:400px}
 #ssolver .scell{font-size:calc(min(80vw,390px)/var(--sn,6)*.42)}
+/* Patches */
+.pboard{position:relative;isolation:isolate;display:grid;gap:0;border:3px solid #2b3550;border-radius:10px;background:#fff;max-width:440px;margin:0 auto;touch-action:none;user-select:none;-webkit-user-select:none;overflow:hidden}
+.pcell{position:relative;z-index:2;aspect-ratio:1;border:0;margin:0;padding:0;border-radius:0;background:transparent;box-shadow:inset 0 0 0 .5px #c9cdd8;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#1d2333}
+.pcell:focus-visible{outline:3px solid var(--brand);outline-offset:-3px}
+.pcell.sel{box-shadow:inset 0 0 0 3px var(--brand)}
+.pclue{display:flex;flex-direction:column;align-items:center;gap:2px;background:#fff;border:2px solid #2b3550;border-radius:8px;padding:2px 5px;min-width:58%;font:800 calc(min(84vw,420px)/var(--pn,6)*.3)/1 system-ui,sans-serif}
+.pico{display:block;border:2px solid #2b3550;border-radius:2px}
+.pico.square{width:.6em;height:.6em}.pico.wide{width:.9em;height:.45em}.pico.tall{width:.45em;height:.8em}
+.pico.any{width:.8em;height:.6em;border:2px dotted #2b3550;border-radius:50%}
+.players{position:absolute;inset:0;z-index:1;pointer-events:none}
+.patch{position:absolute;box-sizing:border-box;border:3px solid #2b3550;border-radius:6px;transition:background .2s}
+.patch.bad{background-image:repeating-linear-gradient(135deg,rgba(196,22,28,.28) 0 5px,transparent 5px 11px)!important}
+.patch.preview{border:3px dashed var(--brand);background:rgba(47,111,237,.14);display:flex;align-items:flex-end;justify-content:flex-end;padding:2px 4px}
+.patch.preview b{font:700 .75rem system-ui,sans-serif;background:var(--brand);color:#fff;border-radius:4px;padding:0 4px}
+.patch.hl{border:4px solid #127a46;animation:glow 1s ease-in-out infinite}
+.pboard.solved .patch{border-color:#127a46}
+.pedit{margin:10px 0;display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.pedit input{width:5em;font:inherit;padding:6px 8px;border-radius:8px;border:1px solid var(--line);background:var(--card);color:var(--ink)}
+.pedit button[aria-pressed=true]{background:var(--brand);border-color:var(--brand);color:#fff}
+#psolver .pboard{max-width:400px;margin:8px 0}

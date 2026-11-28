@@ -7,10 +7,10 @@ SITE = "Unlimited Dailies"
 EMAIL = "contact@unlimiteddailies.com"
 TODAY = datetime.date.today().isoformat()
 OUT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "site")
-V = "9"  # bump to bust asset cache
+V = "10"  # bump to bust asset cache
 INDEXNOW_KEY = "3753766b9ea89f1d1682ceed22f858eb"  # IndexNow key file served at /<key>.txt
 
-NAV = [("/sumbreak-unlimited/", "Sumbreak"), ("/queens-unlimited/", "Queens"), ("/tango-unlimited/", "Tango"), ("/zip-unlimited/", "Zip"), ("/mini-sudoku-unlimited/", "Mini Sudoku")]
+NAV = [("/sumbreak-unlimited/", "Sumbreak"), ("/queens-unlimited/", "Queens"), ("/tango-unlimited/", "Tango"), ("/zip-unlimited/", "Zip"), ("/mini-sudoku-unlimited/", "Mini Sudoku"), ("/patches-unlimited/", "Patches")]
 
 def head(title, desc, path, extra_schema=None, noindex=False):
     url = DOMAIN + path
@@ -62,8 +62,8 @@ def head(title, desc, path, extra_schema=None, noindex=False):
 
 FOOT = f"""</div></main>
 <footer class="site"><div class="wrap">
-<p><a href="/">Home</a><a href="/sumbreak-unlimited/">Sumbreak Unlimited</a><a href="/sumbreak-solver/">Sumbreak Solver</a><a href="/how-to-play-sumbreak/">How to Play Sumbreak</a><a href="/queens-unlimited/">Queens Unlimited</a><a href="/queens-solver/">Queens Solver</a><a href="/tango-unlimited/">Tango Unlimited</a><a href="/tango-solver/">Tango Solver</a><a href="/zip-unlimited/">Zip Unlimited</a><a href="/zip-solver/">Zip Solver</a><a href="/mini-sudoku-unlimited/">Mini Sudoku Unlimited</a><a href="/mini-sudoku-solver/">Mini Sudoku Solver</a><a href="/about/">About</a><a href="/contact/">Contact</a><a href="/privacy-policy/">Privacy</a><a href="/terms/">Terms</a></p>
-<p>© {datetime.date.today().year} {SITE}. Free, unofficial practice puzzles. Not affiliated with, endorsed by or connected to LinkedIn Corporation or Microsoft. "Sumbreak", "Queens", "Tango", "Zip" and "Mini Sudoku" are used only to describe puzzle styles.</p>
+<p><a href="/">Home</a><a href="/sumbreak-unlimited/">Sumbreak Unlimited</a><a href="/sumbreak-solver/">Sumbreak Solver</a><a href="/how-to-play-sumbreak/">How to Play Sumbreak</a><a href="/queens-unlimited/">Queens Unlimited</a><a href="/queens-solver/">Queens Solver</a><a href="/tango-unlimited/">Tango Unlimited</a><a href="/tango-solver/">Tango Solver</a><a href="/zip-unlimited/">Zip Unlimited</a><a href="/zip-solver/">Zip Solver</a><a href="/mini-sudoku-unlimited/">Mini Sudoku Unlimited</a><a href="/mini-sudoku-solver/">Mini Sudoku Solver</a><a href="/patches-unlimited/">Patches Unlimited</a><a href="/patches-solver/">Patches Solver</a><a href="/about/">About</a><a href="/contact/">Contact</a><a href="/privacy-policy/">Privacy</a><a href="/terms/">Terms</a></p>
+<p>© {datetime.date.today().year} {SITE}. Free, unofficial practice puzzles. Not affiliated with, endorsed by or connected to LinkedIn Corporation or Microsoft. "Sumbreak", "Queens", "Tango", "Zip", "Mini Sudoku" and "Patches" are used only to describe puzzle styles.</p>
 </div></footer>
 """
 
@@ -216,7 +216,7 @@ ZGAME = """
     <a class="btn primary" data-next href="#" style="text-decoration:none;display:inline-block">Next puzzle</a>
     <button type="button" class="btn" data-share>Share result</button>
     <button type="button" class="btn" data-close>Close</button>
-    <p class="more-games">Try another game: <a href="/mini-sudoku-unlimited/">Mini Sudoku Unlimited</a> – 6×6 sudoku – <a href="/tango-unlimited/">Tango Unlimited</a> or <a href="/queens-unlimited/">Queens Unlimited</a>.</p>
+    <p class="more-games">Try another game: <a href="/mini-sudoku-unlimited/">Mini Sudoku Unlimited</a> – 6×6 sudoku – <a href="/patches-unlimited/">Patches Unlimited</a> – fill the grid with rectangles – or <a href="/tango-unlimited/">Tango Unlimited</a>.</p>
   </div>
 </div>
 """
@@ -257,6 +257,39 @@ SGAME = """
 """
 SGAME_JS = f'<script src="/assets/sudoku-core.js?v={V}"></script>\n<script src="/assets/sudoku.js?v={V}"></script>'
 
+PGAME = """
+<div id="pgame" data-default="{default}">
+  <div class="levels" role="group" aria-label="Choose difficulty">
+    <button type="button" data-level-btn="daily">Daily</button>
+    <button type="button" data-level-btn="easy">Easy</button>
+    <button type="button" data-level-btn="medium">Medium</button>
+    <button type="button" data-level-btn="hard">Hard</button>
+    <button type="button" data-level-btn="expert">Expert</button>
+  </div>
+  <div class="meta"><span data-puzzle-title>Loading…</span><span>⏱ <span data-timer>0:00</span></span></div>
+  <div class="pboard" aria-label="Patches puzzle board"></div>
+  <p class="game-msg" aria-live="polite"></p>
+  <div class="ctrl">
+    <button type="button" data-action="undo">↶ Undo</button>
+    <button type="button" data-action="restart">Restart</button>
+    <button type="button" data-action="hint">💡 Hint</button>
+    <button type="button" data-action="new">New puzzle →</button>
+  </div>
+  <p class="stats" data-stats></p>
+</div>
+<div class="modal" id="win-modal" hidden role="dialog" aria-modal="true" aria-labelledby="win-title">
+  <div class="card">
+    <h2 id="win-title" style="margin-top:0">🧩 Puzzle solved!</h2>
+    <p data-win-text></p>
+    <a class="btn primary" data-next href="#" style="text-decoration:none;display:inline-block">Next puzzle</a>
+    <button type="button" class="btn" data-share>Share result</button>
+    <button type="button" class="btn" data-close>Close</button>
+    <p class="more-games">Try another game: <a href="/zip-unlimited/">Zip Unlimited</a> – one path through every square – <a href="/queens-unlimited/">Queens Unlimited</a> or <a href="/mini-sudoku-unlimited/">Mini Sudoku Unlimited</a>.</p>
+  </div>
+</div>
+"""
+PGAME_JS = f'<script src="/assets/patches-core.js?v={V}"></script>\n<script src="/assets/patches.js?v={V}"></script>'
+
 def game_archive(launch, path):
     """Links to every past daily board of a game (query-string replays on the same page, not separate pages)."""
     days = (datetime.date.today() - launch).days + 1
@@ -279,6 +312,7 @@ def build():
         ("What is Sumbreak Unlimited?", "Sumbreak Unlimited is a free, unofficial practice version of the Sumbreak-style number puzzle. Instead of one puzzle a day, you can play as many boards as you like in Easy, Medium, Hard and Expert, plus a free daily puzzle of our own with an archive of every past daily."),
         ("Is this the official LinkedIn Sumbreak game?", "No. The official game is played on LinkedIn. This site is an independent fan-made practice tool that uses the same simple idea (merging identical neighbouring numbers) and creates its own puzzles. We are not affiliated with LinkedIn."),
         ("How do you play Sumbreak?", "Drag a number onto an identical number right next to it (up, down, left or right). The two tiles combine into their sum, and the tile you moved leaves an empty dead spot. Keep merging until only one number is left on the board."),
+        ("Can I play the Sumbreak game online for free without LinkedIn?", "Yes. This page runs the Sumbreak game style in any web browser, on phone or computer, with no LinkedIn account, no download and no sign-up. Every board is free and unlimited, from a quick 3×3 warm-up to a 6×6 board with wildcard tiles."),
         ("Can I play Sumbreak more than once a day?", "The official game gives one puzzle per day. Here you can play unlimited puzzles: every time you press New puzzle you get a fresh, solvable board."),
         ("Is every puzzle solvable?", "Yes. Every board is built backwards from a single finished tile, so there is always at least one correct order of merges. If you get stuck, use Undo or the Hint button."),
         ("Do I need an account or download?", "No. The game runs in your browser on phone, tablet or computer. There is no sign-up, and your stats are saved only on your own device."),
@@ -502,6 +536,7 @@ def build():
         ("What does Auto ✕ do?", "When Auto ✕ is switched on, placing a queen automatically crosses out its row, its column, its colour region and the eight squares around it. It saves taps on big boards; switch it off if you prefer to do every deduction yourself."),
         ("Do hints or undo affect my stats?", "Undo never affects anything. Hints are counted only in the result you share, so you can be honest with friends; your solved count and streak still go up."),
         ("Is there a Queens solver?", "Yes. If you are stuck on a board, open our Queens solver, colour the regions to match your puzzle and it shows the queens one at a time."),
+        ("Is my progress saved if I close the page?", "Yes. Your queens, ✕ marks, hints and time on the current board are saved in this browser as you play. Open the same board again – from the same link, level or daily – and you continue where you stopped. Restart clears the saved board."),
     ]
     qgame_schema = {
         "@context": "https://schema.org", "@type": ["VideoGame", "WebApplication"],
@@ -1058,6 +1093,160 @@ def build():
           "url": DOMAIN + "/mini-sudoku-solver/", "applicationCategory": "UtilitiesApplication", "operatingSystem": "Any",
           "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}}])
 
+    # ---------- Patches unlimited ----------
+    pfaqs = [
+        ("What is Patches Unlimited?", "Patches Unlimited is a free practice version of the Patches rectangle puzzle. Split the whole grid into rectangles so that every rectangle holds exactly one clue and matches that clue's number and shape. Every board is made by our own generator, so you can play as many as you like instead of waiting for tomorrow's puzzle."),
+        ("Is this the official LinkedIn Patches game?", "No. Unlimited Dailies is an independent site and is not connected to LinkedIn. We only use the general rules of this rectangle-splitting puzzle style, which is related to the classic Shikaku puzzle; every board, colour and icon here is our own."),
+        ("What do the number and the little shape on a clue mean?", "The number is the area of the patch – how many squares it covers. The shape tells you its outline: a solid square means width and height are equal, a wide box means wider than tall, a tall box means taller than wide, and a dotted oval means any rectangle is allowed."),
+        ("What does a clue with a question mark mean?", "On Hard, Expert and some Daily boards a few clues show only a shape and no number. The patch must still contain that clue and have that shape, but you work out its size from the clues around it."),
+        ("Does every Patches board have exactly one answer?", "Yes. Before a board is shown, our solver searches for every way to split it. If it finds more than one, the generator makes a clue stricter and checks again, so every board has exactly one solution that you can reach by logic."),
+        ("How do I draw and remove a patch?", "Press on a square and drag to the opposite corner, then let go. A new patch replaces any patch it overlaps. Tap a patch once to remove it, or use Undo. Tapping an empty square creates a one-square patch."),
+        ("What does the Hint button do?", "If one of your patches is not part of the answer, Hint removes it. Otherwise it places the patch for the clue with the fewest possible positions left and tells you how many options that clue had."),
+        ("Can I play with a keyboard?", "Yes. Move with the arrow keys, press Enter or Space to start a patch, stretch it with the arrows and press Enter again to place it. Escape cancels and Delete removes the patch under the cursor."),
+        ("Do hints or undo affect my stats?", "Undo never affects anything. Hints are mentioned in the result you share, but your solved count, best times and daily streak still go up."),
+        ("Is there a Patches solver?", "Yes. If you are stuck on any board, open our Patches solver, enter each clue with its number and shape, and reveal the answer one patch at a time."),
+        ("Is my progress saved if I close the page?", "Yes. The patches you have drawn, your hints and your time are saved in this browser as you play, so you can come back to the same board later and carry on. Restart clears the saved board."),
+    ]
+    pgame_schema = {
+        "@context": "https://schema.org", "@type": ["VideoGame", "WebApplication"],
+        "name": "Patches Unlimited", "url": DOMAIN + "/patches-unlimited/",
+        "description": "Free unlimited Patches-style rectangle puzzles in the browser: split the grid into patches that each hold one clue and match its area and shape. 5×5 to 8×8 boards and a daily puzzle.",
+        "applicationCategory": "GameApplication", "operatingSystem": "Any (web browser)",
+        "genre": ["Puzzle", "Logic puzzle"], "gamePlatform": "Web browser", "playMode": "SinglePlayer",
+        "isAccessibleForFree": True, "inLanguage": "en",
+        "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"},
+        "publisher": {"@type": "Organization", "name": SITE, "url": DOMAIN}
+    }
+    ICO = lambda s: f'<span class="pico {s}" style="display:inline-block;vertical-align:middle;margin:0 2px"></span>'
+    body = f"""
+<h1>Patches Unlimited – Play Free Patches Puzzles With No Daily Limit</h1>
+<p class="lead">Cover the whole grid with rectangles: each patch holds exactly one clue, its area matches the number and its outline matches the shape. Unlimited boards, a free daily puzzle and hints that explain themselves – no login.</p>
+{PGAME.format(default="easy")}
+<div class="ad-slot"></div>
+
+<h2>How to play Patches</h2>
+<ol>
+<li><strong>Draw a patch.</strong> Press on a square and drag to the opposite corner of the rectangle you want, then let go. The dashed preview shows its size while you drag.</li>
+<li><strong>One clue per patch.</strong> Every patch must contain exactly one clue – never zero, never two.</li>
+<li><strong>Match the number.</strong> The number on a clue is the patch's area. A 6 can be 1×6, 2×3, 3×2 or 6×1 – as long as it fits the shape.</li>
+<li><strong>Match the shape.</strong> {ICO("square")} square: equal width and height. {ICO("wide")} wide: wider than it is tall. {ICO("tall")} tall: taller than it is wide. {ICO("any")} dotted oval: any rectangle, squares included.</li>
+<li><strong>Cover everything.</strong> The puzzle is solved when every square belongs to exactly one correct patch. Patches that break a rule are striped in red at once.</li>
+</ol>
+<p>Stuck on a board – maybe today's official one? Enter it into the <a href="/patches-solver/">Patches solver</a> and reveal the answer one patch at a time.</p>
+
+<h2>Why practise with unlimited Patches puzzles?</h2>
+<p>The daily Patches board is over in a minute or two, and that is the problem: one board a day is not enough to learn how the shapes and numbers work together. Strong players do not test rectangles at random – they see at a glance that a corner clue can only grow one way, that a big number has nowhere to go but the open middle, or that two neighbouring clues are fighting over the same strip. That kind of vision comes from repetition. Here every board is fresh, every board has exactly one answer, and you can move from a gentle 5×5 to an 8×8 grid with numberless clues whenever you are ready.</p>
+
+<h2>Features</h2>
+<ul>
+<li><strong>Unlimited boards</strong> at four levels – Easy 5×5, Medium 6×6, Hard 7×7 and Expert 8×8 – each with a puzzle number you can share.</li>
+<li><strong>One answer, always</strong>: every board is checked by our solver before you see it.</li>
+<li><strong>Daily Patches puzzle</strong> – one 6×6 board for everyone each day, with a streak counter and an archive of past days.</li>
+<li><strong>Instant rule check</strong>: a patch with no clue, two clues, the wrong area or the wrong shape is striped straight away.</li>
+<li><strong>Hint that teaches</strong>: it removes a wrong patch if you have one, otherwise it places the most constrained clue and tells you how many options it had.</li>
+<li><strong>Undo, Restart, timer, best times and a Share button</strong> to post your time without spoiling the board.</li>
+<li><strong>Touch, mouse and keyboard</strong> play.</li>
+</ul>
+
+<h2>Patches daily archive</h2>
+<p>Every daily board we have published stays here, so you can catch up on days you missed. Archive boards count towards your stats; only today's board extends your streak.</p>
+{game_archive(datetime.date(2026, 11, 28), "/patches-unlimited/")}
+
+<h2>Patches strategy: six habits that solve most boards</h2>
+<h3>1. Start with the clue that has the fewest options</h3>
+<p>Before drawing anything, look for a clue that can only be placed one way. A square clue with the number 4 has just one outline, 2×2, and next to a wall or in a corner it often has only one position. A 1 is always a single square. Place these first; every placed patch removes options from its neighbours.</p>
+<h3>2. Use the edges and corners</h3>
+<p>A clue in a corner can only grow away from the corner. A tall clue on the top edge can only extend downwards. Edges cut the number of possible rectangles roughly in half, which is why experienced players work from the outside in.</p>
+<h3>3. Look for squares no one else can reach</h3>
+<p>Every square must belong to some patch. If an empty square can be reached by only one clue – because every other clue is too small, too far away or the wrong shape – that clue's patch must include it. This single idea solves most of the harder boards.</p>
+<h3>4. Count what is left</h3>
+<p>When a region of the board is fenced off by finished patches, the numbers inside it must add up to its size. If a region of nine squares holds a 4 and a clue without a number, the numberless patch must be exactly 5 squares.</p>
+<h3>5. Let wide and tall clues guide you</h3>
+<p>A wide clue with the number 6 can only be 1×6 or 2×3, and a tall 6 only 6×1 or 3×2. On a 6×6 board a wide 6 is very often a full row. Shape icons are as much information as numbers – read both.</p>
+<h3>6. Leave the "any shape" clues for later</h3>
+<p>The dotted "any shape" clue allows every rectangle, including a square. It is the least informative clue, so leave it until its neighbours are placed and the space around it has shrunk.</p>
+
+<h2>Common Patches mistakes</h2>
+<ul>
+<li><strong>Swallowing a second clue.</strong> A rectangle that looks perfect but touches another clue is never correct. Check the edges of every patch you draw.</li>
+<li><strong>Mixing up wide and tall.</strong> Wide means the patch is longer from left to right; tall means it is longer from top to bottom. A square is neither.</li>
+<li><strong>Leaving orphan squares.</strong> After each patch, glance at the empty squares next to it. If one of them can no longer be reached by any clue, the patch you just drew is wrong.</li>
+<li><strong>Guessing on big numbers.</strong> Large numbers have many possible outlines. Place the small, fixed clues around them first and the big patch usually has only one shape left.</li>
+</ul>
+
+<h2>Worked example: a corner and a strip</h2>
+<p>Picture the top row of a 5×5 board. In the top-left corner there is a clue showing 2 with the wide shape, and two squares to its right, in the third column, a clue showing 3 with the wide shape. The 2 can only be 1×2, and from the corner it can only grow to the right – so it covers columns 1 and 2. The 3 is wide too, so it is 1×3; it cannot reach left any more, so it covers columns 3, 4 and 5. Two clues, two forced patches, and the whole top row is finished without trying a single alternative. The second row now starts with a clean edge above it, which usually makes the next clue just as easy.</p>
+
+<h2>Frequently asked questions</h2>
+{faq_html(pfaqs)}
+<p class="disclaimer">Unlimited Dailies is an independent website. It is not affiliated with, sponsored by or endorsed by LinkedIn Corporation or Microsoft. "Patches" is used only to describe the puzzle style. All boards on this page are generated by our own code, and the colours and clue icons are our own design.</p>
+"""
+    page("/patches-unlimited/", "Patches Unlimited – Free Patches Puzzles, No Daily Limit",
+         "Play Patches unlimited for free: split the grid into rectangles that match each clue's number and shape. 4 levels, a daily puzzle, archive and smart hints.",
+         body, PGAME_JS, [pgame_schema, faq_schema(pfaqs)])
+
+    # ---------- Patches solver ----------
+    psfaqs = [
+        ("How do I get the answer to today's Patches puzzle?", "Choose the board size, tap each square that holds a clue in your puzzle, type its number (leave it empty if the clue has no number) and pick its shape. Press Solve: the answer appears one patch at a time, starting with the clue that has the fewest options, or all at once with Show full answer."),
+        ("Which shape should I pick for a clue?", "Square for a clue whose patch has equal sides, Wide for wider than tall, Tall for taller than wide, and Any when the clue allows every rectangle. If you are unsure, Any always works – the solver just has more to check."),
+        ("Why does the solver say there is no solution?", "A clue was probably entered with the wrong number or shape, or a clue is missing. If all clues have numbers, they must add up to the number of squares on the board – the solver checks that first."),
+        ("Why does it say there is more than one answer?", "Real Patches boards have exactly one solution. If the solver finds two, part of the puzzle is missing – usually a shape entered as Any that is really wide, tall or square."),
+        ("What sizes does the Patches solver support?", "Boards from 4×4 to 10×10, with any mix of numbered and numberless clues."),
+        ("Is my board sent anywhere?", "No. The solver runs completely in your browser, in a background thread so the page stays responsive. Nothing you enter is uploaded or stored."),
+    ]
+    body = f"""
+<h1>Patches Solver – Today's Patches Answer, Patch by Patch</h1>
+<p class="lead">Stuck on a Patches puzzle? Tap in each clue with its number and shape, press Solve, and reveal the answer one rectangle at a time – starting with the patch that is easiest to find.</p>
+<form id="psolver" class="card" autocomplete="off">
+  <label>Board size:
+    <select name="size"><option value="4">4×4</option><option value="5">5×5</option><option value="6" selected>6×6</option><option value="7">7×7</option><option value="8">8×8</option><option value="9">9×9</option><option value="10">10×10</option></select>
+  </label>
+  <div class="pboard" aria-label="Enter your Patches board"></div>
+  <div class="pedit" hidden>
+    <strong data-where></strong>
+    <label>Number: <input name="area" type="number" min="1" max="100" inputmode="numeric" placeholder="none"></label>
+    <button type="button" class="btn" data-shape="any">Any</button>
+    <button type="button" class="btn" data-shape="square">Square</button>
+    <button type="button" class="btn" data-shape="wide">Wide</button>
+    <button type="button" class="btn" data-shape="tall">Tall</button>
+    <button type="button" class="btn" data-remove>Remove clue</button>
+    <button type="button" class="btn" data-done>Done</button>
+  </div>
+  <p style="font-size:.9rem;color:var(--muted)">Tap a square that holds a clue, type its number and choose its shape. Leave the number empty for a clue without one.</p>
+  <button class="btn primary" type="submit">Solve</button>
+  <button class="btn" type="button" data-example>Load example</button>
+  <button class="btn" type="button" data-clear>Clear</button>
+</form>
+<div id="psolver-out" aria-live="polite"></div>
+<div class="ad-slot"></div>
+
+<h2>Stuck on today's Patches? Get the answer in three steps</h2>
+<ol>
+<li><strong>Pick the size</strong> of your board. 6×6 is selected already; every size from 4×4 to 10×10 works.</li>
+<li><strong>Enter the clues.</strong> Tap each square that shows a clue, type the number and choose the shape: {ICO("square")} Square, {ICO("wide")} Wide, {ICO("tall")} Tall or {ICO("any")} Any. Leave the number empty if the clue has only a shape.</li>
+<li><strong>Press Solve.</strong> The first patch appears on the board with a short note on why it is the natural place to start. Press <em>Show next patch</em> for another nudge, or <em>Show full answer</em> to see the whole split.</li>
+</ol>
+
+<h2>How the Patches solver works</h2>
+<p>For every clue the solver first lists every rectangle that could belong to it: rectangles that contain the clue, contain no other clue, stay inside the board and match the clue's area and shape. A corner clue with a small number might have only one or two such rectangles; an "any shape" clue in the middle of the board can have dozens.</p>
+<p>It then fills the board the way a careful player would. It always works on the clue with the fewest rectangles still available, places one, and checks that every empty square can still be reached by at least one remaining clue. If a square becomes unreachable, that choice was wrong and the solver steps back. Because it tries the most constrained clue first, real puzzles are solved in a fraction of a second.</p>
+<p>After the first answer is found, the solver keeps looking for a second one. Proper Patches boards have exactly one solution, so if it finds two it tells you – the most common sign that a shape or number was entered differently from your puzzle.</p>
+<p>The revealed order is chosen to teach: each step names the clue and how many rectangles it still had at that moment. "The only patch that still fits" is a deduction you can make yourself next time.</p>
+
+<h2>Solve it yourself next time</h2>
+<p>Most boards fall to three habits: start with corner and edge clues, place clues whose shape and number allow just one outline, and look for empty squares that only one clue can reach. Practise them on fresh boards in <a href="/patches-unlimited/">Patches Unlimited</a> – every board there has exactly one solution, and the hint tells you which clue is the most constrained.</p>
+
+<h2>FAQ</h2>
+{faq_html(psfaqs)}
+<p class="disclaimer">Unofficial tool. Not affiliated with LinkedIn. The solver runs entirely in your browser; your board is not sent anywhere.</p>
+"""
+    page("/patches-solver/", "Patches Solver – Today's Patches Answer, Step by Step",
+         "Free Patches solver: enter your clues with their numbers and shapes and reveal the answer one rectangle at a time. Works for 4×4 to 10×10 boards.",
+         body, f'<script src="/assets/patches-core.js?v={V}"></script>\n<script src="/assets/patches-solver.js?v={V}"></script>',
+         [faq_schema(psfaqs), {"@context": "https://schema.org", "@type": "WebApplication", "name": "Patches Solver",
+          "url": DOMAIN + "/patches-solver/", "applicationCategory": "UtilitiesApplication", "operatingSystem": "Any",
+          "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}}])
+
     # ---------- Home ----------
     launch = datetime.date(2026, 11, 21)
     today_n = (datetime.date.today() - launch).days + 1
@@ -1084,6 +1273,8 @@ def build():
   <a class="card" href="/zip-solver/"><strong>Zip Solver</strong><small>Tap in your numbers and walls and reveal the path five squares at a time.</small></a>
   <a class="card" href="/mini-sudoku-unlimited/"><strong>Mini Sudoku Unlimited <span class="tag">New</span></strong><small>6×6 sudoku: 1–6 once in every row, column and box. Notes, hints, a daily & a 9×9 Expert level.</small></a>
   <a class="card" href="/mini-sudoku-solver/"><strong>Mini Sudoku Solver</strong><small>Type in your 6×6 or 9×9 board and reveal the answer square by square, with the reason.</small></a>
+  <a class="card" href="/patches-unlimited/"><strong>Patches Unlimited <span class="tag">New</span></strong><small>Split the grid into rectangles that match each clue's number and shape. 5×5 to 8×8 & a daily.</small></a>
+  <a class="card" href="/patches-solver/"><strong>Patches Solver</strong><small>Tap in your clues and reveal the answer one rectangle at a time.</small></a>
   <a class="card" href="/how-to-play-sumbreak/"><strong>How to Play Sumbreak</strong><small>Rules, dead spots and strategy tips.</small></a>
 </div>
 <h2>Today's free puzzle</h2>
@@ -1096,7 +1287,7 @@ def build():
 <li><strong>Always solvable</strong> puzzles, with hints and undo.</li>
 <li><strong>Fast and private</strong> – everything runs in your browser.</li>
 </ul>
-<p>Right now you can play <a href="/sumbreak-unlimited/">Sumbreak Unlimited</a>, the newest daily number-merge puzzle, <a href="/queens-unlimited/">Queens Unlimited</a>, the colour-region logic puzzle with one queen per row, column and region, <a href="/tango-unlimited/">Tango Unlimited</a>, the sun-and-moon balance grid, <a href="/zip-unlimited/">Zip Unlimited</a>, the one-line path puzzle, and <a href="/mini-sudoku-unlimited/">Mini Sudoku Unlimited</a>, the 6×6 number grid – each with its own step-by-step solver. More puzzle styles are on the way.</p>
+<p>Right now you can play <a href="/sumbreak-unlimited/">Sumbreak Unlimited</a>, the newest daily number-merge puzzle, <a href="/queens-unlimited/">Queens Unlimited</a>, the colour-region logic puzzle with one queen per row, column and region, <a href="/tango-unlimited/">Tango Unlimited</a>, the sun-and-moon balance grid, <a href="/zip-unlimited/">Zip Unlimited</a>, the one-line path puzzle, <a href="/mini-sudoku-unlimited/">Mini Sudoku Unlimited</a>, the 6×6 number grid, and <a href="/patches-unlimited/">Patches Unlimited</a>, the rectangle-splitting puzzle – each with its own step-by-step solver. More puzzle styles are on the way.</p>
 <h2 id="archive">Daily puzzle archive</h2>
 <p>Missed a day? Every daily puzzle we have published stays here. Pick a number to replay it – the ones you have solved on this device are ticked. Only today's puzzle counts towards your streak.</p>
 <ul class="archive" data-archive>{archive_html}</ul>
@@ -1115,7 +1306,7 @@ def build():
     # ---------- About / Contact / Privacy / Terms ----------
     page("/about/", "About Unlimited Dailies", "About Unlimited Dailies: free unlimited practice versions of popular daily puzzle games.", f"""
 <h1>About Unlimited Dailies</h1>
-<p>Unlimited Dailies is a small independent website that makes free, unlimited practice versions of popular daily puzzle styles. Our games are <a href="/sumbreak-unlimited/">Sumbreak Unlimited</a>, a number-merge logic puzzle with a <a href="/sumbreak-solver/">solver</a> and a <a href="/how-to-play-sumbreak/">strategy guide</a>, <a href="/queens-unlimited/">Queens Unlimited</a>, a colour-region queen-placement puzzle with its own <a href="/queens-solver/">Queens solver</a>, <a href="/tango-unlimited/">Tango Unlimited</a>, a sun-and-moon binary grid with a <a href="/tango-solver/">Tango solver</a>, <a href="/zip-unlimited/">Zip Unlimited</a>, a numbered path puzzle with a <a href="/zip-solver/">Zip solver</a>, and <a href="/mini-sudoku-unlimited/">Mini Sudoku Unlimited</a>, a 6×6 sudoku with a <a href="/mini-sudoku-solver/">Mini Sudoku solver</a>.</p>
+<p>Unlimited Dailies is a small independent website that makes free, unlimited practice versions of popular daily puzzle styles. Our games are <a href="/sumbreak-unlimited/">Sumbreak Unlimited</a>, a number-merge logic puzzle with a <a href="/sumbreak-solver/">solver</a> and a <a href="/how-to-play-sumbreak/">strategy guide</a>, <a href="/queens-unlimited/">Queens Unlimited</a>, a colour-region queen-placement puzzle with its own <a href="/queens-solver/">Queens solver</a>, <a href="/tango-unlimited/">Tango Unlimited</a>, a sun-and-moon binary grid with a <a href="/tango-solver/">Tango solver</a>, <a href="/zip-unlimited/">Zip Unlimited</a>, a numbered path puzzle with a <a href="/zip-solver/">Zip solver</a>, <a href="/mini-sudoku-unlimited/">Mini Sudoku Unlimited</a>, a 6×6 sudoku with a <a href="/mini-sudoku-solver/">Mini Sudoku solver</a>, and <a href="/patches-unlimited/">Patches Unlimited</a>, a rectangle-splitting puzzle with a <a href="/patches-solver/">Patches solver</a>.</p>
 <p>All puzzles are created by our own generator, and every board is checked to be solvable. The site is free to use and is supported by advertising.</p>
 <p>We are not affiliated with LinkedIn, Microsoft, The New York Times or any other game publisher. Game names are used only to describe the style of puzzle.</p>
 <p>Questions or ideas for the next game? <a href="/contact/">Contact us</a>.</p>
@@ -1144,7 +1335,7 @@ def build():
 <h1>Terms of Use</h1>
 <p>Last updated: {TODAY}</p>
 <p>Unlimited Dailies provides free puzzle games and tools "as is", without warranties of any kind. You may use the site for personal, non-commercial entertainment.</p>
-<p>All puzzles are generated by our own code. Game names such as "Sumbreak", "Queens", "Tango", "Zip" and "Mini Sudoku" are trademarks of their respective owners and are used here only to describe a puzzle style. Unlimited Dailies is not affiliated with or endorsed by those owners.</p>
+<p>All puzzles are generated by our own code. Game names such as "Sumbreak", "Queens", "Tango", "Zip", "Mini Sudoku" and "Patches" are trademarks of their respective owners and are used here only to describe a puzzle style. Unlimited Dailies is not affiliated with or endorsed by those owners.</p>
 <p>We may change or remove games at any time. Questions: <a href="mailto:{EMAIL}">{EMAIL}</a>.</p>
 """)
 
@@ -1160,6 +1351,7 @@ def build():
             ("/tango-unlimited/", "1.0"), ("/tango-solver/", "0.9"),
             ("/zip-unlimited/", "1.0"), ("/zip-solver/", "0.9"),
             ("/mini-sudoku-unlimited/", "1.0"), ("/mini-sudoku-solver/", "0.9"),
+            ("/patches-unlimited/", "1.0"), ("/patches-solver/", "0.9"),
             ("/about/", "0.3"), ("/contact/", "0.3"), ("/privacy-policy/", "0.2"), ("/terms/", "0.2")]
     sm = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
     sm += "".join(f"  <url><loc>{DOMAIN}{u}</loc><lastmod>{TODAY}</lastmod><priority>{p}</priority></url>\n" for u, p in urls)

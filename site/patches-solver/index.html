@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  window.dataLayer.push({'gtm.start': new Date().getTime(), event: 'gtm.js'});
+  function gtag(){dataLayer.push(arguments);}
+</script>
+<script async src="https://www.googletagmanager.com/gtm.js?id=GTM-52WF64FM"></script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Patches Solver – Today's Patches Answer, Step by Step</title>
+<meta name="description" content="Free Patches solver: enter your clues with their numbers and shapes and reveal the answer one rectangle at a time. Works for 4×4 to 10×10 boards.">
+<link rel="canonical" href="https://unlimiteddailies.com/patches-solver/">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Unlimited Dailies">
+<meta property="og:title" content="Patches Solver – Today's Patches Answer, Step by Step">
+<meta property="og:description" content="Free Patches solver: enter your clues with their numbers and shapes and reveal the answer one rectangle at a time. Works for 4×4 to 10×10 boards.">
+<meta property="og:url" content="https://unlimiteddailies.com/patches-solver/">
+<meta property="og:image" content="https://unlimiteddailies.com/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#2f6fed">
+<meta name="monetag" content="c643b64e9fb0e1e28f59dc44caa0c5cc">
+<meta name="msvalidate.01" content="DCD9377743936F2F6B4B5754198E0DD4">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/assets/style.css?v=10">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "name": "Patches Solver breadcrumb", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Unlimited Dailies", "item": "https://unlimiteddailies.com/"}, {"@type": "ListItem", "position": 2, "name": "Patches Solver", "item": "https://unlimiteddailies.com/patches-solver/"}]}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "How do I get the answer to today's Patches puzzle?", "acceptedAnswer": {"@type": "Answer", "text": "Choose the board size, tap each square that holds a clue in your puzzle, type its number (leave it empty if the clue has no number) and pick its shape. Press Solve: the answer appears one patch at a time, starting with the clue that has the fewest options, or all at once with Show full answer."}}, {"@type": "Question", "name": "Which shape should I pick for a clue?", "acceptedAnswer": {"@type": "Answer", "text": "Square for a clue whose patch has equal sides, Wide for wider than tall, Tall for taller than wide, and Any when the clue allows every rectangle. If you are unsure, Any always works – the solver just has more to check."}}, {"@type": "Question", "name": "Why does the solver say there is no solution?", "acceptedAnswer": {"@type": "Answer", "text": "A clue was probably entered with the wrong number or shape, or a clue is missing. If all clues have numbers, they must add up to the number of squares on the board – the solver checks that first."}}, {"@type": "Question", "name": "Why does it say there is more than one answer?", "acceptedAnswer": {"@type": "Answer", "text": "Real Patches boards have exactly one solution. If the solver finds two, part of the puzzle is missing – usually a shape entered as Any that is really wide, tall or square."}}, {"@type": "Question", "name": "What sizes does the Patches solver support?", "acceptedAnswer": {"@type": "Answer", "text": "Boards from 4×4 to 10×10, with any mix of numbered and numberless clues."}}, {"@type": "Question", "name": "Is my board sent anywhere?", "acceptedAnswer": {"@type": "Answer", "text": "No. The solver runs completely in your browser, in a background thread so the page stays responsive. Nothing you enter is uploaded or stored."}}]}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebApplication", "name": "Patches Solver", "url": "https://unlimiteddailies.com/patches-solver/", "applicationCategory": "UtilitiesApplication", "operatingSystem": "Any", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}}</script>
+</head>
+<body>
+<header class="site"><div class="wrap">
+<a class="logo" href="/"><span>∞</span> Unlimited Dailies</a>
+<nav class="top"><a href="/sumbreak-unlimited/">Sumbreak</a><a href="/queens-unlimited/">Queens</a><a href="/tango-unlimited/">Tango</a><a href="/zip-unlimited/">Zip</a><a href="/mini-sudoku-unlimited/">Mini Sudoku</a><a href="/patches-unlimited/">Patches</a></nav>
+</div></header>
+<main><div class="wrap">
+
+<h1>Patches Solver – Today's Patches Answer, Patch by Patch</h1>
+<p class="lead">Stuck on a Patches puzzle? Tap in each clue with its number and shape, press Solve, and reveal the answer one rectangle at a time – starting with the patch that is easiest to find.</p>
+<form id="psolver" class="card" autocomplete="off">
+  <label>Board size:
+    <select name="size"><option value="4">4×4</option><option value="5">5×5</option><option value="6" selected>6×6</option><option value="7">7×7</option><option value="8">8×8</option><option value="9">9×9</option><option value="10">10×10</option></select>
+  </label>
+  <div class="pboard" aria-label="Enter your Patches board"></div>
+  <div class="pedit" hidden>
+    <strong data-where></strong>
+    <label>Number: <input name="area" type="number" min="1" max="100" inputmode="numeric" placeholder="none"></label>
+    <button type="button" class="btn" data-shape="any">Any</button>
+    <button type="button" class="btn" data-shape="square">Square</button>
+    <button type="button" class="btn" data-shape="wide">Wide</button>
+    <button type="button" class="btn" data-shape="tall">Tall</button>
+    <button type="button" class="btn" data-remove>Remove clue</button>
+    <button type="button" class="btn" data-done>Done</button>
+  </div>
+  <p style="font-size:.9rem;color:var(--muted)">Tap a square that holds a clue, type its number and choose its shape. Leave the number empty for a clue without one.</p>
+  <button class="btn primary" type="submit">Solve</button>
+  <button class="btn" type="button" data-example>Load example</button>
+  <button class="btn" type="button" data-clear>Clear</button>
+</form>
+<div id="psolver-out" aria-live="polite"></div>
+<div class="ad-slot"></div>
+
+<h2>Stuck on today's Patches? Get the answer in three steps</h2>
+<ol>
+<li><strong>Pick the size</strong> of your board. 6×6 is selected already; every size from 4×4 to 10×10 works.</li>
+<li><strong>Enter the clues.</strong> Tap each square that shows a clue, type the number and choose the shape: <span class="pico square" style="display:inline-block;vertical-align:middle;margin:0 2px"></span> Square, <span class="pico wide" style="display:inline-block;vertical-align:middle;margin:0 2px"></span> Wide, <span class="pico tall" style="display:inline-block;vertical-align:middle;margin:0 2px"></span> Tall or <span class="pico any" style="display:inline-block;vertical-align:middle;margin:0 2px"></span> Any. Leave the number empty if the clue has only a shape.</li>
+<li><strong>Press Solve.</strong> The first patch appears on the board with a short note on why it is the natural place to start. Press <em>Show next patch</em> for another nudge, or <em>Show full answer</em> to see the whole split.</li>
+</ol>
+
+<h2>How the Patches solver works</h2>
+<p>For every clue the solver first lists every rectangle that could belong to it: rectangles that contain the clue, contain no other clue, stay inside the board and match the clue's area and shape. A corner clue with a small number might have only one or two such rectangles; an "any shape" clue in the middle of the board can have dozens.</p>
+<p>It then fills the board the way a careful player would. It always works on the clue with the fewest rectangles still available, places one, and checks that every empty square can still be reached by at least one remaining clue. If a square becomes unreachable, that choice was wrong and the solver steps back. Because it tries the most constrained clue first, real puzzles are solved in a fraction of a second.</p>
+<p>After the first answer is found, the solver keeps looking for a second one. Proper Patches boards have exactly one solution, so if it finds two it tells you – the most common sign that a shape or number was entered differently from your puzzle.</p>
+<p>The revealed order is chosen to teach: each step names the clue and how many rectangles it still had at that moment. "The only patch that still fits" is a deduction you can make yourself next time.</p>
+
+<h2>Solve it yourself next time</h2>
+<p>Most boards fall to three habits: start with corner and edge clues, place clues whose shape and number allow just one outline, and look for empty squares that only one clue can reach. Practise them on fresh boards in <a href="/patches-unlimited/">Patches Unlimited</a> – every board there has exactly one solution, and the hint tells you which clue is the most constrained.</p>
+
+<h2>FAQ</h2>
+<div class="faq"><details><summary>How do I get the answer to today's Patches puzzle?</summary><p>Choose the board size, tap each square that holds a clue in your puzzle, type its number (leave it empty if the clue has no number) and pick its shape. Press Solve: the answer appears one patch at a time, starting with the clue that has the fewest options, or all at once with Show full answer.</p></details><details><summary>Which shape should I pick for a clue?</summary><p>Square for a clue whose patch has equal sides, Wide for wider than tall, Tall for taller than wide, and Any when the clue allows every rectangle. If you are unsure, Any always works – the solver just has more to check.</p></details><details><summary>Why does the solver say there is no solution?</summary><p>A clue was probably entered with the wrong number or shape, or a clue is missing. If all clues have numbers, they must add up to the number of squares on the board – the solver checks that first.</p></details><details><summary>Why does it say there is more than one answer?</summary><p>Real Patches boards have exactly one solution. If the solver finds two, part of the puzzle is missing – usually a shape entered as Any that is really wide, tall or square.</p></details><details><summary>What sizes does the Patches solver support?</summary><p>Boards from 4×4 to 10×10, with any mix of numbered and numberless clues.</p></details><details><summary>Is my board sent anywhere?</summary><p>No. The solver runs completely in your browser, in a background thread so the page stays responsive. Nothing you enter is uploaded or stored.</p></details></div>
+<p class="disclaimer">Unofficial tool. Not affiliated with LinkedIn. The solver runs entirely in your browser; your board is not sent anywhere.</p>
+</div></main>
+<footer class="site"><div class="wrap">
+<p><a href="/">Home</a><a href="/sumbreak-unlimited/">Sumbreak Unlimited</a><a href="/sumbreak-solver/">Sumbreak Solver</a><a href="/how-to-play-sumbreak/">How to Play Sumbreak</a><a href="/queens-unlimited/">Queens Unlimited</a><a href="/queens-solver/">Queens Solver</a><a href="/tango-unlimited/">Tango Unlimited</a><a href="/tango-solver/">Tango Solver</a><a href="/zip-unlimited/">Zip Unlimited</a><a href="/zip-solver/">Zip Solver</a><a href="/mini-sudoku-unlimited/">Mini Sudoku Unlimited</a><a href="/mini-sudoku-solver/">Mini Sudoku Solver</a><a href="/patches-unlimited/">Patches Unlimited</a><a href="/patches-solver/">Patches Solver</a><a href="/about/">About</a><a href="/contact/">Contact</a><a href="/privacy-policy/">Privacy</a><a href="/terms/">Terms</a></p>
+<p>© 2026 Unlimited Dailies. Free, unofficial practice puzzles. Not affiliated with, endorsed by or connected to LinkedIn Corporation or Microsoft. "Sumbreak", "Queens", "Tango", "Zip", "Mini Sudoku" and "Patches" are used only to describe puzzle styles.</p>
+</div></footer>
+<script src="/assets/patches-core.js?v=10"></script>
+<script src="/assets/patches-solver.js?v=10"></script><script>
+/* Monetag vignette: loaded a few seconds after the page opens so the first view is never blocked.
+   Vignette ads only appear when the visitor follows a link (e.g. "Next puzzle" after a win),
+   never in the middle of a game. */
+(function(){var load=function(){var s=document.createElement('script');s.dataset.zone='12312406';s.src='https://n6wxm.com/vignette.min.js';s.async=true;document.body.appendChild(s);};
+if(document.readyState==='complete')setTimeout(load,4000);else window.addEventListener('load',function(){setTimeout(load,4000);});})();
+</script>
+</body>
+</html>

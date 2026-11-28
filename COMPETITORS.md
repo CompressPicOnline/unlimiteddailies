@@ -1,6 +1,35 @@
 # Competitors
 
-Updated: 2026-11-27 (Asia/Karachi). Facts summarised from their public pages; nothing copied.
+Updated: 2026-11-28 (Asia/Karachi). Facts summarised from their public pages; nothing copied.
+
+## 2026-11-28 check (main run)
+
+Search Console (data to 26 Nov): daily impressions 10/59/32/58/26/28/44 (20–26 Nov), clicks 0/2/1/2/0/1/2 → 8 clicks total; 26 Nov: 2 clicks, 44 impr, avg pos 14.8.
+| Keyword | Our pos (GSC, 28d) today | last run | Non-official sites above us (WebSearch, not Google) | Likely reasons |
+|---|---|---|---|---|
+| sumbreak unlimited | 10.4 (/sumbreak-unlimited/, 16 impr), 15.5 (home, 8) | 10.6 | engine again returned no Sumbreak sites; known list stands (playsumbreak, thesumbreak, bettersumbreak, sumbreakpuzzle, sumbreak.io, sum-break, mergenumbersgame) | exact-match domains, older |
+| sumbreak (head) | 14.5 (how-to, 33 impr), 16.1 (unlimited, 13) | ~14 | – | head term, official LinkedIn + news first |
+| sumbreak game | 19.3 (home, 6), 28.9 (unlimited, 7) | 19.3 | none relevant shown | exact title match on playsumbreak |
+| queens unlimited / game unlimited | 43 (2 impr) / 19 (1) | 19 | queensultimate.com, wordle.global/en/queens/unlimited, playqueensgame.com | older domains, leaderboard, progress saved |
+| queens solver | 56.5 (2 impr, first data) | new | mspiegel.github.io (Rust research solver), maxwellmetzner.github.io/LinkedinSolver, GitHub/PyPI/Medium solvers, Chrome extensions, storage.googleapis queens_solver | developer/blog authority; few are usable web tools |
+| tango unlimited | 37.5 (2 impr); tango daily 5 | 37 | 8tango.com, tango-unlimited.com, tango-game.pages.dev | exact-match domains |
+| zip game unlimited | not ranked yet | – | ProductHunt "Zip Game Unlimited", LinkedIn news, guideflow tutorials | engine shows no real game sites |
+| zip hints today (rotating) | – | – | thewordfinder zip-hints, sportsdunia daily answer posts | daily-answer format (we do not copy) |
+| mini sudoku unlimited | not ranked yet | new | app stores, sudoku-online.org/en/mini.php, mini-sudoku.pages.dev | big sudoku domains/apps |
+| patches solver (new game today) | new today | – | ProductHunt "patches answers today", logicpuzzlehub (vercel) guide, sportsdunia daily answers, maxwellmetzner.github.io multi-solver, Chrome extensions | almost no real web solver → our chance |
+
+New sites analysed today:
+- **maxwellmetzner.github.io/LinkedinSolver** – "LinkedIn Game Solvers | Zip, Tango, Queens, Patches, Mini Sudoku"; ~450 words, no FAQ, no schema; one page with five solvers (Zip 5×5–10×10, Queens 8×8 only, Patches and Mini Sudoku 6×6 only), Clear/Solve. Lacks step-by-step reveal, explanations, other sizes, games, daily, hints, share.
+- **logicpuzzlehub (daily-puzzle-solve…vercel.app) /blog/how-to-solve-linkedin-patches** – ~350 words, 1 FAQ; describes Patches as "pattern completion/symmetry" (does not match the real rectangle mechanic); no solver, no example.
+- **mspiegel.github.io/queens-without-backtracking** – ~1,900-word research write-up of a heuristics-only Rust CLI solver; no playable or web solver UI.
+- **wordle.global/en/queens/unlimited** (re-checked) – "Queens Unlimited - Endless Logic Puzzles"; ~900 core words, 6 FAQ (streak?, unique?, free?, vs daily, **save progress?**); 8×8 only, uniqueness check, 3-state tap, conflict highlight, **progress saved in browser**, global daily leaderboard. Lacks undo, hints, share, timer, other sizes.
+- **pinpointanswer.pages.dev/linkedin-patches-game-unlimited** – ~400 words, 4 FAQ; drag-to-draw/tap-to-remove, "unlimited levels"; no sizes, hints, undo, timer, daily, solver.
+
+Gap list 2026-11-28:
+- Closed today: **Patches game + Patches solver** (competitors: thin 350–450-word pages, solver only 6×6; ours: 4 levels 5×5–8×8, numberless clues, daily + archive, explained hints, undo, share, stats/streak, auto-save, 11 FAQ + FAQPage schema, ~1,650 words; solver 4×4–10×10, numberless clues, patch-by-patch reveal with reasons, uniqueness check); **Queens auto-save of the unfinished board** (wordle.global has saved progress) + FAQ; **Sumbreak "play online free without LinkedIn" FAQ** (Search Console: "sumbreak game", "sumbreak game online free").
+- Still open: global leaderboard (needs server/accounts – skip), Queens 5×5/11×11 in game, Tango 4×4/10×10 in game, printable worksheets (no demand yet), auto-save for Tango and Zip.
+- We are better: only site with game + solver for all six LinkedIn-style puzzles, explained hints, share, stats/streaks, daily archives, FAQ schema.
+- Nobody does well: a Patches solver that handles any size and numberless clues and explains its order.
 
 ## 2026-11-27 check (main run)
 
